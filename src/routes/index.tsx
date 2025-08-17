@@ -1,36 +1,33 @@
-import { createFileRoute } from '@tanstack/react-router'
-import logo from '../logo.svg'
-import '../App.css'
+import { getProductsCategories } from '@/services/categories';
+import { createFileRoute, useLoaderData, useNavigate } from '@tanstack/react-router';
+import '../App.scss';
 
 export const Route = createFileRoute('/')({
   component: App,
-})
+  loader: async () => {
+    const categories: string[] = await getProductsCategories();
+    return { categories };
+  },
+});
 
 function App() {
+  const { categories } = useLoaderData({ from: "/" });
+  const navigate = useNavigate();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/routes/index.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="App-link"
-          href="https://tanstack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn TanStack
-        </a>
-      </header>
-    </div>
-  )
+    <>
+      <div className='categories-container'>
+        <h3>Categories</h3>
+        <ul className='categories-list'>
+          {categories.map((category) => (
+            <li key={category} className='category-item' onClick={() => {
+              navigate({ to: `/products/${category}` })
+            }}>
+              <a href={`/products/${category}`}>{category}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
 }
