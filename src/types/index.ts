@@ -28,3 +28,19 @@ export interface User {
   image?: string;
   password?: string;
 }
+
+export type UsersCart = {
+  carts: [
+    {
+      id: number;
+      total: number;
+      discountPercentage: number;
+      products: Product[];
+      totalProducts: number;
+      totalQuantity: number;
+    }
+  ],
+  total: number;
+  skip: number;
+  limit: number;
+}
