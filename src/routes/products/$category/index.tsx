@@ -22,7 +22,7 @@ function RouteComponent() {
   return (
     <div>
       {!products && <p>Loading...</p>}
-      <h2>Products in {category}</h2>
+      <h2 className='subtitle'>Products in {category}</h2>
       {products && (
         <ul className='product-list'>
           {products.products.map((product: Product) => (
