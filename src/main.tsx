@@ -1,27 +1,43 @@
-import { StrictMode } from 'react'
+import { StrictMode, useMemo } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { AuthProvider, useAuth } from './context/AuthContext'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
 import reportWebVitals from './reportWebVitals.ts'
 
-// Create a new router instance
-const router = createRouter({
-  routeTree,
-  context: {},
-  defaultPreload: 'intent',
-  scrollRestoration: true,
-  defaultStructuralSharing: true,
-  defaultPreloadStaleTime: 0,
-})
+function RouterWithContext() {
+  const { user } = useAuth()
+  
+  const router = useMemo(() => createRouter({
+    routeTree,
+    context: {
+      user,
+    },
+    defaultPreload: 'intent',
+    scrollRestoration: true,
+    defaultStructuralSharing: true,
+    defaultPreloadStaleTime: 0,
+  }), [user])
+
+  return <RouterProvider router={router} />
+}
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router
+    router: ReturnType<typeof createRouter>
   }
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <RouterWithContext />
+    </AuthProvider>
+  )
 }
 
 // Render the app
@@ -30,7 +46,7 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <App />
     </StrictMode>,
   )
 }
