@@ -19,11 +19,11 @@ function App() {
       <div className='categories-container'>
         <h3>Categories</h3>
         <ul className='categories-list'>
-          {categories.map((category) => (
+          {categories.map((category: string) => (
             <li key={category} className='category-item' onClick={() => {
               navigate({ to: `/products/${category}` })
             }}>
-              <a href={`/products/${category}`}>{category}</a>
+              {category}
             </li>
           ))}
         </ul>
