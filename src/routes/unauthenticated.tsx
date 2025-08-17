@@ -7,8 +7,8 @@ export const Route = createFileRoute('/unauthenticated')({
 function RouteComponent() {
   return (
     <div>
-      <h2>Unauthenticated</h2>
-      <p>Please log in to access this page.</p>
+      <h2 className='subtitle'>Unauthenticated</h2>
+      <p className='text'>Please log in to access this page.</p>
     </div>
   )
 }
