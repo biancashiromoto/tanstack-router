@@ -1,5 +1,5 @@
 import { getProductById } from '@/services/products';
-import { createFileRoute, useLoaderData, useParams } from '@tanstack/react-router'
+import { createFileRoute, redirect, useLoaderData } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/products/$category/$id')({
   component: RouteComponent,
@@ -8,13 +8,14 @@ export const Route = createFileRoute('/products/$category/$id')({
     if (!id) {
       throw new Error('Product ID is required');
     }
-    const product = await getProductById(id);
+    const product = await getProductById(Number(id));
+    redirect({ to: `/products/${product.category}/${product.id}` });
     return { product };
   },
+  errorComponent: () => <p>Error loading product details.</p>,
 })
 
 function RouteComponent() {
-  const { category } = useParams({ from: '/products/$category/$id' });
   const { product } = useLoaderData({ from: '/products/$category/$id' });
 
   if (!product) {
@@ -28,7 +29,7 @@ function RouteComponent() {
       <h1>{product.title}</h1>
       <div className="product-detail-content">
         <div className="product-images">
-          {product.images.map((image, index) => (
+          {product.images.map((image: string, index: number) => (
             <img 
               key={index} 
               src={image} 
@@ -40,7 +41,7 @@ function RouteComponent() {
         <div className="product-info">
           <p className="product-price">${product.price}</p>
           <p className="product-description">{product.description}</p>
-          <p className="product-category">Category: {category}</p>
+          <p className="product-category">Category: {product.category}</p>
           {product.brand && <p className="product-brand">Brand: {product.brand}</p>}
 
           {product.rating && (
