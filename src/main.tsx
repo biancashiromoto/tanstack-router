@@ -9,7 +9,7 @@ import { routeTree } from './routeTree.gen'
 import reportWebVitals from './reportWebVitals.ts'
 
 function RouterWithContext() {
-  const { user } = useAuth()
+  const { user, isLoading } = useAuth()
   
   const router = useMemo(() => createRouter({
     routeTree,
@@ -20,7 +20,11 @@ function RouterWithContext() {
     scrollRestoration: true,
     defaultStructuralSharing: true,
     defaultPreloadStaleTime: 0,
-  }), [user])
+  }), [user?.accessToken]) 
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
   return <RouterProvider router={router} />
 }
