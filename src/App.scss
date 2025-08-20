@@ -54,7 +54,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 20px;
     
     .product-item {
       display: flex;
@@ -67,6 +66,7 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       margin: 10px;
       width: 200px;
+      cursor: pointer;
 
       &:hover {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -98,7 +98,7 @@
   .product-detail {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0 20px;
     text-align: left;
 
     h1 {
@@ -230,5 +230,74 @@
       width: 16px;
       height: 16px;
     }
+  }
+
+  .cart-list {
+    padding: 0 20px;
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 50px 1fr 100px auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+
+      .cart-thumbnail {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+      }
+
+      .cart-item-quantity {
+        // display: flex;
+        // align-items: center;
+        // gap: 5px;
+
+        // .quantity-button {
+        //   padding: 5px 10px;
+        //   border: none;
+        //   background-color: #007bff;
+        //   color: white;
+        //   border-radius: 4px;
+        //   cursor: pointer;
+
+        //   &:hover {
+        //     background-color: #0056b3;
+        //   }
+        // }
+
+        .quantity {
+          font-size: 1em;
+          min-width: 20px;
+          margin-right: 0px;
+        }
+      }
+
+      // .cart-item-actions {
+      //   margin-left: auto;
+
+      //   .remove-button {
+      //     padding: 5px 10px;
+      //     border: none;
+      //     background-color: #e74c3c;
+      //     color: white;
+      //     border-radius: 4px;
+      //     cursor: pointer;
+
+      //     &:hover {
+      //       background-color: #c0392b;
+      //     }
+      //   }
+      // }
+    }
+  }
+
+  h3.cart-price {
+    margin-left: 75%;
   }
 }
