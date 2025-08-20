@@ -8,16 +8,17 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<boolean>
   logout: () => void
   isAuthenticated: boolean
+  isLoading: boolean
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    throw new Error('useAuth must be used within an AuthProvider');
   }
-  return context
+  return context;
 }
 
 interface AuthProviderProps {
@@ -26,40 +27,54 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const login = async (username: string, password: string): Promise<boolean> => {
-    const signedUser = await signIn(username, password);
-    if (signedUser) {
-      setUser(signedUser)
-      localStorage.setItem('user', JSON.stringify(signedUser))
-      return true
+    try {
+      setUser(null);
+      localStorage.removeItem('user');
+      
+      const signedUser = await signIn(username, password);
+      if (signedUser) {
+        setUser(signedUser);
+        localStorage.setItem('user', JSON.stringify(signedUser));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Login error:', error);
+      return false;
     }
-    return false
   }
 
   const logout = () => {
-    setUser(null)
-    localStorage.removeItem('user')
+    console.log('Logging out user:', user);
+    setUser(null);
+    localStorage.removeItem('user');
   }
 
   const isAuthenticated = user !== null
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user')
+    const savedUser = localStorage.getItem('user');
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser))
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
       } catch (error) {
-        localStorage.removeItem('user')
+        console.error('Error parsing saved user:', error);
+        localStorage.removeItem('user');
       }
     }
-  }, [])
+    setIsLoading(false);
+  }, []);
 
   const value = {
     user,
     login,
     logout,
     isAuthenticated,
+    isLoading,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
