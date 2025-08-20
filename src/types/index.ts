@@ -3,11 +3,13 @@ export type Product = {
   title: string;
   price: number;
   images: string[];
+  thumbnail?: string;
   description?: string;
   brand?: string;
-  category?: string;
+  category: string;
   stock?: number;
   rating?: number;
+  quantity?: number;
 }
 
 export type ProductsResponse = {
@@ -27,20 +29,22 @@ export interface User {
   lastName: string;
   image?: string;
   password?: string;
+  phone?: string;
+  address?: {
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+  };
 }
 
-export type UsersCart = {
-  carts: [
-    {
-      id: number;
-      total: number;
-      discountPercentage: number;
-      products: Product[];
-      totalProducts: number;
-      totalQuantity: number;
-    }
-  ],
-  total: number;
-  skip: number;
-  limit: number;
-}
+export type UsersCart = [
+  {
+    discountedTotal: number;
+    id: number;
+    totalProducts: number;
+    totalQuantity: number;
+    products: Product[];
+    userId: number;
+  }
+]
