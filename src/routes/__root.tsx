@@ -6,7 +6,17 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { App } from './app'
 import type { User } from '@/types'
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      enabled: true,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    },
+  },
+});
 
 interface RouterContext {
   user: User | null;
