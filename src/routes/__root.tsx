@@ -6,14 +6,14 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { App } from './app'
 import type { User } from '@/types'
 
+const queryClient = new QueryClient();
+
 interface RouterContext {
-  user: User | null
+  user: User | null;
+  queryClient: QueryClient;
 }
 
-const queryClient = new QueryClient()
-
 function RootComponent() {
-  
   return (
     <>
       <AuthProvider>
@@ -38,4 +38,8 @@ function RootComponent() {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
+  beforeLoad: () => {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    return { user, queryClient };
+  },
 })
