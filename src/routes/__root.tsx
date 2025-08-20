@@ -10,7 +10,7 @@ const queryClient = new QueryClient();
 
 interface RouterContext {
   user: User | null;
-  queryClient: QueryClient;
+  queryClient?: QueryClient;
 }
 
 function RootComponent() {
