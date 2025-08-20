@@ -1,38 +1,59 @@
+
+import ProductItem from '@/routes/-components/ProductItem';
+import { getProductsCategories } from '@/services/categories';
 import { getProductsByCategory } from '@/services/products';
 import type { Product } from '@/types';
-import { createFileRoute, useLoaderData, useNavigate, useParams } from '@tanstack/react-router'
+import { queryOptions } from '@tanstack/react-query';
+import { createFileRoute, useLoaderData } from '@tanstack/react-router';
+import { useMemo } from 'react';
 
 export const Route = createFileRoute('/products/$category/')({
   component: RouteComponent,
-  loader: async ({ params }) => {
-    const { category } = params;
-    if (!category) {
-      throw new Error('Category is required');
-    }
-    const products = await getProductsByCategory(category);
-    return { products };
+  loader: async ({ params, context }) => {
+    const queryClient = context?.queryClient;
+    const category = params.category;
+    if (!category) throw new Error('Category is required');
+    return queryClient.ensureQueryData(
+      queryOptions({
+        queryKey: ['products', category],
+        queryFn: async () => {
+          const { products } = await getProductsByCategory(category);
+          return { products, category };
+        },
+        staleTime: 1000 * 60 * 5, // 5 minutes
+      })
+    );
   },
-})
+  beforeLoad: async ({ params }) => {
+    const category = params.category;
+      const categories = await getProductsCategories();
+      if (!categories.includes(category)) throw new Error(`Category ${category} not found`);
+  },
+  errorComponent: () => <p>Error loading products.</p>,
+});
+
 
 function RouteComponent() {
-  const { category } = useParams({ from: '/products/$category/' });
-  const { products } = useLoaderData({ from: '/products/$category/' });
-  const navigate = useNavigate();
+  const { products, category } = useLoaderData({ from: '/products/$category/' });
+
+  const productList = useMemo(() => (
+    <ul className='product-list'>
+      {products?.map((product: Product) => (
+        <ProductItem key={product.id} product={product} category={category} />
+      ))}
+    </ul>
+  ), [products, category]);
 
   return (
-    <div>
-      {!products && <p>Loading...</p>}
+    <section>
       <h2 className='subtitle'>Products in {category}</h2>
-      {products && (
-        <ul className='product-list'>
-          {products.products.map((product: Product) => (
-            <li key={product.id} className="product-item" onClick={ () => navigate({ to: `/products/${category}/${product.id}` }) }>
-              <img src={product.images[0]} alt={product.title} className="product-thumbnail" />
-              <strong>{product.title}</strong> - ${product.price}
-            </li>
-          ))}
-        </ul>
+      {!products ? (
+        <div className='loader-container'>
+          <span className='loader' /> Loading products...
+        </div>
+      ) : (
+        productList
       )}
-    </div>
+    </section>
   );
 }
