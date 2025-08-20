@@ -14,6 +14,8 @@ export const signIn = async (username: string, password: string): Promise<User> 
   }
 
   const data = await response.json();
+
+  localStorage.setItem('user', JSON.stringify(data));
   return data;
 }
 
@@ -23,6 +25,7 @@ export const getAllUsers = async (): Promise<User[]> => {
     throw new Error('Failed to fetch users');
   }
   const data = await response.json();
+  console.log('Fetched users:', data.users);
   return data.users;
 }
 
