@@ -20,7 +20,6 @@ export const Route = createFileRoute('/products/$category/')({
           const { products } = await getProductsByCategory(category);
           return { products, category };
         },
-        staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
   },
