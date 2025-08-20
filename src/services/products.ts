@@ -18,7 +18,7 @@ export const getProductsByCategory = async (category: string): Promise<ProductsR
   return response.json() ?? [];
 }
 
-export const getProductById = async (id: string): Promise<Product> => {
+export const getProductById = async (id: number): Promise<Product> => {
   const response = await fetch(`https://dummyjson.com/products/${id}`);
   if (!response.ok) {
     throw new Error(`Failed to fetch product with id: ${id}`);
