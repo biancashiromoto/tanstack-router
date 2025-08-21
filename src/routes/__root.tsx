@@ -3,8 +3,8 @@ import { TanstackDevtools } from '@tanstack/react-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { App } from './app'
 import type { User } from '@/types'
+import { App } from './-components/app'
 
 const queryClient = new QueryClient();
 
