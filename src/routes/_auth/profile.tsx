@@ -1,5 +1,6 @@
 import { useAuth } from '@/context/AuthContext'
 import { createFileRoute } from '@tanstack/react-router'
+import Loader from '../-components/Loader';
 
 export const Route = createFileRoute('/_auth/profile')({
   component: RouteComponent,
@@ -9,11 +10,12 @@ export const Route = createFileRoute('/_auth/profile')({
         title: 'Profile',
       }
     ]
-  })
+  }),
+  errorComponent: () => <p>Error loading profile.</p>,
 })
 
 function RouteComponent() {
-  const { user: authUser } = useAuth()
+  const { user: authUser } = useAuth();
 
   return (
     <div className="profile-container">
@@ -29,7 +31,7 @@ function RouteComponent() {
           <p className='text'><strong>Phone:</strong> {authUser.phone}</p>
         </div>
       ) : (
-        <p className='text'>Carregando dados do usuário...</p>
+        <Loader />
       )}
     </div>
   )

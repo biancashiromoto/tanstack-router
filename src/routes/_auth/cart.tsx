@@ -10,7 +10,14 @@ export const Route = createFileRoute('/_auth/cart')({
     const userId = context.user?.id;
     const cart = await getUsersCartById(Number(userId))
     return { cart: cart[0] ?? { products: [] } }
-  }
+  },
+  head: () => ({
+    meta: [
+      {
+        title: 'Cart',
+      }
+    ]
+  }),
 })
 
 function RouteComponent() {
