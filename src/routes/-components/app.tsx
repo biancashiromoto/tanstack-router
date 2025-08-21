@@ -1,7 +1,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { Outlet } from '@tanstack/react-router';
-import Avatar from './-components/Avatar';
-import Navbar from './-components/Navbar';
+import Avatar from './Avatar';
+import Navbar from './Navbar';
 import { HeadContent } from '@tanstack/react-router';
 
 export function App() {
