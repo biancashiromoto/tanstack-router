@@ -8,7 +8,14 @@ export const Route = createFileRoute('/login')({
   component: Login,
   loader: async ({ context }) => {
     return { user: context.user ?? null }
-  }
+  },
+  head: () => ({
+    meta: [
+      {
+        title: 'Login',
+      }
+    ]
+  }),
 })
 
 function Login() {
@@ -52,7 +59,7 @@ function Login() {
   }
 
   return (
-    <>
+    <div className="login-container">
       <h2 className='subtitle'>Login</h2>
       <form onSubmit={handleSubmit}>
         {error && <div className="error-message">{error}</div>}
@@ -82,6 +89,6 @@ function Login() {
           {isLoading ? 'Signing in...' : 'Login'}
         </button>
       </form>
-    </>
+    </div>
   )
 }
