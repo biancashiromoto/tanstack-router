@@ -1,31 +1,14 @@
-import { useAuth } from '@/context/AuthContext'
-// import { getAllUsers } from '@/services/users'
-// import { useQuery } from '@tanstack/react-query'
-import { createFileRoute, useLoaderData, useNavigate } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useAuth } from "@/context/AuthContext"
+import { useNavigate } from "@tanstack/react-router"
+import { useEffect, useState } from "react"
 
-export const Route = createFileRoute('/login')({
-  component: Login,
-  loader: async ({ context }) => {
-    return { user: context.user ?? null }
-  },
-  head: () => ({
-    meta: [
-      {
-        title: 'Login',
-      }
-    ]
-  }),
-})
-
-function Login() {
+const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { login, isAuthenticated } = useAuth()
+  const { login, isAuthenticated, user } = useAuth()
   const navigate = useNavigate()
-  const { user } = useLoaderData({ from: '/login' });
 
   useEffect(() => {
     if (user && isAuthenticated) {
@@ -92,3 +75,5 @@ function Login() {
     </div>
   )
 }
+
+export default LoginForm
