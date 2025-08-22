@@ -9,6 +9,7 @@ export const Route = createFileRoute('/products/$category/$id')({
       throw new Error('Product ID is required');
     }
     const product = await getProductById(Number(id));
+    if (!product) throw new Error('Product not found');
     redirect({ to: `/products/${product.category}/${product.id}` });
     return { product };
   },
@@ -17,10 +18,6 @@ export const Route = createFileRoute('/products/$category/$id')({
 
 function RouteComponent() {
   const { product } = useLoaderData({ from: '/products/$category/$id' });
-
-  if (!product) {
-    return <p>Loading...</p>;
-  }
 
   const productRating = product.rating ? new Array(Math.ceil(product.rating)).fill('⭐') : null;
 
