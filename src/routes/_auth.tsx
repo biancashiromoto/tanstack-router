@@ -1,6 +1,7 @@
-import { createFileRoute, redirect, Outlet } from '@tanstack/react-router'
+import { createFileRoute, redirect, Outlet, useRouterState } from '@tanstack/react-router';
+import Loader from '@/routes/-components/Loader';
 
-export const Route = createFileRoute('/_auth')({
+export const Route = createFileRoute("/_auth")({
   component: AuthLayout,
   beforeLoad: async ({ context }) => {
     if (!context.user) {
@@ -11,5 +12,7 @@ export const Route = createFileRoute('/_auth')({
 })
 
 function AuthLayout() {
-  return <Outlet />
+  const isLoading = useRouterState({ select: s => s.status === 'pending' });
+  
+  return isLoading ? <Loader /> : <Outlet />;
 }
