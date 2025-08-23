@@ -58,6 +58,10 @@ $categories-menu-width: 180px;
           text-decoration: underline;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
+        &.active {
+          color: greenyellow;
+        }
       }
     }
   }
