@@ -1,4 +1,3 @@
-
 import ProductItem from '@/routes/-components/ProductItem';
 import { getProductsCategories } from '@/services/categories';
 import { getProductsByCategory } from '@/services/products';
@@ -7,7 +6,7 @@ import { queryOptions } from '@tanstack/react-query';
 import { createFileRoute, useLoaderData } from '@tanstack/react-router';
 import { useMemo } from 'react';
 
-export const Route = createFileRoute('/products/$category/')({
+export const Route = createFileRoute('/_product/$category/')({
   component: RouteComponent,
   loader: async ({ params, context }) => {
     const queryClient = context?.queryClient;
@@ -34,7 +33,7 @@ export const Route = createFileRoute('/products/$category/')({
 
 
 function RouteComponent() {
-  const { products, category } = useLoaderData({ from: '/products/$category/' });
+  const { products, category } = useLoaderData({ from: '/_product/$category/' });
 
   const productList = useMemo(() => (
     <ul className='product-list'>
