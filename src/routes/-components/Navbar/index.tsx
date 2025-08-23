@@ -25,7 +25,6 @@ const Navbar = () => {
       {isAuthenticated && <button className="link-button logout" type="button" onClick={handleLogout}>Logout</button>}
       <ul>
         <li><Link to="/">Home</Link></li>
-        {!isAuthenticated && <li><Link to="/login">Login</Link></li>}
         {isAuthenticated && <li><Link to="/profile">Profile</Link></li>}
         {isAuthenticated && <li><Link to="/cart">Cart</Link></li>}
       </ul>
