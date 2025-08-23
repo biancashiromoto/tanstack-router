@@ -1,10 +1,10 @@
 import { useAuth } from '@/context/AuthContext';
 import { Outlet } from '@tanstack/react-router';
-import Avatar from './Avatar';
 // import Navbar from './Navbar';
-import { HeadContent } from '@tanstack/react-router';
 import useFetchCategories from '@/hooks/useFetchCategories';
+import { HeadContent } from '@tanstack/react-router';
 import CategoriesMenu from './CategoriesMenu';
+import Header from './Header';
 
 export function App() {
   const { user } = useAuth();
@@ -13,8 +13,8 @@ export function App() {
   return (
     <>
       <HeadContent />
-      <main className={`main ${user ? 'auth' : ''}`}>
-        {user && <Avatar user={user} />}
+        <main className={`main ${user ? 'auth' : ''}`}>
+        <Header />
         {/* <Navbar /> */}
         {isLoading && <div>Loading categories...</div>}
         {error && <div>Error loading categories</div>}
