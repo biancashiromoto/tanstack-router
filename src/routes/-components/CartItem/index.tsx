@@ -20,7 +20,7 @@ const CartItem = ({ item }: CartItemProps) => {
     getProduct();
   }, [item.id]);
 
-  const handleClick = () => navigate({ to: `/products/${product?.category}/${product?.id}` });
+  const handleClick = () => navigate({ to: `/${product?.category}/${product?.id}` });
   
   return (
     <div className='cart-item' key={item.id} onClick={handleClick}>
