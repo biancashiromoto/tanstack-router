@@ -15,6 +15,24 @@ $categories-menu-width: 180px;
     display: grid;
     grid-template-columns: $categories-menu-width auto;
     height: 100dvh;
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      grid-column: span 2;
+      padding: 0 20px 0 8px;
+    }
+  }
+    
+  button.link-button {
+    border: none;
+    background-color: unset;
+    color: #007bff;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 
   .subtitle {
@@ -190,29 +208,6 @@ $categories-menu-width: 180px;
     border-bottom: 1px solid #eee;
     height: $navbar-height;
     grid-column: span 2;
-    
-    button.link-button {
-      border: none;
-      background-color: unset;
-      color: #007bff;
-
-      &:hover {
-        text-decoration: underline;
-        cursor: pointer;
-      }
-
-      &.return {
-        left: 5%;
-        display: flex;
-        gap: 8px;
-        position:absolute;
-      }
-
-      &.logout {
-        right: 5%;
-        position:absolute;
-      }
-    }
 
     ul {
       list-style: none;
