@@ -6,7 +6,7 @@ export const getAllProducts = async (): Promise<ProductsResponse> => {
     throw new Error('Failed to fetch products');
   }
   
-  return response.json() ?? [];
+  return await response.json() ?? [];
 }
 
 export const getProductsByCategory = async (category: string): Promise<ProductsResponse> => {
@@ -14,8 +14,8 @@ export const getProductsByCategory = async (category: string): Promise<ProductsR
   if (!response.ok) {
     throw new Error(`Failed to fetch products for category: ${category}`);
   }
-  
-  return response.json() ?? [];
+
+  return await response.json() ?? [];
 }
 
 export const getProductById = async (id: number): Promise<Product> => {
@@ -24,5 +24,5 @@ export const getProductById = async (id: number): Promise<Product> => {
     throw new Error(`Failed to fetch product with id: ${id}`);
   }
   
-  return response.json();
+  return await response.json();
 }
