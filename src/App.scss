@@ -36,11 +36,16 @@ $categories-menu-width: 180px;
   }
 
   .subtitle {
-    margin: 20px 0;
+    margin: 16px 0;
   }
 
   .text {
     margin: 20px 0;
+  }
+
+  .products {
+    display: grid;
+    grid-template-rows: min-content auto;
   }
 
   .categories-container {
@@ -155,7 +160,7 @@ $categories-menu-width: 180px;
 
     .product-images {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
 
       .product-image {
