@@ -4,7 +4,6 @@ import { getProductsByCategory } from '@/services/products';
 import type { Product } from '@/types';
 import { queryOptions } from '@tanstack/react-query';
 import { createFileRoute, Outlet, useLoaderData, useMatches } from '@tanstack/react-router';
-import { useMemo } from 'react';
 
 export const Route = createFileRoute('/_product/$category')({
   component: RouteComponent,
@@ -42,24 +41,25 @@ export const Route = createFileRoute('/_product/$category')({
 
 
 function RouteComponent() {
-  const { products, category } = useLoaderData({ from: '/_product/$category' });
+  const { products } = useLoaderData({ from: '/_product/$category' });
   const matches = useMatches();
 
   const isProductSelected = matches.some(match => 
     match.routeId === '/_product/$category/$id'
   );
 
-  const productList = useMemo(() => (
-    <ul className='product-list'>
-      {products?.map((product: Product) => (
-        <ProductItem key={product.id} product={product} />
-      ))}
-    </ul>
-  ), [products, category]);
-
   return (
     <section className="product-categories">
-      {!isProductSelected && productList}
+      {!isProductSelected && (
+        <>
+          <p className='text'>{products.length} products found</p>
+          <ul className='product-list'>
+            {products?.map((product: Product) => (
+              <ProductItem key={product.id} product={product} />
+            ))}
+          </ul>
+        </>
+      )}
       {isProductSelected && <Outlet />}
     </section>
   );
