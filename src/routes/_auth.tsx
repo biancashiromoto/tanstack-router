@@ -1,18 +1,23 @@
-import { createFileRoute, redirect, Outlet, useRouterState } from '@tanstack/react-router';
-import Loader from '@/routes/-components/Loader';
+import {
+  createFileRoute,
+  redirect,
+  Outlet,
+  useRouterState,
+} from "@tanstack/react-router";
+import Loader from "@/routes/-components/Loader";
 
 export const Route = createFileRoute("/_auth")({
   component: AuthLayout,
   beforeLoad: async ({ context }) => {
     if (!context.user) {
-      throw redirect({ to: '/unauthenticated' })
+      throw redirect({ to: "/unauthenticated" });
     }
-    return {}
+    return {};
   },
-})
+});
 
 function AuthLayout() {
-  const isLoading = useRouterState({ select: s => s.status === 'pending' });
-  
+  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
+
   return isLoading ? <Loader /> : <Outlet />;
 }
