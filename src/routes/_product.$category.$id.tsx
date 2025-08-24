@@ -1,5 +1,5 @@
 import { getProductById } from "@/services/products";
-import type { Product } from "@/types";
+import type { Product, Review } from "@/types";
 import { queryOptions } from "@tanstack/react-query";
 import {
   createFileRoute,
@@ -8,6 +8,7 @@ import {
   Outlet,
 } from "@tanstack/react-router";
 import { useState } from "react";
+import ProductReview from "./-components/ProductReview";
 
 export const Route = createFileRoute("/_product/$category/$id")({
   component: RouteComponent,
@@ -74,18 +75,30 @@ function RouteComponent() {
 
           {product.rating && (
             <>
-              <p className="product-rating">Rating: {productRating}</p>
-              <Link
-                to={`/${product.category}/${product.id}/reviews`}
-                onClick={() => setShowReviews((prev) => !prev)}
-              >
-                {product.reviews && (
-                  <>
-                    {!showReviews ? <span>Show </span> : <span>Hide </span>} (
-                    {product.reviews.length} reviews)
-                  </>
-                )}
-              </Link>
+              <div className="product-rating-container">
+                <p className="product-rating">Rating: {productRating}</p>
+                <button
+                  onClick={() => setShowReviews((prev) => !prev)}
+                  type="button"
+                  className="button toggle-reviews"
+                >
+                  {product.reviews && (
+                    <>
+                      {!showReviews ? <span>Show </span> : <span>Hide </span>} (
+                      {product.reviews.length} reviews)
+                    </>
+                  )}
+                </button>
+              </div>
+              <div className="product-reviews">
+                {showReviews &&
+                  product.reviews.map((review: Review, index: number) => (
+                    <ProductReview
+                      key={`${review.date}-${index}`}
+                      review={review}
+                    />
+                  ))}
+              </div>
             </>
           )}
         </div>
