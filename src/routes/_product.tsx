@@ -1,9 +1,15 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  useRouterState,
+} from "@tanstack/react-router";
+import Loader from "./-components/Loader";
 
 export const Route = createFileRoute("/_product")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <Outlet />;
+  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
+  return isLoading ? <Loader /> : <Outlet />;
 }
