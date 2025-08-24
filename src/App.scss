@@ -14,6 +14,7 @@ $categories-menu-width: 180px;
   main.main {
     display: grid;
     grid-template-columns: $categories-menu-width auto;
+    grid-template-rows: $avatar-height auto;
     height: 100dvh;
 
     header {
@@ -22,6 +23,7 @@ $categories-menu-width: 180px;
       align-items: center;
       grid-column: span 2;
       padding: 0 20px 0 8px;
+      height: $avatar-height;
     }
   }
     
@@ -49,7 +51,7 @@ $categories-menu-width: 180px;
     grid-template-rows: min-content auto;
 
     .breadcrumb {
-      padding: 4px 0 4px 4px;
+      padding: 0 0 8px 8px;
     }
   }
 
