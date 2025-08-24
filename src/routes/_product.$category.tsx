@@ -59,7 +59,6 @@ function RouteComponent() {
 
   return (
     <section className="product-categories">
-      <h2 className='subtitle'>Products in {category}</h2>
       {!isProductSelected && productList}
       {isProductSelected && <Outlet />}
     </section>
