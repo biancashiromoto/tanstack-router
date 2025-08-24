@@ -14,8 +14,9 @@ $categories-menu-width: 180px;
   main.main {
     display: grid;
     grid-template-columns: $categories-menu-width auto;
-    grid-template-rows: $avatar-height auto;
+    grid-template-rows: $avatar-height $avatar-height auto;
     height: 100dvh;
+    gap: 12px;
 
     header {
       display: grid;
@@ -25,6 +26,11 @@ $categories-menu-width: 180px;
       grid-template-columns: auto auto;
       padding: 0 20px 0 8px;
       height: $avatar-height;
+    }
+
+    .breadcrumb {
+      grid-column: 2;
+      align-self: center;
     }
 
     button.logout,
@@ -55,18 +61,10 @@ $categories-menu-width: 180px;
       margin: 20px 0;
     }
 
-    .products {
-      display: grid;
-      grid-template-rows: min-content auto;
-
-      .breadcrumb {
-        padding: 0 0 8px 8px;
-      }
-    }
-
     .categories-container {
       width: $categories-menu-width;
       grid-column: 1;
+      grid-row: 2;
       height: 100%;
 
       .categories-list {
@@ -148,6 +146,11 @@ $categories-menu-width: 180px;
           color: #666;
         }
       }
+    }
+
+    .product {
+      grid-column: 2;
+      grid-row: 3;
     }
 
     .product-detail {
