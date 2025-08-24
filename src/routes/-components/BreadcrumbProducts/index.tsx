@@ -25,7 +25,7 @@ export default function BreadcrumbProducts({
   const productTitle = product ?? productData?.title;
 
   return (
-    <div role="presentation">
+    <div role="presentation" className="breadcrumb">
       <Breadcrumbs aria-label="breadcrumb">
         <Typography
           sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }}
