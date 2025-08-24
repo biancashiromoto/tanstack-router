@@ -1,26 +1,40 @@
 import { useAuth } from "@/context/AuthContext";
 import Avatar from "../Avatar";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 
 const Header = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  
+  const currentLocation = useLocation();
+
   const handleLogout = () => {
     logout();
-    navigate({ to: '/login' });
-  }
+    navigate({ to: "/" });
+  };
 
-  if (!user) return null;
+  if (currentLocation.pathname === "/" && !user) return null;
 
   return (
     <header>
-      <Avatar user={user} />
-      <button className="link-button logout" type="button" onClick={handleLogout}>
-        Logout
-      </button>
+      {user && (
+        <>
+          <Avatar user={user} />
+          <button
+            className="link-button logout"
+            type="button"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </>
+      )}
+      {!user && (
+        <Link className="link-button login" to="/">
+          Login
+        </Link>
+      )}
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
