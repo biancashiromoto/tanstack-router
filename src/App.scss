@@ -25,23 +25,25 @@ $categories-menu-width: 180px;
       grid-template-columns: auto auto;
       padding: 0 20px 0 8px;
       height: $avatar-height;
+    }
 
-      button.logout,
-      a.login {
-        text-decoration: none;
-        border: none;
-        background-color: unset;
-        color: #007bff;
-        font-family: inherit;
-        width: min-content;
-        position: absolute;
-        right: 16px;
-        font-size: 16px;
+    button.logout,
+    a.login,
+    button.toggle-reviews {
+      text-decoration: none;
+      border: none;
+      background-color: unset;
+      color: #007bff;
+      font-family: inherit;
+      width: fit-content;
+      position: absolute;
+      right: 0px;
+      font-size: 16px;
+      padding-right: 16px;
 
-        &:hover {
-          text-decoration: underline;
-          cursor: pointer;
-        }
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
       }
     }
 
@@ -252,6 +254,13 @@ $categories-menu-width: 180px;
           margin-bottom: 10px;
           font-size: 1em;
           color: #666;
+        }
+
+        .product-rating {
+          &-container {
+            display: flex;
+            align-items: center;
+          }
         }
 
         .product-stock {
