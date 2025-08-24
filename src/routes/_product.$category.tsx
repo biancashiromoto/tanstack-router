@@ -7,10 +7,8 @@ import {
   createFileRoute,
   Outlet,
   useLoaderData,
-  useMatches,
   useParams,
 } from "@tanstack/react-router";
-import BreadcrumbProducts from "./-components/BreadcrumbProducts";
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
@@ -49,16 +47,11 @@ export const Route = createFileRoute("/_product/$category")({
 
 function RouteComponent() {
   const { products } = useLoaderData({ from: "/_product/$category" });
-  const params = useParams({ from: "/_product/$category" });
-  const matches = useMatches();
-
-  const isProductSelected = matches.some(
-    (match) => match.routeId === "/_product/$category/$id"
-  );
+  const { id } = useParams({ from: "" });
+  const isProductSelected = !!id;
 
   return (
-    <section className="product-categories">
-      <BreadcrumbProducts category={params.category} productId={params.id} />
+    <section className="product">
       {!isProductSelected && (
         <>
           <p className="text">{products.length} products found</p>
