@@ -3,13 +3,18 @@ import { Link } from "@tanstack/react-router";
 
 type ProductItemProps = {
   product: Product;
-  category: string;
 }
 
-const ProductItem = ({ product, category }: ProductItemProps) => {
+const ProductItem = ({ product }: ProductItemProps) => {
   return (
     <li key={product.id} className="product-item">
-      <Link to={`/${category}/${product.id}`}>
+      <Link 
+        to="/$category/$id" 
+        params={{ 
+          category: product.category, 
+          id: product.id.toString() 
+        }}
+      >
         <img src={product.images[0]} alt={product.title} className="product-thumbnail" />
         <strong>{product.title}</strong> - ${product.price}
       </Link>
