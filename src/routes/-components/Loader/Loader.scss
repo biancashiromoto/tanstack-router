@@ -3,6 +3,8 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  position: absolute;
+  left: calc(50% + 75px);
 }
 
 .loader-spinner {
