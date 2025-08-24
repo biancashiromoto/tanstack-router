@@ -19,6 +19,7 @@ $categories-menu-width: 180px;
     header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       grid-column: span 2;
       padding: 0 20px 0 8px;
     }
@@ -46,6 +47,10 @@ $categories-menu-width: 180px;
   .products {
     display: grid;
     grid-template-rows: min-content auto;
+
+    .breadcrumb {
+      padding: 4px 0 4px 4px;
+    }
   }
 
   .categories-container {
