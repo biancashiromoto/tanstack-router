@@ -4,6 +4,7 @@ import Link from '@mui/material/Link';
 import { getProductById } from '@/services/products';
 import type { Product } from '@/types';
 import { useQuery } from '@tanstack/react-query';
+import { formatCategoryName } from '@/helpers';
 
 type BreadcrumbProductProps = {
   category: string;
@@ -21,8 +22,8 @@ export default function BreadcrumbProducts({
     queryFn: () => getProductById(Number(productId)),
     enabled: !!productId
   });
-
   const productTitle = product ?? productData?.title;
+  const categoryName = formatCategoryName(category);
 
   return (
     <div role="presentation" className="breadcrumb">
@@ -38,7 +39,7 @@ export default function BreadcrumbProducts({
           color="inherit"
           href={`/${category}`}
         >
-          {category}
+          {categoryName}
         </Link>
         {productTitle && (
           <Typography
