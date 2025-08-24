@@ -10,36 +10,31 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnauthenticatedRouteImport } from './routes/unauthenticated'
-import { Route as ProductRouteImport } from './routes/_product'
 import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as CategoryRouteImport } from './routes/$category'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProductCategoryRouteImport } from './routes/_product.$category'
 import { Route as AuthProfileRouteImport } from './routes/_auth.profile'
 import { Route as AuthCartRouteImport } from './routes/_auth.cart'
-import { Route as ProductCategoryIdRouteImport } from './routes/_product.$category.$id'
+import { Route as CategoryIdRouteImport } from './routes/$category.$id'
 
 const UnauthenticatedRoute = UnauthenticatedRouteImport.update({
   id: '/unauthenticated',
   path: '/unauthenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductRoute = ProductRouteImport.update({
-  id: '/_product',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoryRoute = CategoryRouteImport.update({
+  id: '/$category',
+  path: '/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const ProductCategoryRoute = ProductCategoryRouteImport.update({
-  id: '/$category',
-  path: '/$category',
-  getParentRoute: () => ProductRoute,
 } as any)
 const AuthProfileRoute = AuthProfileRouteImport.update({
   id: '/profile',
@@ -51,72 +46,70 @@ const AuthCartRoute = AuthCartRouteImport.update({
   path: '/cart',
   getParentRoute: () => AuthRoute,
 } as any)
-const ProductCategoryIdRoute = ProductCategoryIdRouteImport.update({
+const CategoryIdRoute = CategoryIdRouteImport.update({
   id: '/$id',
   path: '/$id',
-  getParentRoute: () => ProductCategoryRoute,
+  getParentRoute: () => CategoryRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$category': typeof CategoryRouteWithChildren
   '/unauthenticated': typeof UnauthenticatedRoute
+  '/$category/$id': typeof CategoryIdRoute
   '/cart': typeof AuthCartRoute
   '/profile': typeof AuthProfileRoute
-  '/$category': typeof ProductCategoryRouteWithChildren
-  '/$category/$id': typeof ProductCategoryIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$category': typeof CategoryRouteWithChildren
   '/unauthenticated': typeof UnauthenticatedRoute
+  '/$category/$id': typeof CategoryIdRoute
   '/cart': typeof AuthCartRoute
   '/profile': typeof AuthProfileRoute
-  '/$category': typeof ProductCategoryRouteWithChildren
-  '/$category/$id': typeof ProductCategoryIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$category': typeof CategoryRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
-  '/_product': typeof ProductRouteWithChildren
   '/unauthenticated': typeof UnauthenticatedRoute
+  '/$category/$id': typeof CategoryIdRoute
   '/_auth/cart': typeof AuthCartRoute
   '/_auth/profile': typeof AuthProfileRoute
-  '/_product/$category': typeof ProductCategoryRouteWithChildren
-  '/_product/$category/$id': typeof ProductCategoryIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$category'
     | '/unauthenticated'
+    | '/$category/$id'
     | '/cart'
     | '/profile'
-    | '/$category'
-    | '/$category/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$category'
     | '/unauthenticated'
+    | '/$category/$id'
     | '/cart'
     | '/profile'
-    | '/$category'
-    | '/$category/$id'
   id:
     | '__root__'
     | '/'
+    | '/$category'
     | '/_auth'
-    | '/_product'
     | '/unauthenticated'
+    | '/$category/$id'
     | '/_auth/cart'
     | '/_auth/profile'
-    | '/_product/$category'
-    | '/_product/$category/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CategoryRoute: typeof CategoryRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
-  ProductRoute: typeof ProductRouteWithChildren
   UnauthenticatedRoute: typeof UnauthenticatedRoute
 }
 
@@ -129,18 +122,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UnauthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_product': {
-      id: '/_product'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof ProductRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_auth': {
       id: '/_auth'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$category': {
+      id: '/$category'
+      path: '/$category'
+      fullPath: '/$category'
+      preLoaderRoute: typeof CategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -149,13 +142,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_product/$category': {
-      id: '/_product/$category'
-      path: '/$category'
-      fullPath: '/$category'
-      preLoaderRoute: typeof ProductCategoryRouteImport
-      parentRoute: typeof ProductRoute
     }
     '/_auth/profile': {
       id: '/_auth/profile'
@@ -171,15 +157,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCartRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_product/$category/$id': {
-      id: '/_product/$category/$id'
+    '/$category/$id': {
+      id: '/$category/$id'
       path: '/$id'
       fullPath: '/$category/$id'
-      preLoaderRoute: typeof ProductCategoryIdRouteImport
-      parentRoute: typeof ProductCategoryRoute
+      preLoaderRoute: typeof CategoryIdRouteImport
+      parentRoute: typeof CategoryRoute
     }
   }
 }
+
+interface CategoryRouteChildren {
+  CategoryIdRoute: typeof CategoryIdRoute
+}
+
+const CategoryRouteChildren: CategoryRouteChildren = {
+  CategoryIdRoute: CategoryIdRoute,
+}
+
+const CategoryRouteWithChildren = CategoryRoute._addFileChildren(
+  CategoryRouteChildren,
+)
 
 interface AuthRouteChildren {
   AuthCartRoute: typeof AuthCartRoute
@@ -193,33 +191,10 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
-interface ProductCategoryRouteChildren {
-  ProductCategoryIdRoute: typeof ProductCategoryIdRoute
-}
-
-const ProductCategoryRouteChildren: ProductCategoryRouteChildren = {
-  ProductCategoryIdRoute: ProductCategoryIdRoute,
-}
-
-const ProductCategoryRouteWithChildren = ProductCategoryRoute._addFileChildren(
-  ProductCategoryRouteChildren,
-)
-
-interface ProductRouteChildren {
-  ProductCategoryRoute: typeof ProductCategoryRouteWithChildren
-}
-
-const ProductRouteChildren: ProductRouteChildren = {
-  ProductCategoryRoute: ProductCategoryRouteWithChildren,
-}
-
-const ProductRouteWithChildren =
-  ProductRoute._addFileChildren(ProductRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CategoryRoute: CategoryRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
-  ProductRoute: ProductRouteWithChildren,
   UnauthenticatedRoute: UnauthenticatedRoute,
 }
 export const routeTree = rootRouteImport
