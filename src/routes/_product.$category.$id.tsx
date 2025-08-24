@@ -1,9 +1,15 @@
 import { getProductById } from "@/services/products";
 import type { Product } from "@/types";
 import { queryOptions } from "@tanstack/react-query";
-import { createFileRoute, useLoaderData, Link } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useLoaderData,
+  Link,
+  Outlet,
+} from "@tanstack/react-router";
+import { useState } from "react";
 
-export const Route = createFileRoute("/$category/$id")({
+export const Route = createFileRoute("/_product/$category/$id")({
   component: RouteComponent,
   loader: async ({ params, context }) => {
     const queryClient = context?.queryClient;
@@ -37,7 +43,8 @@ export const Route = createFileRoute("/$category/$id")({
 });
 
 function RouteComponent() {
-  const product = useLoaderData({ from: "/$category/$id" });
+  const product = useLoaderData({ from: "/_product/$category/$id" });
+  const [showReviews, setShowReviews] = useState(false);
 
   const productRating = product.rating
     ? new Array(Math.ceil(product.rating)).fill("⭐")
@@ -68,15 +75,22 @@ function RouteComponent() {
           {product.rating && (
             <>
               <p className="product-rating">Rating: {productRating}</p>
-              <Link to={`/${product.category}/${product.id}/reviews`}>
+              <Link
+                to={`/${product.category}/${product.id}/reviews`}
+                onClick={() => setShowReviews((prev) => !prev)}
+              >
                 {product.reviews && (
-                  <span>{product.reviews.length} reviews</span>
+                  <>
+                    {!showReviews ? <span>Show </span> : <span>Hide </span>} (
+                    {product.reviews.length} reviews)
+                  </>
                 )}
               </Link>
             </>
           )}
         </div>
       </div>
+      {showReviews && <Outlet />}
     </div>
   );
 }

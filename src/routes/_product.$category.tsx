@@ -12,7 +12,7 @@ import {
 } from "@tanstack/react-router";
 import BreadcrumbProducts from "./-components/BreadcrumbProducts";
 
-export const Route = createFileRoute("/$category")({
+export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
   loader: async ({ params, context }) => {
     const queryClient = context?.queryClient;
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/$category")({
     if (!categories.includes(category))
       throw new Error(`Category ${category} not found`);
   },
-  // errorComponent: () => <p>Error loading products.</p>,
+  errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
   head: ({ loaderData: { category } }: { loaderData?: any }) => {
     return {
       meta: [
@@ -48,12 +48,12 @@ export const Route = createFileRoute("/$category")({
 });
 
 function RouteComponent() {
-  const { products } = useLoaderData({ from: "/$category" });
-  const params = useParams({ from: "/$category" });
+  const { products } = useLoaderData({ from: "/_product/$category" });
+  const params = useParams({ from: "/_product/$category" });
   const matches = useMatches();
 
   const isProductSelected = matches.some(
-    (match) => match.routeId === "/$category/$id"
+    (match) => match.routeId === "/_product/$category/$id"
   );
 
   return (
