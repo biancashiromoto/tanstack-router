@@ -19,10 +19,15 @@ $categories-menu-width: 180px;
     gap: 12px;
 
     .home-container,
-    .cart,
+    .cart-container,
     .profile-container {
       grid-column: 2;
       grid-row: 2;
+    }
+
+    .products-container {
+      grid-column: 2;
+      grid-row: 3;
     }
 
     header {
