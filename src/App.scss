@@ -18,6 +18,11 @@ $categories-menu-width: 180px;
     height: 100dvh;
     gap: 12px;
 
+    .home-container {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
     header {
       display: grid;
       align-items: center;
@@ -263,6 +268,7 @@ $categories-menu-width: 180px;
           &-container {
             display: flex;
             align-items: center;
+            min-width: 100px;
           }
         }
 
@@ -276,40 +282,15 @@ $categories-menu-width: 180px;
       }
     }
 
-    // .navbar {
-    //   background-color: #f8f9fa;
-    //   padding: 10px 20px;
-    //   border-bottom: 1px solid #eee;
-    //   height: $navbar-height;
-    //   grid-column: span 2;
-
-    //   ul {
-    //     list-style: none;
-    //     display: flex;
-    //     gap: 15px;
-    //     justify-content: center;
-
-    //     li {
-    //       a {
-    //         text-decoration: none;
-    //         color: #007bff;
-
-    //         &:hover {
-    //           text-decoration: underline;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-
     .avatar-container {
       display: flex;
       align-items: center;
       gap: 4px;
       margin: 0 auto 0 4px;
       height: $avatar-height;
+      cursor: pointer;
 
-      .avatar-name {
+      .avatar-email {
         font-weight: bold;
       }
 
