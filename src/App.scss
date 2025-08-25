@@ -48,7 +48,8 @@ $categories-menu-width: 180px;
     button.logout,
     a.login,
     button.toggle-reviews,
-    a.cart {
+    a.cart,
+    button.go-back {
       text-decoration: none;
       border: none;
       background-color: unset;
@@ -379,6 +380,17 @@ $categories-menu-width: 180px;
 
     h3.cart-price {
       margin-left: 75%;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+
+    .MuiPaginationItem-root {
+      margin: 0 5px;
     }
   }
 }
