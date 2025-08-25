@@ -19,6 +19,9 @@ const Header = () => {
       {user && (
         <>
           <Avatar user={user} />
+          <Link className="link-button cart" to="/cart">
+            Cart
+          </Link>
           <button
             className="link-button logout"
             type="button"
