@@ -1,10 +1,15 @@
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
-import { getProductById } from '@/services/products';
-import type { Product } from '@/types';
-import { useQuery } from '@tanstack/react-query';
-import { formatCategoryName } from '@/helpers';
+import { formatCategoryName } from "@/helpers";
+import { getProductById } from "@/services/products";
+import type { Product } from "@/types";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
+import { useQuery } from "@tanstack/react-query";
+import {
+  useSearch,
+  Link as TanStackLink,
+  useRouter,
+} from "@tanstack/react-router";
 
 type BreadcrumbProductProps = {
   category: string;
@@ -15,35 +20,59 @@ type BreadcrumbProductProps = {
 export default function BreadcrumbProducts({
   category,
   productId = null,
-  product = null
+  product = null,
 }: BreadcrumbProductProps) {
   const { data: productData } = useQuery({
-    queryKey: ['product', productId],
+    queryKey: ["product", productId],
     queryFn: () => getProductById(Number(productId)),
-    enabled: !!productId
+    enabled: !!productId,
   });
   const productTitle = product ?? productData?.title;
   const categoryName = formatCategoryName(category);
+  const router = useRouter();
+  const { page } = useSearch({ from: "/_product/$category" });
 
   return (
     <div role="presentation" className="breadcrumb">
+      <button
+        type="button"
+        onClick={() => router.history.back()}
+        className="button go-back"
+      >
+        Go back
+      </button>
       <Breadcrumbs aria-label="breadcrumb">
         <Typography
-          sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }}
+          sx={{ color: "text.primary", display: "flex", alignItems: "center" }}
         >
           Products
         </Typography>
         <Link
           underline="hover"
-          sx={{ display: 'flex', alignItems: 'center' }}
+          sx={{ display: "flex", alignItems: "center" }}
           color="inherit"
           href={`/${category}`}
         >
           {categoryName}
         </Link>
+        {!productTitle && (
+          <Typography
+            sx={{
+              color: "text.primary",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            Page {page}
+          </Typography>
+        )}
         {productTitle && (
           <Typography
-            sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }}
+            sx={{
+              color: "text.primary",
+              display: "flex",
+              alignItems: "center",
+            }}
           >
             {productTitle}
           </Typography>
