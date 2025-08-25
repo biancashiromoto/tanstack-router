@@ -5,11 +5,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
-import {
-  useSearch,
-  Link as TanStackLink,
-  useRouter,
-} from "@tanstack/react-router";
+import { useSearch, useRouter } from "@tanstack/react-router";
 
 type BreadcrumbProductProps = {
   category: string;
