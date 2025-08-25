@@ -51,7 +51,7 @@ function RouteComponent() {
   const isProductSelected = !!id;
 
   return (
-    <section className="product">
+    <>
       {!isProductSelected && (
         <>
           <p className="text">{products.length} products found</p>
@@ -63,6 +63,6 @@ function RouteComponent() {
         </>
       )}
       {isProductSelected && <Outlet />}
-    </section>
+    </>
   );
 }
