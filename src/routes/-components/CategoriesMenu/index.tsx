@@ -16,6 +16,7 @@ const CategoriesMenu = ({ categories }: CategoriesMenuProps) => {
             to={`/${category}`}
             activeProps={{ className: "active" }}
             preload={false}
+            search={{ page: 1, limit: 5 }}
           >
             {category}
           </Link>
