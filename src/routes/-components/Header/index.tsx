@@ -1,18 +1,15 @@
 import { useAuth } from "@/context/AuthContext";
+import { Link, useNavigate } from "@tanstack/react-router";
 import Avatar from "../Avatar";
-import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 
 const Header = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const currentLocation = useLocation();
 
   const handleLogout = () => {
     logout();
     navigate({ to: "/" });
   };
-
-  if (currentLocation.pathname === "/" && !user) return null;
 
   return (
     <header>
