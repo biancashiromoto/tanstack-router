@@ -15,6 +15,7 @@ function RouterWithContext() {
     routeTree,
     context: {
       user,
+      queryClient: null,
     },
     defaultPreload: 'intent',
     scrollRestoration: true,
