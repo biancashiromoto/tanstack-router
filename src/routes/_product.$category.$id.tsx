@@ -1,12 +1,7 @@
 import { getProductById } from "@/services/products";
 import type { Product, Review } from "@/types";
 import { queryOptions } from "@tanstack/react-query";
-import {
-  createFileRoute,
-  useLoaderData,
-  Link,
-  Outlet,
-} from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLoaderData } from "@tanstack/react-router";
 import { useState } from "react";
 import ProductReview from "./-components/ProductReview";
 
