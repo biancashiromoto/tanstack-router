@@ -3,23 +3,14 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "@tanstack/react-router";
 
 export interface CustomCardProps {
   product: Product;
 }
 
 export default function CustomCard({ product }: CustomCardProps) {
-  const navigate = useNavigate();
-
   return (
     <Card
-      onClick={() =>
-        navigate({
-          to: "/$category/$id",
-          params: { category: product.category, id: String(product.id) },
-        })
-      }
       sx={{
         maxWidth: 250,
         width: "100%",
