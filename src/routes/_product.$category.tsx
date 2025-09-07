@@ -5,6 +5,7 @@ import Pagination from "@mui/material/Pagination";
 import { queryOptions } from "@tanstack/react-query";
 import {
   createFileRoute,
+  Link,
   Outlet,
   useLoaderData,
   useNavigate,
@@ -97,7 +98,13 @@ function RouteComponent() {
             }}
           >
             {currentProducts?.map((product: Product) => (
-              <CustomCard product={product} key={product.id} />
+              <Link
+                to={`/$category/$id`}
+                params={{ category, id: String(product.id) }}
+                key={product.id}
+              >
+                <CustomCard product={product} />
+              </Link>
             ))}
           </List>
         </>
