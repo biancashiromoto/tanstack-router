@@ -1,27 +1,14 @@
+import { getProductsByCategory } from "@/services/products";
+import { Box } from "@mui/material";
 import {
   createFileRoute,
   Outlet,
   useParams,
   useRouterState,
 } from "@tanstack/react-router";
-import Loader from "./-components/Loader";
-import { getProductsByCategory } from "@/services/products";
-import type { Product } from "@/types";
 import BreadcrumbProducts from "./-components/BreadcrumbProducts";
-import { Box } from "@mui/material";
-
-export type LoaderData = {
-  products: {
-    products: Product[];
-  };
-  category: Product["category"];
-};
-
-export type LoaderParams = {
-  params: {
-    category: Product["category"];
-  };
-};
+import Loader from "./-components/Loader";
+import type { LoaderData, LoaderParams } from "./-types/_product.types";
 
 export const Route = createFileRoute("/_product")({
   component: RouteComponent,
@@ -36,15 +23,12 @@ function RouteComponent() {
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
   const { category, id } = useParams({ from: "" });
 
+  if (isLoading) return <Loader />;
+
   return (
-    <Box sx={{ mx: "auto", p: 1, maxWidth: 1200 }}>
-      {isLoading && <Loader />}
-      {!isLoading && (
-        <>
-          <BreadcrumbProducts category={category} productId={id} />
-          <Outlet />
-        </>
-      )}
+    <Box sx={{ mx: "auto", p: 1 }}>
+      <BreadcrumbProducts category={category} productId={id} />
+      <Outlet />
     </Box>
   );
 }
