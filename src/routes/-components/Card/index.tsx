@@ -16,7 +16,8 @@ export default function CustomCard({ product }: CustomCardProps) {
     <Card
       onClick={() =>
         navigate({
-          to: `/${product.category}/${product.id}`,
+          to: "/$category/$id",
+          params: { category: product.category, id: String(product.id) },
         })
       }
       sx={{
