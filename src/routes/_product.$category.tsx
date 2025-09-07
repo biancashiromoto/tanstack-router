@@ -1,4 +1,3 @@
-import ProductItem from "@/routes/-components/ProductItem";
 import { getProductsCategories } from "@/services/categories";
 import { getProductsByCategory } from "@/services/products";
 import type { Product } from "@/types";
@@ -13,13 +12,15 @@ import {
   useSearch,
 } from "@tanstack/react-router";
 import React from "react";
+import CustomCard from "./-components/Card";
+import { Box, List, ListItem, Typography } from "@mui/material";
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
   validateSearch: (search: Record<string, unknown>) => {
     return {
       page: Number(search?.page) || 1,
-      limit: Number(search?.limit) || 5,
+      limit: Number(search?.limit) || 15,
     };
   },
   loader: async ({ params, context }) => {
@@ -80,18 +81,33 @@ function RouteComponent() {
   };
 
   return (
-    <>
+    <Box sx={{ mx: "auto", p: 2, maxWidth: 1200 }}>
       {!isProductSelected && (
         <>
-          <p className="text">
+          <Typography variant="body1" className="text">
             {products.length} products found - Showing page {page} of{" "}
             {totalPages}
-          </p>
-          <ul className="product-list">
+          </Typography>
+          <List
+            className="product-list"
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 2,
+            }}
+          >
             {currentProducts?.map((product: Product) => (
-              <ProductItem key={product.id} product={product} />
+              <ListItem
+                key={product.id}
+                sx={{
+                  justifyContent: "center",
+                  width: "max-content",
+                }}
+              >
+                <CustomCard product={product} />
+              </ListItem>
             ))}
-          </ul>
+          </List>
         </>
       )}
       {isProductSelected && <Outlet />}
@@ -105,6 +121,6 @@ function RouteComponent() {
           className="pagination"
         />
       )}
-    </>
+    </Box>
   );
 }
