@@ -33,6 +33,5 @@ export const searchProducts = async (query: string): Promise<ProductsResponse> =
     throw new Error(`Failed to search products with query: ${query}`);
   }
 
-  console.log(response)
   return await response.json() ?? [];
 }
