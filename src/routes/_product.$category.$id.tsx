@@ -49,22 +49,23 @@ function RouteComponent() {
 
   return (
     <Box className="product-detail">
-      <Typography variant="h4">{product.title}</Typography>
+      <Typography variant="h6">{product.title}</Typography>
       <Box className="product-detail-content">
-        <Box className="product-images">
+        <Box
+          className="product-images"
+          sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}
+        >
           {product.images.map((image: string, index: number) => (
             <Box
               key={index}
               component="img"
               src={image}
               alt={`${product.title} ${index + 1}`}
-              width="45dvw"
+              width="35dvw"
             />
           ))}
         </Box>
-        <Box
-          sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2 }}
-        >
+        <Box sx={{ py: 1, display: "flex", flexDirection: "column", gap: 2 }}>
           <Typography className="product-price">${product.price}</Typography>
           <Typography className="product-description">
             {product.description}
