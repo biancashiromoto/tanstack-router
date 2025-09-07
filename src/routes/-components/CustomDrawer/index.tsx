@@ -32,6 +32,7 @@ export default function CustomDrawer() {
               params={{ category }}
               style={{ width: "100%" }}
               preloadDelay={1000}
+              reloadDocument
             >
               <ListItemText primary={category} />
             </Link>
