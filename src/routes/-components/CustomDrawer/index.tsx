@@ -22,11 +22,16 @@ export default function CustomDrawer() {
       <List>
         <Typography variant="h6">Categories</Typography>
         {categories.map((category: string) => (
-          <ListItem key={category} className="category-item" sx={{ p: 0.25 }}>
+          <ListItem
+            key={category}
+            className="category-item"
+            sx={{ p: 0.25, pl: 3 }}
+          >
             <Link
               to={`/${category}`}
               params={{ category }}
               style={{ width: "100%" }}
+              preloadDelay={1000}
             >
               <ListItemText primary={category} />
             </Link>
