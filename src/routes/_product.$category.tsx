@@ -9,11 +9,13 @@ import {
   useLoaderData,
   useNavigate,
   useParams,
+  useRouterState,
   useSearch,
 } from "@tanstack/react-router";
 import React from "react";
 import CustomCard from "./-components/Card";
 import { Box, List, ListItem, Typography } from "@mui/material";
+import Loader from "./-components/Loader";
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
@@ -57,6 +59,7 @@ export const Route = createFileRoute("/_product/$category")({
 });
 
 function RouteComponent() {
+  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
   const { products } = useLoaderData({ from: "/_product/$category" });
   const { category } = useLoaderData({ from: "/_product" });
   const { id } = useParams({ from: "" });
@@ -80,8 +83,10 @@ function RouteComponent() {
     });
   };
 
+  if (isLoading) return <Loader />;
+
   return (
-    <Box sx={{ mx: "auto", p: 2, maxWidth: 1200 }}>
+    <Box sx={{ mx: "auto", py: 2, maxWidth: 1200 }}>
       {!isProductSelected && (
         <>
           <Typography variant="body1" className="text">
@@ -94,6 +99,7 @@ function RouteComponent() {
               display: "flex",
               flexWrap: "wrap",
               gap: 2,
+              maxWidth: "80dvw",
             }}
           >
             {currentProducts?.map((product: Product) => (
