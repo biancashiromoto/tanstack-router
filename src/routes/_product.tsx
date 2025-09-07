@@ -37,7 +37,7 @@ function RouteComponent() {
   const { category, id } = useParams({ from: "" });
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ mx: "auto", p: 1, maxWidth: 1200 }}>
       {isLoading && <Loader />}
       {!isLoading && (
         <>
