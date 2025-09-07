@@ -5,7 +5,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
-import { useSearch, useRouter } from "@tanstack/react-router";
+import { useSearch } from "@tanstack/react-router";
 
 type BreadcrumbProductProps = {
   category: string;
@@ -25,24 +25,19 @@ export default function BreadcrumbProducts({
   });
   const productTitle = product ?? productData?.title;
   const categoryName = formatCategoryName(category);
-  const router = useRouter();
   const { page } = useSearch({ from: "/_product/$category" });
 
   return (
     <div role="presentation" className="breadcrumb">
-      <button
-        type="button"
-        onClick={() => router.history.back()}
-        className="button go-back"
-      >
-        Go back
-      </button>
       <Breadcrumbs aria-label="breadcrumb">
-        <Typography
-          sx={{ color: "text.primary", display: "flex", alignItems: "center" }}
+        <Link
+          underline="hover"
+          sx={{ display: "flex", alignItems: "center" }}
+          color="inherit"
+          href="/"
         >
-          Products
-        </Typography>
+          Home
+        </Link>
         <Link
           underline="hover"
           sx={{ display: "flex", alignItems: "center" }}
