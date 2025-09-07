@@ -1,4 +1,5 @@
 import type { Review } from "@/types";
+import { Box, Typography } from "@mui/material";
 
 const ProductReview = ({ review }: { review: Review }) => {
   const productRating = review.rating
@@ -6,16 +7,18 @@ const ProductReview = ({ review }: { review: Review }) => {
     : null;
 
   return (
-    <div key={review.date} className="review">
-      <div className="review__header">
+    <Box key={review.date} className="review">
+      <Box className="review__header">
         {productRating && <p>{productRating}</p>}
-        <p className="review__author">{review.reviewerName} -</p>
-        <p className="review__date">
+        <Typography className="review__author">
+          {review.reviewerName} -
+        </Typography>
+        <Typography className="review__date">
           {new Date(review.date).toLocaleDateString()}
-        </p>
-      </div>
+        </Typography>
+      </Box>
       <p className="review__comment">{review.comment}</p>
-    </div>
+    </Box>
   );
 };
 
