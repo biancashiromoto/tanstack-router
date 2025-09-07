@@ -18,7 +18,8 @@ export default function CustomAutocomplete() {
   );
 
   useEffect(() => {
-    if (location.pathname === "/") handleSearchChange("");
+    if (location.pathname === "/" || location.pathname === "/cart")
+      handleSearchChange("");
   }, [location]);
 
   return (
@@ -33,7 +34,10 @@ export default function CustomAutocomplete() {
             navigate({ to: "/" });
             return;
           }
-          navigate({ to: `/${value.category}/${value.id}` });
+          navigate({
+            to: "/$category/$id",
+            params: { category: value.category, id: String(value.id) },
+          });
         }}
         options={options}
         autoHighlight
