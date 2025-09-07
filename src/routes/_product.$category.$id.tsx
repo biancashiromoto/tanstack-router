@@ -2,7 +2,12 @@ import { getProductById } from "@/services/products";
 import type { Product, Review } from "@/types";
 import { Box, Button, Typography } from "@mui/material";
 import { queryOptions } from "@tanstack/react-query";
-import { createFileRoute, Outlet, useLoaderData } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  useLoaderData,
+  useRouterState,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import ProductReview from "./-components/ProductReview";
 
@@ -42,10 +47,13 @@ export const Route = createFileRoute("/_product/$category/$id")({
 function RouteComponent() {
   const product = useLoaderData({ from: "/_product/$category/$id" });
   const [showReviews, setShowReviews] = useState(false);
+  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
 
   const productRating = product.rating
     ? new Array(Math.ceil(product.rating)).fill("⭐")
     : null;
+
+  if (isLoading) return <Typography>Loading product details...</Typography>;
 
   return (
     <Box className="product-detail">
