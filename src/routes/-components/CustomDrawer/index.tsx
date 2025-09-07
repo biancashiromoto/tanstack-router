@@ -38,12 +38,11 @@ export default function CustomDrawer() {
   );
 
   return (
-    <Box sx={{ textAlign: "right" }}>
+    <Box sx={{ textAlign: "center" }}>
       <IconButton
         onClick={toggleDrawer(true)}
         sx={{
           color: "black",
-          ml: 5,
           fontSize: 36,
         }}
       >
