@@ -1,6 +1,6 @@
-import { getProductsCategories } from "@/services/categories";
 import { getProductsByCategory } from "@/services/products";
 import type { Product } from "@/types";
+import { Box, List, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import { queryOptions } from "@tanstack/react-query";
 import {
@@ -14,7 +14,6 @@ import {
 } from "@tanstack/react-router";
 import React from "react";
 import CustomCard from "./-components/Card";
-import { Box, List, ListItem, Typography } from "@mui/material";
 import Loader from "./-components/Loader";
 
 export const Route = createFileRoute("/_product/$category")({
@@ -39,12 +38,6 @@ export const Route = createFileRoute("/_product/$category")({
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
-  },
-  beforeLoad: async ({ params }) => {
-    const category = params.category;
-    const categories = await getProductsCategories();
-    if (!categories.includes(category))
-      throw new Error(`Category ${category} not found`);
   },
   errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
   head: ({ loaderData: { category } }: { loaderData?: any }) => {
@@ -99,19 +92,12 @@ function RouteComponent() {
               display: "flex",
               flexWrap: "wrap",
               gap: 2,
-              maxWidth: "80dvw",
+              width: "100%",
+              justifyContent: "center",
             }}
           >
             {currentProducts?.map((product: Product) => (
-              <ListItem
-                key={product.id}
-                sx={{
-                  justifyContent: "center",
-                  width: "max-content",
-                }}
-              >
-                <CustomCard product={product} />
-              </ListItem>
+              <CustomCard product={product} key={product.id} />
             ))}
           </List>
         </>
