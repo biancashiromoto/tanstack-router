@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/AuthContext";
 import { formatCategoryName } from "@/helpers";
 import { getProductById } from "@/services/products";
 import type { Product } from "@/types";
@@ -23,9 +24,11 @@ export default function BreadcrumbProducts({
     queryFn: () => getProductById(Number(productId)),
     enabled: !!productId,
   });
+
   const productTitle = product ?? productData?.title;
   const categoryName = formatCategoryName(category);
   const { page } = useSearch({ from: "/_product/$category" });
+  const { user } = useAuth();
 
   return (
     <div role="presentation" className="breadcrumb">
@@ -36,7 +39,7 @@ export default function BreadcrumbProducts({
           color="inherit"
           href="/"
         >
-          Home
+          {user ? "Profile" : "Home"}
         </Link>
         <Link
           underline="hover"
