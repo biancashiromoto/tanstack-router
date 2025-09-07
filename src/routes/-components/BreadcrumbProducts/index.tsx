@@ -37,7 +37,7 @@ export default function BreadcrumbProducts({
           underline="hover"
           sx={{ display: "flex", alignItems: "center" }}
           color="inherit"
-          href="/"
+          href={user ? "/profile" : "/"}
         >
           {user ? "Profile" : "Home"}
         </Link>
