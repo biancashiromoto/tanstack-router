@@ -1,24 +1,18 @@
 import { useAuth } from "@/context/AuthContext";
-import { Link, useNavigate, useRouteContext } from "@tanstack/react-router";
-import Avatar from "../Avatar";
-import SearchBar from "../SearchBar";
 import { Box, Divider, Typography } from "@mui/material";
+import { Link, useRouteContext } from "@tanstack/react-router";
+import Avatar from "../Avatar";
 import CustomDrawer from "../CustomDrawer";
+import SearchBar from "../SearchBar";
+import { FaShoppingCart } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
 
-export interface HeaderProps {
-  search: string;
-  handleSearchChange: (value: string) => void;
-  options: any[];
-}
-
-const Header = ({ search, handleSearchChange, options }: HeaderProps) => {
-  const navigate = useNavigate();
+const Header = () => {
   const { user, logout } = useAuth();
   const { categories } = useRouteContext({ from: "__root__" });
 
   const handleLogout = () => {
     logout();
-    navigate({ to: "/" });
   };
 
   return (
@@ -28,12 +22,11 @@ const Header = ({ search, handleSearchChange, options }: HeaderProps) => {
       sx={{
         position: "sticky",
         width: "100%",
-        pt: 2,
         display: "grid",
         gridTemplateColumns: "80% auto",
         gridTemplateRows: "auto auto auto",
         alignItems: "center",
-        gap: 2,
+        gap: 1,
       }}
     >
       {!user && (
@@ -48,37 +41,54 @@ const Header = ({ search, handleSearchChange, options }: HeaderProps) => {
         </Typography>
       )}
       {user && (
-        <Box sx={{ gridColumn: 2 }}>
+        <Box
+          sx={{
+            gridColumn: "span 2",
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            justifyContent: "space-between",
+          }}
+        >
           <Avatar user={user} />
-          <Link className="link-button cart" to="/cart">
-            Cart
-          </Link>
-          <button
-            className="link-button logout"
-            type="button"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Link to="/cart">
+              <Typography
+                variant="body1"
+                component="span"
+                sx={{ display: "flex", gap: 1, alignItems: "center" }}
+              >
+                <FaShoppingCart />
+                Cart
+              </Typography>
+            </Link>
+            <Link onClick={handleLogout} to="/">
+              <Typography
+                variant="body1"
+                component="span"
+                sx={{ display: "flex", gap: 1, alignItems: "center" }}
+              >
+                <MdLogout />
+                Logout
+              </Typography>
+            </Link>
+          </Box>
         </Box>
       )}
       <Box
         sx={{
           display: "grid",
           alignItems: "center",
-          gridTemplateColumns: "85% 40px",
+          gridTemplateColumns: "85% auto",
           gridColumn: "span 2",
           gridRow: 2,
+          py: 1,
         }}
       >
-        <SearchBar
-          search={search}
-          handleSearchChange={handleSearchChange}
-          options={options}
-        />
+        <SearchBar />
         {categories && <CustomDrawer />}
       </Box>
-      <Divider sx={{ gridRow: 3, gridColumn: "span 2" }} />
+      <Divider sx={{ gridRow: 3, gridColumn: "span 2", my: 1 }} />
     </Box>
   );
 };
