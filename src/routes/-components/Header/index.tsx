@@ -11,9 +11,7 @@ const Header = () => {
   const { user, logout } = useAuth();
   const { categories } = useRouteContext({ from: "__root__" });
 
-  const handleLogout = () => {
-    logout();
-  };
+  const handleLogout = () => logout();
 
   return (
     <Box
