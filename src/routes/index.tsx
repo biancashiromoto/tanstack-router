@@ -1,12 +1,12 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
-import '../App.scss';
-import LoginForm from '@/routes/-components/LoginForm';
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import "../App.scss";
+import LoginForm from "@/routes/-components/LoginForm";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: App,
-  loader: async ({ context }) => {
+  beforeLoad: async ({ context }) => {
     const user = context.user;
-    if (user) throw redirect({ to: '/profile'});
+    if (user) throw redirect({ to: "/profile" });
     return { user: null };
   },
 });
