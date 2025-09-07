@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { routeTree } from "./routeTree.gen";
 
 import reportWebVitals from "./reportWebVitals.ts";
+import Loader from "./routes/-components/Loader/index.tsx";
 
 function RouterWithContext() {
   const { user, isLoading } = useAuth();
@@ -29,7 +30,7 @@ function RouterWithContext() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return <RouterProvider router={router} />;
