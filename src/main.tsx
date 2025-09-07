@@ -29,9 +29,7 @@ function RouterWithContext() {
     [user?.accessToken]
   );
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  if (isLoading) return <Loader />;
 
   return <RouterProvider router={router} />;
 }
