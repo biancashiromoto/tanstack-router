@@ -1,6 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { createFileRoute } from "@tanstack/react-router";
 import Loader from "./-components/Loader";
+import { Box, Typography } from "@mui/material";
 
 export const Route = createFileRoute("/_auth/profile")({
   component: RouteComponent,
@@ -18,33 +19,50 @@ function RouteComponent() {
   const { user: authUser } = useAuth();
 
   return (
-    <div className="profile-container">
-      <h2 className="subtitle">Profile Page</h2>
+    <Box
+      sx={{
+        mt: 2,
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
+    >
+      <Typography variant="h5" className="subtitle">
+        Profile Page
+      </Typography>
       {authUser ? (
-        <div className="user-info">
-          <p className="text">
+        <Box
+          className="user-info"
+          sx={{
+            mt: 2,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6" className="text">
             <strong>Welcome, {authUser.firstName}!</strong>
-          </p>
+          </Typography>
           <img src={authUser.image} alt="User Avatar" className="avatar" />
           {authUser.address && (
-            <p className="text">
-              <strong>Address:</strong> {authUser.address.address} -{" "}
-              {authUser.address.city}, {authUser.address.state} -{" "}
-              {authUser.address.country}
-            </p>
+            <Typography variant="body1" className="text">
+              <>Address:</> {authUser.address.address} - {authUser.address.city}
+              , {authUser.address.state} - {authUser.address.country}
+            </Typography>
           )}
-          <p className="text">
+          <Typography variant="body1" className="text">
             <strong>Email:</strong> {authUser.email}
-          </p>
+          </Typography>
           {authUser.phone && (
-            <p className="text">
+            <Typography variant="body1" className="text">
               <strong>Phone:</strong> {authUser.phone}
-            </p>
+            </Typography>
           )}
-        </div>
+        </Box>
       ) : (
         <Loader />
       )}
-    </div>
+    </Box>
   );
 }
