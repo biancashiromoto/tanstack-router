@@ -22,6 +22,7 @@ export default function CustomCard({ product }: CustomCardProps) {
       sx={{
         maxWidth: 250,
         width: "100%",
+        height: "100%",
         cursor: "pointer",
       }}
     >
@@ -30,11 +31,30 @@ export default function CustomCard({ product }: CustomCardProps) {
         alt={product.title}
         image={product.images[0]}
       />
-      <CardContent>
-        <Typography gutterBottom variant="body1" component="div">
+      <CardContent
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "auto auto",
+          gridTemplateRows: "auto auto",
+        }}
+      >
+        <Typography
+          gutterBottom
+          variant="body1"
+          component="div"
+          sx={{ gridColumn: "span 2", height: 50 }}
+        >
           {product.title}
         </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+        <Typography
+          variant="body2"
+          sx={{
+            color: "text.secondary",
+            gridRow: 2,
+            gridColumn: 2,
+            justifySelf: "end",
+          }}
+        >
           U${product.price}
         </Typography>
       </CardContent>
