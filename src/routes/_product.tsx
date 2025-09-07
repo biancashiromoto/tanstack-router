@@ -8,6 +8,7 @@ import Loader from "./-components/Loader";
 import { getProductsByCategory } from "@/services/products";
 import type { Product } from "@/types";
 import BreadcrumbProducts from "./-components/BreadcrumbProducts";
+import { Box } from "@mui/material";
 
 export type LoaderData = {
   products: {
@@ -34,8 +35,9 @@ export const Route = createFileRoute("/_product")({
 function RouteComponent() {
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
   const { category, id } = useParams({ from: "" });
+
   return (
-    <div className="products-container">
+    <Box sx={{ width: "100%" }}>
       {isLoading && <Loader />}
       {!isLoading && (
         <>
@@ -43,6 +45,6 @@ function RouteComponent() {
           <Outlet />
         </>
       )}
-    </div>
+    </Box>
   );
 }
