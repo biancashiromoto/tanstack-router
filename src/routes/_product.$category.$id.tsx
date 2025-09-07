@@ -1,5 +1,6 @@
 import { getProductById } from "@/services/products";
 import type { Product, Review } from "@/types";
+import { Box, Button, Typography } from "@mui/material";
 import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute, Outlet, useLoaderData } from "@tanstack/react-router";
 import { useState } from "react";
@@ -47,35 +48,43 @@ function RouteComponent() {
     : null;
 
   return (
-    <div className="product-detail">
-      <h1>{product.title}</h1>
-      <div className="product-detail-content">
-        <div className="product-images">
+    <Box className="product-detail">
+      <Typography variant="h4">{product.title}</Typography>
+      <Box className="product-detail-content">
+        <Box className="product-images">
           {product.images.map((image: string, index: number) => (
-            <img
+            <Box
               key={index}
+              component="img"
               src={image}
               alt={`${product.title} ${index + 1}`}
-              className="product-image"
+              width="45dvw"
             />
           ))}
-        </div>
-        <div className="product-info">
-          <p className="product-price">${product.price}</p>
-          <p className="product-description">{product.description}</p>
-          <p className="product-category">Category: {product.category}</p>
+        </Box>
+        <Box
+          sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2 }}
+        >
+          <Typography className="product-price">${product.price}</Typography>
+          <Typography className="product-description">
+            {product.description}
+          </Typography>
           {product.brand && (
-            <p className="product-brand">Brand: {product.brand}</p>
+            <Typography className="product-brand">
+              Brand: {product.brand}
+            </Typography>
           )}
 
           {product.rating && (
-            <>
-              <div className="product-rating-container">
-                <p className="product-rating">Rating: {productRating}</p>
-                <button
+            <Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography className="product-rating">
+                  Rating: {productRating}
+                </Typography>
+                <Button
                   onClick={() => setShowReviews((prev) => !prev)}
-                  type="button"
                   className="button toggle-reviews"
+                  variant="text"
                 >
                   {product.reviews && (
                     <>
@@ -83,9 +92,9 @@ function RouteComponent() {
                       {product.reviews.length} reviews)
                     </>
                   )}
-                </button>
-              </div>
-              <div className="product-reviews">
+                </Button>
+              </Box>
+              <Box className="product-reviews">
                 {showReviews &&
                   product.reviews.map((review: Review, index: number) => (
                     <ProductReview
@@ -93,12 +102,12 @@ function RouteComponent() {
                       review={review}
                     />
                   ))}
-              </div>
-            </>
+              </Box>
+            </Box>
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
       {showReviews && <Outlet />}
-    </div>
+    </Box>
   );
 }
