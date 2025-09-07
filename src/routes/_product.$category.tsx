@@ -1,25 +1,28 @@
-import ProductItem from "@/routes/-components/ProductItem";
-import { getProductsCategories } from "@/services/categories";
 import { getProductsByCategory } from "@/services/products";
 import type { Product } from "@/types";
+import { Box, List, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import { queryOptions } from "@tanstack/react-query";
 import {
   createFileRoute,
+  Link,
   Outlet,
   useLoaderData,
   useNavigate,
   useParams,
+  useRouterState,
   useSearch,
 } from "@tanstack/react-router";
 import React from "react";
+import CustomCard from "./-components/Card";
+import Loader from "./-components/Loader";
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
   validateSearch: (search: Record<string, unknown>) => {
     return {
       page: Number(search?.page) || 1,
-      limit: Number(search?.limit) || 5,
+      limit: Number(search?.limit) || 15,
     };
   },
   loader: async ({ params, context }) => {
@@ -37,12 +40,6 @@ export const Route = createFileRoute("/_product/$category")({
       })
     );
   },
-  beforeLoad: async ({ params }) => {
-    const category = params.category;
-    const categories = await getProductsCategories();
-    if (!categories.includes(category))
-      throw new Error(`Category ${category} not found`);
-  },
   errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
   head: ({ loaderData: { category } }: { loaderData?: any }) => {
     return {
@@ -56,6 +53,7 @@ export const Route = createFileRoute("/_product/$category")({
 });
 
 function RouteComponent() {
+  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
   const { products } = useLoaderData({ from: "/_product/$category" });
   const { category } = useLoaderData({ from: "/_product" });
   const { id } = useParams({ from: "" });
@@ -79,19 +77,36 @@ function RouteComponent() {
     });
   };
 
+  if (isLoading) return <Loader />;
+
   return (
-    <>
+    <Box sx={{ mx: "auto", py: 2, maxWidth: 1200 }}>
       {!isProductSelected && (
         <>
-          <p className="text">
+          <Typography variant="body1" className="text">
             {products.length} products found - Showing page {page} of{" "}
             {totalPages}
-          </p>
-          <ul className="product-list">
+          </Typography>
+          <List
+            className="product-list"
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 2,
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
             {currentProducts?.map((product: Product) => (
-              <ProductItem key={product.id} product={product} />
+              <Link
+                to={`/$category/$id`}
+                params={{ category, id: String(product.id) }}
+                key={product.id}
+              >
+                <CustomCard product={product} />
+              </Link>
             ))}
-          </ul>
+          </List>
         </>
       )}
       {isProductSelected && <Outlet />}
@@ -105,6 +120,6 @@ function RouteComponent() {
           className="pagination"
         />
       )}
-    </>
+    </Box>
   );
 }

@@ -1,22 +1,41 @@
 import type { User } from "@/types";
+import { Box, Typography } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import { RxAvatar } from "react-icons/rx";
 
 const Avatar = ({ user }: { user: User }) => {
   const navigate = useNavigate();
   return (
-    <div
-      className="avatar-container"
+    <Box
       onClick={() => navigate({ to: `/profile` })}
       role="link"
+      sx={{
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+        gridColumn: 1,
+      }}
     >
       {user.image ? (
-        <img className="avatar-img" src={user.image} alt="User Avatar" />
+        <Box
+          sx={{
+            borderRadius: "50%",
+            overflow: "hidden",
+            width: 25,
+            height: 25,
+          }}
+          component="img"
+          src={user.image}
+          alt="User Avatar"
+        />
       ) : (
         <RxAvatar />
       )}
-      <p className="avatar-email">{user.email}</p>
-    </div>
+      <Typography variant="body1" className="avatar-email">
+        {user.email}
+      </Typography>
+    </Box>
   );
 };
 

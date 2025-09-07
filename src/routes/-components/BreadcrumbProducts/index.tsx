@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/AuthContext";
 import { formatCategoryName } from "@/helpers";
 import { getProductById } from "@/services/products";
 import type { Product } from "@/types";
@@ -5,7 +6,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
-import { useSearch, useRouter } from "@tanstack/react-router";
+import { useSearch } from "@tanstack/react-router";
 
 type BreadcrumbProductProps = {
   category: string;
@@ -23,26 +24,23 @@ export default function BreadcrumbProducts({
     queryFn: () => getProductById(Number(productId)),
     enabled: !!productId,
   });
+
   const productTitle = product ?? productData?.title;
   const categoryName = formatCategoryName(category);
-  const router = useRouter();
   const { page } = useSearch({ from: "/_product/$category" });
+  const { user } = useAuth();
 
   return (
     <div role="presentation" className="breadcrumb">
-      <button
-        type="button"
-        onClick={() => router.history.back()}
-        className="button go-back"
-      >
-        Go back
-      </button>
       <Breadcrumbs aria-label="breadcrumb">
-        <Typography
-          sx={{ color: "text.primary", display: "flex", alignItems: "center" }}
+        <Link
+          underline="hover"
+          sx={{ display: "flex", alignItems: "center" }}
+          color="inherit"
+          href={user ? "/profile" : "/"}
         >
-          Products
-        </Typography>
+          {user ? "Profile" : "Home"}
+        </Link>
         <Link
           underline="hover"
           sx={{ display: "flex", alignItems: "center" }}

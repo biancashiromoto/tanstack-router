@@ -1,4 +1,12 @@
 import { useAuth } from "@/context/AuthContext";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
@@ -42,37 +50,45 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login-container">
-      <h2 className="subtitle">Login</h2>
-      <form onSubmit={handleSubmit}>
-        {error && <div className="error-message">{error}</div>}
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" disabled={isLoading}>
+    <Paper className="login-container" sx={{ px: 4, py: 3, mt: 2 }}>
+      <Typography variant="h5" className="subtitle">
+        Login
+      </Typography>
+      <FormControl
+        onSubmit={handleSubmit}
+        component="form"
+        className="login-form"
+        fullWidth
+        sx={{ gap: 2, my: 2, display: "grid" }}
+      >
+        {error && (
+          <FormHelperText className="error-message">{error}</FormHelperText>
+        )}
+        <TextField
+          type="text"
+          id="username"
+          name="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          variant="outlined"
+          label="Username"
+        />
+        <TextField
+          type="password"
+          id="password"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          variant="outlined"
+          label="Password"
+        />
+        <Button type="submit" disabled={isLoading} variant="contained">
           {isLoading ? "Signing in..." : "Login"}
-        </button>
-      </form>
-    </div>
+        </Button>
+      </FormControl>
+    </Paper>
   );
 };
 

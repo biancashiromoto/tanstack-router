@@ -5,6 +5,7 @@ import { createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import type { User } from "@/types";
 import { App } from "./-components/app";
+import { getProductsCategories } from "@/services/categories";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,6 +22,7 @@ const queryClient = new QueryClient({
 interface RouterContext {
   user: User | null;
   queryClient: QueryClient | null;
+  categories: string[];
 }
 
 function RootComponent() {
@@ -48,8 +50,9 @@ function RootComponent() {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
-  beforeLoad: () => {
+  beforeLoad: async () => {
     const user = JSON.parse(localStorage.getItem("user") || "null");
-    return { user, queryClient };
+    const categories = await getProductsCategories();
+    return { user, queryClient, categories };
   },
 });

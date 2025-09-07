@@ -1,7 +1,13 @@
 import { getProductById } from "@/services/products";
 import type { Product, Review } from "@/types";
+import { Box, Button, Typography } from "@mui/material";
 import { queryOptions } from "@tanstack/react-query";
-import { createFileRoute, Outlet, useLoaderData } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  useLoaderData,
+  useRouterState,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import ProductReview from "./-components/ProductReview";
 
@@ -41,41 +47,53 @@ export const Route = createFileRoute("/_product/$category/$id")({
 function RouteComponent() {
   const product = useLoaderData({ from: "/_product/$category/$id" });
   const [showReviews, setShowReviews] = useState(false);
+  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
 
   const productRating = product.rating
     ? new Array(Math.ceil(product.rating)).fill("⭐")
     : null;
 
+  if (isLoading) return <Typography>Loading product details...</Typography>;
+
   return (
-    <div className="product-detail">
-      <h1>{product.title}</h1>
-      <div className="product-detail-content">
-        <div className="product-images">
+    <Box className="product-detail">
+      <Typography variant="h6">{product.title}</Typography>
+      <Box className="product-detail-content">
+        <Box
+          className="product-images"
+          sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}
+        >
           {product.images.map((image: string, index: number) => (
-            <img
+            <Box
               key={index}
+              component="img"
               src={image}
               alt={`${product.title} ${index + 1}`}
-              className="product-image"
+              width="35dvw"
             />
           ))}
-        </div>
-        <div className="product-info">
-          <p className="product-price">${product.price}</p>
-          <p className="product-description">{product.description}</p>
-          <p className="product-category">Category: {product.category}</p>
+        </Box>
+        <Box sx={{ py: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+          <Typography className="product-price">${product.price}</Typography>
+          <Typography className="product-description">
+            {product.description}
+          </Typography>
           {product.brand && (
-            <p className="product-brand">Brand: {product.brand}</p>
+            <Typography className="product-brand">
+              Brand: {product.brand}
+            </Typography>
           )}
 
           {product.rating && (
-            <>
-              <div className="product-rating-container">
-                <p className="product-rating">Rating: {productRating}</p>
-                <button
+            <Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography className="product-rating">
+                  Rating: {productRating}
+                </Typography>
+                <Button
                   onClick={() => setShowReviews((prev) => !prev)}
-                  type="button"
                   className="button toggle-reviews"
+                  variant="text"
                 >
                   {product.reviews && (
                     <>
@@ -83,9 +101,9 @@ function RouteComponent() {
                       {product.reviews.length} reviews)
                     </>
                   )}
-                </button>
-              </div>
-              <div className="product-reviews">
+                </Button>
+              </Box>
+              <Box className="product-reviews">
                 {showReviews &&
                   product.reviews.map((review: Review, index: number) => (
                     <ProductReview
@@ -93,12 +111,12 @@ function RouteComponent() {
                       review={review}
                     />
                   ))}
-              </div>
-            </>
+              </Box>
+            </Box>
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
       {showReviews && <Outlet />}
-    </div>
+    </Box>
   );
 }

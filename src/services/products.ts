@@ -26,3 +26,12 @@ export const getProductById = async (id: number): Promise<Product> => {
   
   return await response.json();
 }
+
+export const searchProducts = async (query: string): Promise<ProductsResponse> => {
+  const response = await fetch(`https://dummyjson.com/products/search?q=${query}`);
+  if (!response.ok) {
+    throw new Error(`Failed to search products with query: ${query}`);
+  }
+
+  return await response.json() ?? [];
+}

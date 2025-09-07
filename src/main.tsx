@@ -1,39 +1,45 @@
-import { StrictMode, useMemo } from 'react'
-import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { AuthProvider, useAuth } from './context/AuthContext'
+import { StrictMode, useMemo } from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 // Import the generated route tree
-import { routeTree } from './routeTree.gen'
+import { routeTree } from "./routeTree.gen";
 
-import reportWebVitals from './reportWebVitals.ts'
+import reportWebVitals from "./reportWebVitals.ts";
+import Loader from "./routes/-components/Loader/index.tsx";
 
 function RouterWithContext() {
-  const { user, isLoading } = useAuth()
-  
-  const router = useMemo(() => createRouter({
-    routeTree,
-    context: {
-      user,
-      queryClient: null,
-    },
-    defaultPreload: 'intent',
-    scrollRestoration: true,
-    defaultStructuralSharing: true,
-    defaultPreloadStaleTime: 0,
-  }), [user?.accessToken]) 
+  const { user, isLoading } = useAuth();
+
+  const router = useMemo(
+    () =>
+      createRouter({
+        routeTree,
+        context: {
+          user,
+          queryClient: null,
+          categories: [],
+        },
+        defaultPreload: "intent",
+        scrollRestoration: true,
+        defaultStructuralSharing: true,
+        defaultPreloadStaleTime: 0,
+      }),
+    [user?.accessToken]
+  );
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <Loader />;
   }
 
-  return <RouterProvider router={router} />
+  return <RouterProvider router={router} />;
 }
 
 // Register the router instance for type safety
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
-    router: ReturnType<typeof createRouter>
+    router: ReturnType<typeof createRouter>;
   }
 }
 
@@ -42,21 +48,21 @@ function App() {
     <AuthProvider>
       <RouterWithContext />
     </AuthProvider>
-  )
+  );
 }
 
 // Render the app
-const rootElement = document.getElementById('app')
+const rootElement = document.getElementById("app");
 if (rootElement && !rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
+  const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
       <App />
-    </StrictMode>,
-  )
+    </StrictMode>
+  );
 }
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals()
+reportWebVitals();
