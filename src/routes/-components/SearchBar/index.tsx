@@ -1,22 +1,33 @@
 import type { Product } from "@/types";
 import { Box } from "@mui/material";
 import CustomAutocomplete from "../Autocomplete";
+import { searchProducts } from "@/services/products";
+import { useState } from "react";
 
-type SearchBarTypes = {
-  search: string;
-  handleSearchChange: (value: string) => void;
-  options: Product[];
-};
+const SearchBar = () => {
+  const [search, setSearch] = useState<string>("");
+  const [options, setOptions] = useState<Product[]>([]);
 
-const SearchBar = ({ search, handleSearchChange, options }: SearchBarTypes) => {
+  const handleSearch = async (query: string) => {
+    try {
+      const results = await searchProducts(query);
+      setOptions(results.products);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    handleSearch(value);
+  };
+
   return (
-    <Box sx={{ width: "100%", px: 2 }}>
-      <CustomAutocomplete
-        handleChange={handleSearchChange}
-        search={search}
-        options={options}
-      />
-    </Box>
+    <CustomAutocomplete
+      handleChange={handleSearchChange}
+      search={search}
+      options={options}
+    />
   );
 };
 
