@@ -1,5 +1,4 @@
 import useSearchProducts from "@/hooks/useSearchProducts";
-import type { Product } from "@/types";
 import { FormControl, Typography } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
