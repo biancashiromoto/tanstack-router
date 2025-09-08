@@ -1,34 +1,26 @@
 import { useAuth } from "@/context/AuthContext";
 import { formatCategoryName } from "@/helpers";
 import { getProductById } from "@/services/products";
-import type { Product } from "@/types";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
-import { useSearch } from "@tanstack/react-router";
+import { useParams, useSearch } from "@tanstack/react-router";
 
-type BreadcrumbProductProps = {
-  category: string;
-  productId?: string | null;
-  product?: Product["title"] | null;
-};
+export default function BreadcrumbProducts() {
+  const { id, category } = useParams({ from: "" });
 
-export default function BreadcrumbProducts({
-  category,
-  productId = null,
-  product = null,
-}: BreadcrumbProductProps) {
   const { data: productData } = useQuery({
-    queryKey: ["product", productId],
-    queryFn: () => getProductById(Number(productId)),
-    enabled: !!productId,
+    queryKey: ["product", id],
+    queryFn: () => getProductById(Number(id)),
   });
 
-  const productTitle = product ?? productData?.title;
-  const categoryName = formatCategoryName(category);
-  const { page } = useSearch({ from: "/_product/$category" });
   const { user } = useAuth();
+  const { page } = useSearch({ from: "" });
+
+  if (!category) return null;
+
+  const categoryName = formatCategoryName(category);
 
   return (
     <div role="presentation" className="breadcrumb">
@@ -39,7 +31,7 @@ export default function BreadcrumbProducts({
           color="inherit"
           href={user ? "/profile" : "/"}
         >
-          {user ? "Profile" : "Home"}
+          Home
         </Link>
         <Link
           underline="hover"
@@ -49,7 +41,7 @@ export default function BreadcrumbProducts({
         >
           {categoryName}
         </Link>
-        {!productTitle && (
+        {!productData?.title && (
           <Typography
             sx={{
               color: "text.primary",
@@ -60,7 +52,7 @@ export default function BreadcrumbProducts({
             Page {page}
           </Typography>
         )}
-        {productTitle && (
+        {id && (
           <Typography
             sx={{
               color: "text.primary",
@@ -68,7 +60,7 @@ export default function BreadcrumbProducts({
               alignItems: "center",
             }}
           >
-            {productTitle}
+            {productData?.title}
           </Typography>
         )}
       </Breadcrumbs>
