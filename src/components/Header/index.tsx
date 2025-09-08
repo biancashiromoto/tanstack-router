@@ -1,13 +1,16 @@
 import { useAuth } from "@/context/AuthContext";
+import useResponsive from "@/hooks/useResponsive";
 import { Box, Divider, Typography } from "@mui/material";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import Avatar from "../Avatar";
-import CustomDrawer from "../CustomDrawer";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import CustomAutocomplete from "../Autocomplete";
+import Avatar from "../Avatar";
+import CustomDrawer from "../CustomDrawer";
 
 const Header = () => {
+  const { isMobile } = useResponsive();
+
   const { user, logout } = useAuth();
   const { categories } = useRouteContext({ from: "__root__" });
 
@@ -40,6 +43,7 @@ const Header = () => {
       )}
       {user && (
         <Box
+          className="header-user"
           sx={{
             gridColumn: "span 2",
             display: "flex",
@@ -52,22 +56,30 @@ const Header = () => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Link to="/cart">
               <Typography
-                variant="body1"
                 component="span"
-                sx={{ display: "flex", gap: 1, alignItems: "center" }}
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                  color: "text.primary",
+                }}
               >
                 <FaShoppingCart />
-                Cart
+                {isMobile ? "" : "Cart"}
               </Typography>
             </Link>
             <Link onClick={handleLogout} to="/">
               <Typography
-                variant="body1"
                 component="span"
-                sx={{ display: "flex", gap: 1, alignItems: "center" }}
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                  color: "text.primary",
+                }}
               >
                 <MdLogout />
-                Logout
+                {isMobile ? "" : "Logout"}
               </Typography>
             </Link>
           </Box>
