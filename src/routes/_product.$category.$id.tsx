@@ -62,7 +62,13 @@ function RouteComponent() {
       <Box className="product-detail-content">
         <Box
           className="product-images"
-          sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
           {product.images.map((image: string, index: number) => (
             <Box
