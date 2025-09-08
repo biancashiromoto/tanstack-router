@@ -5,7 +5,6 @@ import Pagination from "@mui/material/Pagination";
 import { queryOptions } from "@tanstack/react-query";
 import {
   createFileRoute,
-  Link,
   Outlet,
   useLoaderData,
   useNavigate,
@@ -14,8 +13,8 @@ import {
   useSearch,
 } from "@tanstack/react-router";
 import React from "react";
-import CustomCard from "./-components/Card";
-import Loader from "./-components/Loader";
+import CustomCard from "@/components/Card";
+import Loader from "@/components/Loader";
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
