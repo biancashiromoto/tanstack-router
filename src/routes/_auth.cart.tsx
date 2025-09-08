@@ -2,7 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { getUsersCartById } from "@/services/users";
 import type { Product } from "@/types";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import CartItem from "@/routes/-components/CartItem";
+import CartItem from "@/components/CartItem";
 
 export const Route = createFileRoute("/_auth/cart")({
   component: RouteComponent,
