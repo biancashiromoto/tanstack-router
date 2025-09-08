@@ -6,9 +6,9 @@ import {
   useParams,
   useRouterState,
 } from "@tanstack/react-router";
-import BreadcrumbProducts from "./-components/BreadcrumbProducts";
-import Loader from "./-components/Loader";
-import type { LoaderData, LoaderParams } from "./-types/_product.types";
+import BreadcrumbProducts from "@/components/BreadcrumbProducts";
+import Loader from "@/components/Loader";
+import type { LoaderData, LoaderParams } from "@/types/_product.types";
 
 export const Route = createFileRoute("/_product")({
   component: RouteComponent,
