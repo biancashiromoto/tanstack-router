@@ -9,8 +9,8 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import ProductReview from "./-components/ProductReview";
-import Loader from "./-components/Loader";
+import ProductReview from "@/components/ProductReview";
+import Loader from "@/components/Loader";
 
 export const Route = createFileRoute("/_product/$category/$id")({
   component: RouteComponent,
