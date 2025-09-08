@@ -1,6 +1,6 @@
 import type { User, UsersCart } from "@/types";
 
-export const signIn = async (username: string, password: string): Promise<User> => {
+export const signIn = async (username: User["username"], password: User["password"]): Promise<User> => {
   const response = await fetch('https://dummyjson.com/auth/login', {
     method: 'POST',
     headers: {
@@ -29,7 +29,7 @@ export const getAllUsers = async (): Promise<User[]> => {
   return data.users;
 }
 
-export const getUsersCartById = async (userId: number): Promise<UsersCart> => {
+export const getUsersCartById = async (userId: User["id"]): Promise<UsersCart> => {
   const response = await fetch(`https://dummyjson.com/users/${userId}/carts`);
   if (!response.ok) {
     throw new Error('Failed to fetch user cart');
@@ -38,7 +38,7 @@ export const getUsersCartById = async (userId: number): Promise<UsersCart> => {
   return data.carts;
 }
 
-export const getUserById = async (userId: number): Promise<User> => {
+export const getUserById = async (userId: User["id"]): Promise<User> => {
   const response = await fetch(`https://dummyjson.com/users/${userId}`);
   if (!response.ok) {
     throw new Error('Failed to fetch user');

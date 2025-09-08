@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_auth/cart")({
   component: RouteComponent,
   loader: async ({ context }) => {
     const userId = context.user?.id;
-    const cart = await getUsersCartById(Number(userId));
+    const cart = await getUsersCartById(userId);
     return { cart: cart[0] ?? { products: [] } };
   },
   head: () => ({

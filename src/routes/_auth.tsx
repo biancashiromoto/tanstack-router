@@ -12,7 +12,6 @@ export const Route = createFileRoute("/_auth")({
     if (!context.user) {
       throw redirect({ to: "/unauthenticated" });
     }
-    return {};
   },
 });
 

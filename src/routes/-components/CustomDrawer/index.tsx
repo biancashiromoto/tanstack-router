@@ -19,20 +19,31 @@ export default function CustomDrawer() {
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
-        <Typography variant="h6">Categories</Typography>
+      <List sx={{ p: 1 }}>
+        <Typography variant="h6" sx={{ pl: 1.5, textDecoration: "underline" }}>
+          Categories
+        </Typography>
         {categories.map((category: string) => (
-          <ListItem
-            key={category}
-            className="category-item"
-            sx={{ p: 0.25, pl: 3 }}
-          >
+          <ListItem key={category}>
             <Link
-              to={`/${category}`}
+              to="/$category"
               params={{ category }}
-              style={{ width: "100%" }}
-              preloadDelay={1000}
-              reloadDocument
+              search={{ page: 1, limit: 15 }}
+              style={{
+                width: "100%",
+                textDecoration: "none",
+                textTransform: "capitalize",
+                color: "inherit",
+                borderRadius: "4px",
+                display: "block",
+              }}
+              activeProps={{
+                style: {
+                  fontWeight: "bold",
+                  color: "#0662be",
+                  backgroundColor: "rgba(25, 118, 210, 0.08)",
+                },
+              }}
             >
               <ListItemText primary={category} />
             </Link>

@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useState } from "react";
 import ProductReview from "./-components/ProductReview";
+import Loader from "./-components/Loader";
 
 export const Route = createFileRoute("/_product/$category/$id")({
   component: RouteComponent,
@@ -53,7 +54,7 @@ function RouteComponent() {
     ? new Array(Math.ceil(product.rating)).fill("⭐")
     : null;
 
-  if (isLoading) return <Typography>Loading product details...</Typography>;
+  if (isLoading) return <Loader />;
 
   return (
     <Box className="product-detail">

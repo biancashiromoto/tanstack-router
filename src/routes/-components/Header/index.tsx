@@ -21,7 +21,7 @@ const Header = () => {
         position: "sticky",
         width: "100%",
         display: "grid",
-        gridTemplateColumns: "80% auto",
+        gridTemplateColumns: "85% auto",
         gridTemplateRows: "auto auto auto",
         alignItems: "center",
         gap: 1,

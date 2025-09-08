@@ -4,7 +4,7 @@ import Header from "./Header";
 
 export function App() {
   return (
-    <Box sx={{ px: 2, py: 1 }}>
+    <Box sx={{ px: 2, py: 1, maxWidth: 800, mx: "auto" }}>
       <HeadContent />
       <Header />
       <Outlet />
