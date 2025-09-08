@@ -4,7 +4,7 @@ import {
   Outlet,
   useRouterState,
 } from "@tanstack/react-router";
-import Loader from "@/routes/-components/Loader";
+import Loader from "@/components/Loader";
 
 export const Route = createFileRoute("/_auth")({
   component: AuthLayout,
