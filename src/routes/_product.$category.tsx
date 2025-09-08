@@ -53,8 +53,7 @@ export const Route = createFileRoute("/_product/$category")({
 
 function RouteComponent() {
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
-  const { products } = useLoaderData({ from: "/_product/$category" });
-  const { category } = useLoaderData({ from: "/_product" });
+  const { category, products } = useLoaderData({ from: "/_product" });
   const { id } = useParams({ from: "" });
   const isProductSelected = !!id;
   const { page, limit } = useSearch({ from: "/_product/$category" });
@@ -97,7 +96,7 @@ function RouteComponent() {
             }}
           >
             {currentProducts?.map((product: Product) => (
-              <CustomCard product={product} />
+              <CustomCard product={product} key={product.id} />
             ))}
           </List>
         </Box>
