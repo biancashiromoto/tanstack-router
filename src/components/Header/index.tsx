@@ -3,9 +3,9 @@ import { Box, Divider, Typography } from "@mui/material";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import Avatar from "../Avatar";
 import CustomDrawer from "../CustomDrawer";
-import SearchBar from "../SearchBar";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
+import CustomAutocomplete from "../Autocomplete";
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -83,7 +83,7 @@ const Header = () => {
           py: 1,
         }}
       >
-        <SearchBar />
+        <CustomAutocomplete />
         {categories && <CustomDrawer />}
       </Box>
       <Divider sx={{ gridRow: 3, gridColumn: "span 2", my: 1 }} />
