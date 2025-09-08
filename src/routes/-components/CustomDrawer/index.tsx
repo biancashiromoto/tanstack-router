@@ -44,7 +44,6 @@ export default function CustomDrawer() {
                   backgroundColor: "rgba(25, 118, 210, 0.08)",
                 },
               }}
-              reloadDocument
             >
               <ListItemText primary={category} />
             </Link>
