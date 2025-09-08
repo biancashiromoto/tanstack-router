@@ -8,6 +8,7 @@ import { routeTree } from "./routeTree.gen";
 
 import reportWebVitals from "./reportWebVitals.ts";
 import Loader from "./routes/-components/Loader/index.tsx";
+import "./index.scss";
 
 function RouterWithContext() {
   const { user, isLoading } = useAuth();
