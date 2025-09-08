@@ -1,9 +1,7 @@
 import type { Product } from "@/types";
 
 export type LoaderData = {
-  products: {
-    products: Product[];
-  };
+  products: Product[];
   category: Product["category"];
 };
 
