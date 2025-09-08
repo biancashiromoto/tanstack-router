@@ -90,21 +90,15 @@ function RouteComponent() {
           <List
             className="product-list"
             sx={{
-              display: "flex",
-              flexWrap: "wrap",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
               gap: 2,
               width: "100%",
               justifyContent: "center",
             }}
           >
             {currentProducts?.map((product: Product) => (
-              <Link
-                to={`/$category/$id`}
-                params={{ category, id: String(product.id) }}
-                key={product.id}
-              >
-                <CustomCard product={product} />
-              </Link>
+              <CustomCard product={product} />
             ))}
           </List>
         </>
