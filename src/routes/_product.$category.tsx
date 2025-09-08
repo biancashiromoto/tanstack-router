@@ -82,7 +82,7 @@ function RouteComponent() {
   return (
     <Box sx={{ mx: "auto", py: 2, maxWidth: 1200 }}>
       {!isProductSelected && (
-        <>
+        <Box>
           <Typography variant="body1" className="text">
             {products.length} products found - Showing page {page} of{" "}
             {totalPages}
@@ -101,7 +101,7 @@ function RouteComponent() {
               <CustomCard product={product} />
             ))}
           </List>
-        </>
+        </Box>
       )}
       {isProductSelected && <Outlet />}
       {!isProductSelected && totalPages > 1 && (
@@ -112,6 +112,7 @@ function RouteComponent() {
           showFirstButton
           showLastButton
           className="pagination"
+          sx={{ my: 2, display: "flex", justifyContent: "center" }}
         />
       )}
     </Box>
