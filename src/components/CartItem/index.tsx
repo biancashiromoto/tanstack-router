@@ -11,8 +11,12 @@ const CartItem = ({ item }: CartItemProps) => {
 
   const handleClick = () =>
     navigate({
-      to: "/cart/$id",
+      to: "/$category/$id",
       params: { category: item.category, id: item.id.toString() },
+      mask: {
+        to: "/cart/$id",
+        params: { id: item.id.toString() },
+      },
     });
 
   return (
