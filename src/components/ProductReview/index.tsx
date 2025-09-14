@@ -1,9 +1,11 @@
 import { getProductRating } from "@/helpers";
 import type { Review } from "@/types";
 import { Box, Typography } from "@mui/material";
+import { Link } from "@tanstack/react-router";
 
 const ProductReview = ({ review }: { review: Review }) => {
   const productRating = getProductRating(review.rating);
+
   return (
     <Box key={review.date} className="review">
       <Box
@@ -11,7 +13,10 @@ const ProductReview = ({ review }: { review: Review }) => {
         sx={{ display: "flex", alignItems: "center", gap: 1 }}
       >
         <Typography className="review__author" variant="body2">
-          {review.reviewerName} -
+          <Link to={`/user/${review.reviewer?.id}`}>
+            {review.reviewer?.firstName} {review.reviewer?.lastName} (
+            {review.reviewer?.username})
+          </Link>
         </Typography>
         <Typography className="review__date" variant="body2">
           {new Date(review.date).toLocaleDateString()}
