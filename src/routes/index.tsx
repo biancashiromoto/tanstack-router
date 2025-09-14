@@ -1,4 +1,3 @@
-import LoginForm from "@/components/LoginForm";
 import DailyDeals from "@/components/DailyDeals";
 import { useAuth } from "@/context/AuthContext";
 import { Box, Container, Typography } from "@mui/material";
@@ -11,14 +10,6 @@ export const Route = createFileRoute("/")({
 function App() {
   const { user } = useAuth();
 
-  if (!user) {
-    return (
-      <Container maxWidth="sm" sx={{ py: 8 }}>
-        <LoginForm />
-      </Container>
-    );
-  }
-
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
       <Box
@@ -29,14 +20,16 @@ function App() {
         }}
       >
         <Container maxWidth="lg">
-          <Typography
-            variant="h4"
-            component="h1"
-            gutterBottom
-            sx={{ fontWeight: "bold" }}
-          >
-            Welcome, {user.firstName}!
-          </Typography>
+          {user && (
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{ fontWeight: "bold" }}
+            >
+              Welcome, {user.firstName}!
+            </Typography>
+          )}
           <Typography variant="h5" sx={{ opacity: 0.9 }}>
             Discover the best deals and amazing products
           </Typography>
