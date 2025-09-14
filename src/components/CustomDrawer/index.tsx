@@ -1,3 +1,4 @@
+import { formatCategoryName } from "@/helpers";
 import useResponsive from "@/hooks/useResponsive";
 import { IconButton, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -47,7 +48,7 @@ export default function CustomDrawer() {
                 },
               }}
             >
-              <ListItemText primary={category} />
+              <ListItemText primary={formatCategoryName(category)} />
             </Link>
           </ListItem>
         ))}
