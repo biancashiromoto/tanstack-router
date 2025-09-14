@@ -18,7 +18,7 @@ export default function Breadcrumb() {
     (match) => match.routeId === "/_product/$category/$productId"
   )?.loaderData;
 
-  if (location.pathname === "/") return null;
+  if (location.pathname === "/" || location.pathname === "/login") return null;
 
   const categoryName = formatCategoryName(category);
 
