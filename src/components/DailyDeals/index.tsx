@@ -3,13 +3,11 @@ import { productsService } from "@/services/products";
 import type { Product } from "@/types";
 import {
   Box,
-  Button,
   CircularProgress,
   Container,
   Grid,
   Typography,
 } from "@mui/material";
-import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import Card from "../Card";
 
@@ -108,20 +106,6 @@ const DailyDeals = () => {
           <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
             Come back soon!
           </Typography>
-        </Box>
-      )}
-
-      {discountedProducts.length > 0 && (
-        <Box textAlign="center" mt={4}>
-          <Button
-            component={Link}
-            to="/products"
-            variant="outlined"
-            size="large"
-            sx={{ px: 4 }}
-          >
-            See All Products
-          </Button>
         </Box>
       )}
     </Container>
