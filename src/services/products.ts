@@ -1,9 +1,7 @@
 import type { ProductsResponse, Product } from "@/types";
-import { Users } from "./users";
 
 export class Products {
   private baseUrl: string;
-  private users = new Users();
 
   constructor(baseUrl: string = 'https://dummyjson.com') {
     this.baseUrl = baseUrl;
@@ -50,17 +48,24 @@ export class Products {
   async enrichProductReviews(product: Product) {
     if (!product || !product.reviews) return product;
 
-    const reviewersEmails = product.reviews.map(review => review.reviewerEmail);
-    const users = await this.users.getUsersFromReview(reviewersEmails);
+    try {
+      const { Users } = await import("./users");
+      const usersService = new Users(this.baseUrl);
+      
+      const reviewersEmails = product.reviews.map(review => review.reviewerEmail);
+      const users = await usersService.getUsersFromReview(reviewersEmails);
 
-    product.reviews = product.reviews.map(review => {
-      const user = users.find(u => u?.email === review.reviewerEmail);
-      return {
-        ...review,
-        reviewerName: user ? `${user.firstName} ${user.lastName}` : 'Unknown',
-        reviewerAvatar: user?.image || '',
-      };
-    });
+      product.reviews = product.reviews.map(review => {
+        const user = users.find((u: any) => u?.email === review.reviewerEmail);
+        return {
+          ...review,
+          reviewerName: user ? `${user.firstName} ${user.lastName}` : 'Unknown',
+          reviewerAvatar: user?.image || '',
+        };
+      });
+    } catch (error) {
+      console.warn('Failed to enrich product reviews:', error);
+    }
 
     return product;
   }
