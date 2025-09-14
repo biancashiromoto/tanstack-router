@@ -15,11 +15,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 export default function Breadcrumb() {
   const { id, category } = useParams({ from: "" });
   const { user } = useAuth();
-  const { maskedLocation } = useLocation();
+  const location = useLocation();
 
   const { data: productData, isLoading: isLoadingProduct } = useQuery({
     queryKey: ["product", id],
-    queryFn: () => getProductById(Number(id)),
+    queryFn: () => getProductById(id),
     enabled: Boolean(id),
   });
 
@@ -45,15 +45,15 @@ export default function Breadcrumb() {
 
     items.push(
       <Link
-        key={maskedLocation ? "cart" : "category"}
+        key={location.maskedLocation ? "cart" : "category"}
         component={RouterLink}
-        to={maskedLocation ? "/cart" : "/$category"}
-        params={maskedLocation ? undefined : category}
+        to={location.maskedLocation ? "/cart" : "/$category"}
+        params={location.maskedLocation ? undefined : category}
         underline="hover"
         sx={{ display: "flex", alignItems: "center" }}
         color="inherit"
       >
-        {maskedLocation ? "Cart" : categoryName}
+        {location.maskedLocation ? "Cart" : categoryName}
       </Link>
     );
 
