@@ -10,5 +10,5 @@ export const Route = createFileRoute("/")({
 function App() {
   const { user } = useAuth();
 
-  return <Box className="home-container">{!user && <LoginForm />}</Box>;
+  return <Box>{!user && <LoginForm />}</Box>;
 }
