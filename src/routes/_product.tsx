@@ -15,19 +15,20 @@ export const Route = createFileRoute("/_product")({
   loader: async ({ params, context }: LoaderParams): Promise<LoaderData> => {
     const queryClient = context?.queryClient;
     const { category, productId } = params;
+
+    if (!productId) return { category, products: [], selectedProduct: null };
     const products = await queryClient?.ensureQueryData(
       queryOptions({
         queryKey: ["products", category],
-        queryFn: async () => {
-          const { products } =
-            await productsService.getProductsByCategory(category);
-          return { products, category };
-        },
+        queryFn: async () =>
+          await productsService.getProductsByCategory(category),
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
+
     const selectedProduct =
       products?.products.find((p) => p.id === Number(productId)) ?? null;
+
     return {
       category,
       products: products?.products || [],
