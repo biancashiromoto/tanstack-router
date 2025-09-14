@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
 import {
   useParams,
-  useSearch,
   Link as RouterLink,
   useLocation,
 } from "@tanstack/react-router";
