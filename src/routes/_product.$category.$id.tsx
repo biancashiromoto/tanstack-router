@@ -2,6 +2,7 @@ import Loader from "@/components/Loader";
 import ProductReview from "@/components/ProductReview";
 import useResponsive from "@/hooks/useResponsive";
 import { getProductById } from "@/services/products";
+import { getUsersFromReview } from "@/services/users";
 import type { Product, Review } from "@/types";
 import { Box, Button, Typography } from "@mui/material";
 import { queryOptions } from "@tanstack/react-query";
@@ -19,13 +20,39 @@ export const Route = createFileRoute("/_product/$category/$id")({
     const queryClient = context?.queryClient;
     const { id } = params;
     if (!id) throw new Error("Product ID is required");
-    return queryClient.ensureQueryData(
+
+    const product = await queryClient.ensureQueryData(
       queryOptions({
         queryKey: ["product", id],
         queryFn: () => getProductById(Number(id)),
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
+
+    const reviewersEmails = product.reviews?.map((r) => r.reviewerEmail) || [];
+
+    const reviewers = await queryClient.ensureQueryData(
+      queryOptions({
+        queryKey: ["reviewers", reviewersEmails],
+        queryFn: async () => await getUsersFromReview(reviewersEmails),
+        staleTime: 1000 * 60 * 5, // 5 minutes
+      })
+    );
+
+    if (!reviewers || !product) {
+      throw new Error("Failed to load product or reviewers");
+    }
+
+    const enrichedReviews: Review[] =
+      product.reviews?.map((review: Review) => {
+        const reviewer =
+          reviewers?.find(
+            (user) => user !== null && user.email === review.reviewerEmail
+          ) ?? undefined;
+        return { ...review, reviewer };
+      }) || [];
+    product.reviews = enrichedReviews;
+    return product;
   },
   errorComponent: ({ error }) => {
     return <p>Error loading product details: {error.message}</p>;
@@ -47,8 +74,6 @@ function RouteComponent() {
   const [showReviews, setShowReviews] = useState(false);
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
   const { isMobile, isTablet } = useResponsive();
-  const location = useRouterState({ select: (s) => s.location });
-  console.log(location);
 
   const productRating = product.rating
     ? new Array(Math.ceil(product.rating)).fill("⭐")
