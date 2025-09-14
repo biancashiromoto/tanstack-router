@@ -1,57 +1,80 @@
-import { useAuth } from "@/context/AuthContext";
 import { formatCategoryName } from "@/helpers";
-import useFetchProductDetails from "@/hooks/useFetchProductDetails";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
 import {
   Link as RouterLink,
   useLocation,
   useParams,
+  useMatches,
 } from "@tanstack/react-router";
-import Loader from "../Loader";
+import { Typography } from "@mui/material";
 
 export default function Breadcrumb() {
   const { category } = useParams({ from: "" });
-  const { user } = useAuth();
   const location = useLocation();
-  useFetchProductDetails();
-  const { product, isLoading: isLoadingProduct } = useFetchProductDetails();
-  if (!category) return null;
+  const matches = useMatches();
+
+  const selectedProduct = matches.find(
+    (match) => match.routeId === "/_product/$category/$productId"
+  )?.loaderData;
+
+  if (location.pathname === "/") return null;
 
   const categoryName = formatCategoryName(category);
 
   const createBreadcrumbItems = () => {
     const items = [];
 
-    items.push(
-      <Link
-        key="home"
-        component={RouterLink}
-        to={user ? "/profile" : "/"}
-        underline="hover"
-        sx={{ display: "flex", alignItems: "center" }}
-        color="inherit"
-      >
-        Home
-      </Link>
-    );
+    if (location.pathname !== "/profile") {
+      items.push(
+        <Link
+          key="home"
+          component={RouterLink}
+          to="/"
+          underline="hover"
+          sx={{ display: "flex", alignItems: "center" }}
+          color="inherit"
+        >
+          Home
+        </Link>
+      );
+    }
 
-    items.push(
-      <Link
-        key={location.maskedLocation ? "cart" : "category"}
-        component={RouterLink}
-        to={location.maskedLocation ? "/cart" : "/$category"}
-        params={location.maskedLocation ? undefined : category}
-        underline="hover"
-        sx={{ display: "flex", alignItems: "center" }}
-        color="inherit"
-      >
-        {location.maskedLocation ? "Cart" : categoryName}
-      </Link>
-    );
+    if (
+      location.maskedLocation?.pathname.includes("/cart") ||
+      location.pathname === "/cart"
+    ) {
+      items.push(
+        <Link
+          key="cart"
+          component={RouterLink}
+          to="/cart"
+          underline="hover"
+          sx={{ display: "flex", alignItems: "center" }}
+          color="inherit"
+        >
+          Cart
+        </Link>
+      );
+    }
 
-    if (product) {
+    if (categoryName && !location.maskedLocation?.pathname.includes("/cart")) {
+      items.push(
+        <Link
+          key="category"
+          component={RouterLink}
+          to="/$category"
+          params={category}
+          underline="hover"
+          sx={{ display: "flex", alignItems: "center" }}
+          color="inherit"
+        >
+          {categoryName}
+        </Link>
+      );
+    }
+
+    if (selectedProduct) {
       items.push(
         <Typography
           key="product"
@@ -62,7 +85,7 @@ export default function Breadcrumb() {
             gap: 1,
           }}
         >
-          {!isLoadingProduct ? product.title : <Loader />}
+          {selectedProduct.title}
         </Typography>
       );
     }
