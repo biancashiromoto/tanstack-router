@@ -9,13 +9,14 @@ import {
   useParams,
   useSearch,
   Link as RouterLink,
+  useLocation,
 } from "@tanstack/react-router";
 import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Breadcrumb() {
   const { id, category } = useParams({ from: "" });
   const { user } = useAuth();
-  const { page } = useSearch({ from: "" });
+  const { maskedLocation } = useLocation();
 
   const { data: productData, isLoading: isLoadingProduct } = useQuery({
     queryKey: ["product", id],
@@ -45,14 +46,15 @@ export default function Breadcrumb() {
 
     items.push(
       <Link
-        key="category"
+        key={maskedLocation ? "cart" : "category"}
         component={RouterLink}
-        to={`/_product/${category}`}
+        to={maskedLocation ? "/cart" : "/$category"}
+        params={maskedLocation ? undefined : category}
         underline="hover"
         sx={{ display: "flex", alignItems: "center" }}
         color="inherit"
       >
-        {categoryName}
+        {maskedLocation ? "Cart" : categoryName}
       </Link>
     );
 
@@ -72,19 +74,6 @@ export default function Breadcrumb() {
           ) : (
             productData?.title || `Produto ${id}`
           )}
-        </Typography>
-      );
-    } else if (page) {
-      items.push(
-        <Typography
-          key="page"
-          sx={{
-            color: "text.primary",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          Página {page}
         </Typography>
       );
     }
