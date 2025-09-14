@@ -48,13 +48,11 @@ export interface User {
   };
 }
 
-export type UsersCart = [
-  {
-    discountedTotal: number;
-    id: number;
-    totalProducts: number;
-    totalQuantity: number;
-    products: Product[];
-    userId: number;
-  }
-]
+export type UsersCart = {
+  discountedTotal: number;
+  id: number;
+  totalProducts: number;
+  totalQuantity: number;
+  products: Product[];
+  userId: number;
+};
