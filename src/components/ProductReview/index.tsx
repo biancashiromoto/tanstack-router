@@ -12,8 +12,12 @@ const ProductReview = ({ review }: { review: Review }) => {
         className="review__header"
         sx={{ display: "flex", alignItems: "center", gap: 1 }}
       >
-        <Typography className="review__author" variant="body2">
-          <Link to={`/user/${review.reviewer?.id}`}>
+        <Typography variant="body2">
+          <Link
+            to="/user/$userId"
+            params={{ userId: review.reviewer?.id }}
+            mask={{ to: `/user/${review.reviewer?.username}` }}
+          >
             {review.reviewer?.firstName} {review.reviewer?.lastName} (
             {review.reviewer?.username})
           </Link>
