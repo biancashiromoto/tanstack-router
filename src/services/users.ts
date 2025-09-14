@@ -46,3 +46,28 @@ export const getUserById = async (userId: User["id"]): Promise<User> => {
   const data = await response.json();
   return data;
 }
+
+export const getUserByEmail = async (email: User["email"]): Promise<User | null> => {
+  const response = await fetch(`https://dummyjson.com/users/search?q=${email}`);
+  if (!response.ok) throw new Error('Failed to fetch user');
+
+  const data = await response.json();
+
+  if (!data.users || data.users.length === 0) throw new Error('User not found');
+  return data.users?.[0];
+}
+
+export const getUsersFromReview = async (reviewersEmails: User["email"][]): Promise<(User | null)[]> => {
+  const users = await Promise.all(
+    reviewersEmails.map(async (email) => {
+      try {
+        return await getUserByEmail(email);
+      } catch (error) {
+        console.error(`Failed to fetch user by email ${email}:`, error);
+        return null;
+      }
+    })
+  );
+
+  return users ?? [];
+}
