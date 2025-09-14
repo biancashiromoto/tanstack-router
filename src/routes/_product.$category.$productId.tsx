@@ -12,19 +12,36 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { useState } from "react";
+import type { RouterContext } from "./__root";
+
+export interface ProductRouteLoaderData {
+  product: Product;
+}
+
+export interface ProductRouteParams {
+  category: string;
+  productId: string;
+}
 
 export const Route = createFileRoute("/_product/$category/$productId")({
   component: RouteComponent,
-  beforeLoad: async ({ params, context }) => {
+  beforeLoad: async ({
+    params,
+    context,
+  }: {
+    params: ProductRouteParams;
+    context: RouterContext;
+  }) => {
     if (!params.productId || typeof params.productId !== "string")
       throw new Error("Product ID is required");
-    const product = await context?.queryClient.ensureQueryData(
+    const product = await context?.queryClient?.ensureQueryData(
       queryOptions({
         queryKey: ["product", params.productId],
         queryFn: () => getProductById(params.productId),
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
+    if (!product) throw new Error("Product not found");
     context.selectedProduct = product;
     return { product };
   },
