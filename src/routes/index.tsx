@@ -1,5 +1,5 @@
-import { useAuth } from "@/context/AuthContext";
 import LoginForm from "@/components/LoginForm";
+import { useAuth } from "@/context/AuthContext";
 import { Box } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 
