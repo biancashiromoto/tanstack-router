@@ -41,9 +41,14 @@ export class Users {
     if (!response.ok) {
       throw new Error('Failed to fetch user cart');
     }
-    const data = await response.json();
 
-    return data.carts[0];
+    const data = await response.json();
+    const cart = data.carts[0];
+    const enrichedProducts = await this.enrichCartProductsWithDetails(cart).then(c => c.products);
+    return {
+      ...cart,
+      products: enrichedProducts,
+    };
   }
 
   async getUserById(userId: User["id"]): Promise<User> {
@@ -98,6 +103,34 @@ export class Users {
         result.status === 'fulfilled' && result.value !== null
       )
       .map(result => result.value as User);
+  }
+
+  async enrichCartProductsWithDetails(cart: UsersCart): Promise<UsersCart> {
+    const { getProductById } = await import("./products");
+    
+    const enrichedProducts = await Promise.all(
+      cart.products.map(async (product) => {
+        try {
+          const productDetails = await getProductById(String(product.id));
+          return {
+            ...product,
+            category: productDetails?.category || 'uncategorized',
+            total: product.price * (product.quantity ?? 1),
+          };
+        } catch (error) {
+          console.warn(`Failed to get product details for ID ${product.id}:`, error);
+          return {
+            ...product,
+            category: 'uncategorized',
+            total: product.price * (product.quantity ?? 1),
+          };
+        }
+      })
+    );
+    return {
+      ...cart,
+      products: enrichedProducts,
+    };
   }
 }
 
