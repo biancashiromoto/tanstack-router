@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { createFileRoute } from "@tanstack/react-router";
-import Loader from "./-components/Loader";
+import Loader from "@/components/Loader";
 import { Box, Typography } from "@mui/material";
 
 export const Route = createFileRoute("/_auth/profile")({

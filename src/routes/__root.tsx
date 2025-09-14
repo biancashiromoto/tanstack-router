@@ -1,11 +1,15 @@
+import AppLayout from "@/components/AppLayout";
 import { AuthProvider } from "@/context/AuthContext";
+import { getProductsCategories } from "@/services/categories";
+import type { User } from "@/types";
 import { TanstackDevtools } from "@tanstack/react-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createRootRouteWithContext } from "@tanstack/react-router";
+import {
+  createRootRouteWithContext,
+  HeadContent,
+  Outlet,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import type { User } from "@/types";
-import { App } from "./-components/app";
-import { getProductsCategories } from "@/services/categories";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,20 +34,23 @@ function RootComponent() {
     <>
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
-          <App />
+          <HeadContent />
+          <AppLayout>
+            <Outlet />
+          </AppLayout>
         </QueryClientProvider>
-        <TanstackDevtools
-          config={{
-            position: "bottom-left",
-          }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
       </AuthProvider>
+      <TanstackDevtools
+        config={{
+          position: "bottom-left",
+        }}
+        plugins={[
+          {
+            name: "Tanstack Router",
+            render: <TanStackRouterDevtoolsPanel />,
+          },
+        ]}
+      />
     </>
   );
 }

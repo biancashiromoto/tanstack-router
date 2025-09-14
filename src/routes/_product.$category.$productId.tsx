@@ -1,3 +1,6 @@
+import Loader from "@/components/Loader";
+import ProductReview from "@/components/ProductReview";
+import useResponsive from "@/hooks/useResponsive";
 import { getProductById } from "@/services/products";
 import type { Product, Review } from "@/types";
 import { Box, Button, Typography } from "@mui/material";
@@ -9,26 +12,23 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import ProductReview from "./-components/ProductReview";
-import Loader from "./-components/Loader";
 
-export const Route = createFileRoute("/_product/$category/$id")({
+export const Route = createFileRoute("/_product/$category/$productId")({
   component: RouteComponent,
+  beforeLoad: async ({ params }) => {
+    if (!params.productId || typeof params.productId !== "string")
+      throw new Error("Product ID is required");
+  },
   loader: async ({ params, context }) => {
-    const queryClient = context?.queryClient;
-    const { id } = params;
-    if (!id) throw new Error("Product ID is required");
-    return queryClient.ensureQueryData(
+    const product = await context?.queryClient.ensureQueryData(
       queryOptions({
-        queryKey: ["product", id],
-        queryFn: async () => {
-          const product = await getProductById(Number(id));
-          if (!product) throw new Error("Product not found");
-          return product;
-        },
+        queryKey: ["product", params.productId],
+        queryFn: () => getProductById(params.productId),
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
+    if (!product) throw new Error("Failed to load product or reviewers");
+    return product;
   },
   errorComponent: ({ error }) => {
     return <p>Error loading product details: {error.message}</p>;
@@ -46,9 +46,10 @@ export const Route = createFileRoute("/_product/$category/$id")({
 });
 
 function RouteComponent() {
-  const product = useLoaderData({ from: "/_product/$category/$id" });
+  const product = useLoaderData({ from: "/_product/$category/$productId" });
   const [showReviews, setShowReviews] = useState(false);
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
+  const { isMobile, isTablet } = useResponsive();
 
   const productRating = product.rating
     ? new Array(Math.ceil(product.rating)).fill("⭐")
@@ -59,10 +60,28 @@ function RouteComponent() {
   return (
     <Box className="product-detail">
       <Typography variant="h6">{product.title}</Typography>
-      <Box className="product-detail-content">
+      <Box
+        className="product-detail-content"
+        sx={{
+          display: "flex",
+          flexDirection: isMobile || isTablet ? "column" : "row",
+          position: "relative",
+          gap: 2,
+          alignItems: isMobile || isTablet ? "center" : "flex-start",
+          justifyContent: "center",
+          mt: 2,
+        }}
+      >
         <Box
           className="product-images"
-          sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+          }}
         >
           {product.images.map((image: string, index: number) => (
             <Box
@@ -74,7 +93,16 @@ function RouteComponent() {
             />
           ))}
         </Box>
-        <Box sx={{ py: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box
+          sx={{
+            py: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            gridRow: 1,
+            gridColumn: 2,
+          }}
+        >
           <Typography className="product-price">${product.price}</Typography>
           <Typography className="product-description">
             {product.description}
@@ -86,7 +114,7 @@ function RouteComponent() {
           )}
 
           {product.rating && (
-            <Box>
+            <Box sx={{ position: "relative" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography className="product-rating">
                   Rating: {productRating}

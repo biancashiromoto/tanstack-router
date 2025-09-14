@@ -1,3 +1,4 @@
+import useResponsive from "@/hooks/useResponsive";
 import useSearchProducts from "@/hooks/useSearchProducts";
 import { FormControl, Typography } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -11,6 +12,7 @@ export default function CustomAutocomplete() {
   const navigate = useNavigate();
   const location = useLocation();
   const { search, options, handleSearchChange } = useSearchProducts();
+  const { isMobile } = useResponsive();
 
   const filteredProducts = options.filter((option) =>
     option.title.toLowerCase().includes(search.toLowerCase())
@@ -24,7 +26,7 @@ export default function CustomAutocomplete() {
   return (
     <FormControl fullWidth>
       <Autocomplete
-        size="medium"
+        size={isMobile ? "small" : "medium"}
         inputValue={search}
         onInputChange={(_, value) => handleSearchChange(value)}
         clearOnEscape

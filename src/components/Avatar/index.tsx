@@ -1,3 +1,4 @@
+import useResponsive from "@/hooks/useResponsive";
 import type { User } from "@/types";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
@@ -5,6 +6,8 @@ import { RxAvatar } from "react-icons/rx";
 
 const Avatar = ({ user }: { user: User }) => {
   const navigate = useNavigate();
+  const { isMobile } = useResponsive();
+
   return (
     <Box
       onClick={() => navigate({ to: `/profile` })}
@@ -22,8 +25,8 @@ const Avatar = ({ user }: { user: User }) => {
           sx={{
             borderRadius: "50%",
             overflow: "hidden",
-            width: 25,
-            height: 25,
+            width: isMobile ? 15 : 25,
+            height: isMobile ? 15 : 25,
           }}
           component="img"
           src={user.image}
@@ -32,7 +35,10 @@ const Avatar = ({ user }: { user: User }) => {
       ) : (
         <RxAvatar />
       )}
-      <Typography variant="body1" className="avatar-email">
+      <Typography
+        variant={isMobile ? "caption" : "body2"}
+        className="avatar-email"
+      >
         {user.email}
       </Typography>
     </Box>

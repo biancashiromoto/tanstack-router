@@ -1,16 +1,13 @@
+import CartItem from "@/components/CartItem";
+import Loader from "@/components/Loader";
 import { useAuth } from "@/context/AuthContext";
-import { getUsersCartById } from "@/services/users";
+import useCart from "@/hooks/useCart";
 import type { Product } from "@/types";
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import CartItem from "@/routes/-components/CartItem";
+import { Box, Typography } from "@mui/material";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/cart")({
   component: RouteComponent,
-  loader: async ({ context }) => {
-    const userId = context.user?.id;
-    const cart = await getUsersCartById(userId);
-    return { cart: cart[0] ?? { products: [] } };
-  },
   head: () => ({
     meta: [
       {
@@ -22,29 +19,42 @@ export const Route = createFileRoute("/_auth/cart")({
 
 function RouteComponent() {
   const { user } = useAuth();
-  const {
-    cart: { products, total },
-  } = useLoaderData({ from: "/_auth/cart" });
+  const { cart, isLoading } = useCart();
+
+  if (isLoading) return <Loader />;
+
+  if (!cart) return <Typography>No cart data available</Typography>;
 
   return (
-    <div className="cart-container">
-      <h2 className="subtitle">{user?.firstName}'s Cart</h2>
-      {products ? (
-        <div className="cart-list">
-          {products.length > 0 ? (
-            products.map((item: Product) => (
+    <Box className="cart-container">
+      <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        {user?.firstName}'s Cart
+      </Typography>
+      {cart?.products.length ? (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          {cart.products.length > 0 ? (
+            cart.products.map((item: Product) => (
               <CartItem key={item.id} item={item} />
             ))
           ) : (
             <p>No items in cart</p>
           )}
-        </div>
+        </Box>
       ) : (
-        <p>No cart data available</p>
+        <Typography>No cart data available</Typography>
       )}
-      {products.length > 0 && (
-        <h3 className="subtitle cart-price">Total: ${total}</h3>
+      {cart.products.length > 0 && (
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            marginTop: 2,
+            marginLeft: "calc(100% - 150px)",
+            textAlign: "right",
+          }}
+        >
+          Total: ${cart.totalProducts.toFixed(2)}
+        </Typography>
       )}
-    </div>
+    </Box>
   );
 }

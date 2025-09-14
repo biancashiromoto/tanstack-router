@@ -8,3 +8,7 @@ export const formatCategoryName = (
   );
   return shouldCapitalizeFirstLetter ? formatted : formatted.toLowerCase();
 };
+
+export const getProductRating = (rating: number | null) => {
+  return rating ? new Array(Math.ceil(rating)).fill("⭐") : null;
+};

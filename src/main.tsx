@@ -1,13 +1,14 @@
 import { StrictMode, useMemo } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 
 import reportWebVitals from "./reportWebVitals.ts";
-import Loader from "./routes/-components/Loader/index.tsx";
+import Loader from "@/components/Loader/index.tsx";
+import "./index.scss";
 
 function RouterWithContext() {
   const { user, isLoading } = useAuth();

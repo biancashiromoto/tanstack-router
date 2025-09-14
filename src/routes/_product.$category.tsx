@@ -1,21 +1,17 @@
-import { getProductsByCategory } from "@/services/products";
+import CustomCard from "@/components/Card";
+import Loader from "@/components/Loader";
 import type { Product } from "@/types";
 import { Box, List, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
-import { queryOptions } from "@tanstack/react-query";
 import {
   createFileRoute,
-  Link,
   Outlet,
   useLoaderData,
   useNavigate,
-  useParams,
   useRouterState,
   useSearch,
 } from "@tanstack/react-router";
 import React from "react";
-import CustomCard from "./-components/Card";
-import Loader from "./-components/Loader";
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
@@ -25,27 +21,12 @@ export const Route = createFileRoute("/_product/$category")({
       limit: Number(search?.limit) || 15,
     };
   },
-  loader: async ({ params, context }) => {
-    const queryClient = context?.queryClient;
-    const category = params.category;
-    if (!category) throw new Error("Category is required");
-    return queryClient.ensureQueryData(
-      queryOptions({
-        queryKey: ["products", category],
-        queryFn: async () => {
-          const { products } = await getProductsByCategory(category);
-          return { products, category };
-        },
-        staleTime: 1000 * 60 * 5, // 5 minutes
-      })
-    );
-  },
   errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
-  head: ({ loaderData: { category } }: { loaderData?: any }) => {
+  head: ({ params }) => {
     return {
       meta: [
         {
-          title: `Products in ${category}`,
+          title: `Products in ${params.category}`,
         },
       ],
     };
@@ -54,10 +35,9 @@ export const Route = createFileRoute("/_product/$category")({
 
 function RouteComponent() {
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
-  const { products } = useLoaderData({ from: "/_product/$category" });
-  const { category } = useLoaderData({ from: "/_product" });
-  const { id } = useParams({ from: "" });
-  const isProductSelected = !!id;
+  const { category, products, selectedProduct } = useLoaderData({
+    from: "/_product",
+  });
   const { page, limit } = useSearch({ from: "/_product/$category" });
   const navigate = useNavigate();
 
@@ -79,38 +59,30 @@ function RouteComponent() {
 
   if (isLoading) return <Loader />;
 
+  if (!!selectedProduct) return <Outlet />;
+
   return (
-    <Box sx={{ mx: "auto", py: 2, maxWidth: 1200 }}>
-      {!isProductSelected && (
-        <>
-          <Typography variant="body1" className="text">
-            {products.length} products found - Showing page {page} of{" "}
-            {totalPages}
-          </Typography>
-          <List
-            className="product-list"
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 2,
-              width: "100%",
-              justifyContent: "center",
-            }}
-          >
-            {currentProducts?.map((product: Product) => (
-              <Link
-                to={`/$category/$id`}
-                params={{ category, id: String(product.id) }}
-                key={product.id}
-              >
-                <CustomCard product={product} />
-              </Link>
-            ))}
-          </List>
-        </>
-      )}
-      {isProductSelected && <Outlet />}
-      {!isProductSelected && totalPages > 1 && (
+    <Box>
+      <Box>
+        <Typography variant="body1" className="text">
+          {products.length} products found - Showing page {page} of {totalPages}
+        </Typography>
+        <List
+          className="product-list"
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+            gap: 2,
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          {currentProducts?.map((product: Product) => (
+            <CustomCard product={product} key={product.id} />
+          ))}
+        </List>
+      </Box>
+      {totalPages > 1 && (
         <Pagination
           count={totalPages}
           page={page}
@@ -118,6 +90,7 @@ function RouteComponent() {
           showFirstButton
           showLastButton
           className="pagination"
+          sx={{ my: 2, display: "flex", justifyContent: "center" }}
         />
       )}
     </Box>
