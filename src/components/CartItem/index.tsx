@@ -9,9 +9,9 @@ type CartItemProps = {
 const CartItem = ({ item }: CartItemProps) => {
   return (
     <Link
-      to="/cart/$productId"
+      to={`/${item.category}/${item.id}`}
       params={{ productId: String(item.id), category: item.category }}
-      mask={{ to: `/${item.category}/${item.id}` }}
+      mask={{ to: `/cart/${item.id}` }}
       style={{ textDecoration: "none" }}
     >
       <Box
