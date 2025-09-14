@@ -12,8 +12,8 @@ export interface CustomCardProps {
 export default function CustomCard({ product }: CustomCardProps) {
   return (
     <Link
-      to="/$category/$id"
-      params={{ category: product.category, id: String(product.id) }}
+      to="/$category/$productId"
+      params={{ category: product.category, productId: String(product.id) }}
       style={{ textDecoration: "none" }}
       preloadDelay={500}
     >
