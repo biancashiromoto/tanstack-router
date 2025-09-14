@@ -2,7 +2,6 @@ import Loader from "@/components/Loader";
 import ProductReview from "@/components/ProductReview";
 import useResponsive from "@/hooks/useResponsive";
 import { getProductById } from "@/services/products";
-import { getUsersFromReview } from "@/services/users";
 import type { Product, Review } from "@/types";
 import { Box, Button, Typography } from "@mui/material";
 import { queryOptions } from "@tanstack/react-query";
@@ -16,42 +15,19 @@ import { useState } from "react";
 
 export const Route = createFileRoute("/_product/$category/$id")({
   component: RouteComponent,
+  beforeLoad: async ({ params }) => {
+    if (!params.id || typeof params.id !== "string")
+      throw new Error("Product ID is required");
+  },
   loader: async ({ params, context }) => {
-    const queryClient = context?.queryClient;
-    const { id } = params;
-    if (!id) throw new Error("Product ID is required");
-
-    const product = await queryClient.ensureQueryData(
+    const product = await context?.queryClient.ensureQueryData(
       queryOptions({
-        queryKey: ["product", id],
-        queryFn: () => getProductById(Number(id)),
+        queryKey: ["product", params.id],
+        queryFn: () => getProductById(params.id),
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
-
-    const reviewersEmails = product.reviews?.map((r) => r.reviewerEmail) || [];
-
-    const reviewers = await queryClient.ensureQueryData(
-      queryOptions({
-        queryKey: ["reviewers", reviewersEmails],
-        queryFn: async () => await getUsersFromReview(reviewersEmails),
-        staleTime: 1000 * 60 * 5, // 5 minutes
-      })
-    );
-
-    if (!reviewers || !product) {
-      throw new Error("Failed to load product or reviewers");
-    }
-
-    const enrichedReviews: Review[] =
-      product.reviews?.map((review: Review) => {
-        const reviewer =
-          reviewers?.find(
-            (user) => user !== null && user.email === review.reviewerEmail
-          ) ?? undefined;
-        return { ...review, reviewer };
-      }) || [];
-    product.reviews = enrichedReviews;
+    if (!product) throw new Error("Failed to load product or reviewers");
     return product;
   },
   errorComponent: ({ error }) => {
