@@ -8,7 +8,6 @@ import {
   Outlet,
   useLoaderData,
   useNavigate,
-  useParams,
   useRouterState,
   useSearch,
 } from "@tanstack/react-router";
