@@ -1,28 +1,22 @@
 import { useAuth } from "@/context/AuthContext";
 import { formatCategoryName } from "@/helpers";
-import { getProductById } from "@/services/products";
+import useFetchProductDetails from "@/hooks/useFetchProductDetails";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import { useQuery } from "@tanstack/react-query";
 import {
-  useParams,
   Link as RouterLink,
   useLocation,
+  useParams,
 } from "@tanstack/react-router";
-import CircularProgress from "@mui/material/CircularProgress";
+import Loader from "../Loader";
 
 export default function Breadcrumb() {
-  const { id, category } = useParams({ from: "" });
+  const { category } = useParams({ from: "" });
   const { user } = useAuth();
   const location = useLocation();
-
-  const { data: productData, isLoading: isLoadingProduct } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => getProductById(id),
-    enabled: Boolean(id),
-  });
-
+  useFetchProductDetails();
+  const { product, isLoading: isLoadingProduct } = useFetchProductDetails();
   if (!category) return null;
 
   const categoryName = formatCategoryName(category);
@@ -57,7 +51,7 @@ export default function Breadcrumb() {
       </Link>
     );
 
-    if (id) {
+    if (product) {
       items.push(
         <Typography
           key="product"
@@ -68,11 +62,7 @@ export default function Breadcrumb() {
             gap: 1,
           }}
         >
-          {isLoadingProduct ? (
-            <CircularProgress size={16} />
-          ) : (
-            productData?.title || `Produto ${id}`
-          )}
+          {!isLoadingProduct ? product.title : <Loader />}
         </Typography>
       );
     }
