@@ -15,11 +15,9 @@ import { useState } from "react";
 
 export const Route = createFileRoute("/_product/$category/$productId")({
   component: RouteComponent,
-  beforeLoad: async ({ params }) => {
+  beforeLoad: async ({ params, context }) => {
     if (!params.productId || typeof params.productId !== "string")
       throw new Error("Product ID is required");
-  },
-  loader: async ({ params, context }) => {
     const product = await context?.queryClient.ensureQueryData(
       queryOptions({
         queryKey: ["product", params.productId],
@@ -27,8 +25,13 @@ export const Route = createFileRoute("/_product/$category/$productId")({
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
-    if (!product) throw new Error("Failed to load product or reviewers");
-    return product;
+    context.selectedProduct = product;
+    return { product };
+  },
+  loader: async ({ context }) => {
+    if (!context.selectedProduct)
+      throw new Error("Failed to load product or reviewers");
+    return context.selectedProduct;
   },
   errorComponent: ({ error }) => {
     return <p>Error loading product details: {error.message}</p>;
