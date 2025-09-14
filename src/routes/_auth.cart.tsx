@@ -4,42 +4,18 @@ import type { Product } from "@/types";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 import CartItem from "@/components/CartItem";
 import { Box, Typography } from "@mui/material";
-import { getProductById } from "@/services/products";
 import { queryOptions } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_auth/cart")({
   component: RouteComponent,
   loader: async ({ context }) => {
-    const {
-      queryClient,
-      user: { id },
-    } = context;
-    const userId = context.user?.id;
-    const cart = await getUsersCartById(userId);
-
-    const products = await queryClient.ensureQueryData(
+    return await context?.queryClient.ensureQueryData(
       queryOptions({
-        queryKey: ["product", id],
-        queryFn: async () =>
-          await Promise.all(
-            cart[0]?.products?.map(async (product) => {
-              if (!product.category) {
-                const fullProduct = await getProductById(product.id);
-                return { ...product, category: fullProduct.category };
-              }
-              return product;
-            }) || []
-          ),
+        queryKey: ["cart", context.user?.id],
+        queryFn: () => getUsersCartById(context.user?.id),
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
-
-    return {
-      cart: {
-        ...cart[0],
-        products,
-      },
-    };
   },
   head: () => ({
     meta: [
@@ -52,19 +28,17 @@ export const Route = createFileRoute("/_auth/cart")({
 
 function RouteComponent() {
   const { user } = useAuth();
-  const {
-    cart: { products, total },
-  } = useLoaderData({ from: "/_auth/cart" });
+  const { cart } = useLoaderData({ from: "/_auth/cart" });
 
   return (
     <Box className="cart-container">
       <Typography variant="h6" sx={{ marginBottom: 2 }}>
         {user?.firstName}'s Cart
       </Typography>
-      {products ? (
+      {cart.products.length ? (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {products.length > 0 ? (
-            products.map((item: Product) => (
+          {cart.products.length > 0 ? (
+            cart.products.map((item: Product) => (
               <CartItem key={item.id} item={item} />
             ))
           ) : (
@@ -74,7 +48,7 @@ function RouteComponent() {
       ) : (
         <Typography>No cart data available</Typography>
       )}
-      {products.length > 0 && (
+      {cart.products.length > 0 && (
         <Typography
           sx={{
             fontWeight: "bold",
@@ -83,7 +57,7 @@ function RouteComponent() {
             textAlign: "right",
           }}
         >
-          Total: ${total}
+          Total: ${cart.total}
         </Typography>
       )}
     </Box>
