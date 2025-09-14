@@ -12,7 +12,6 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import Card from "../Card";
-import "./DailyDeals.scss";
 
 const DailyDeals = () => {
   const [discountedProducts, setDiscountedProducts] = useState<Product[]>([]);
