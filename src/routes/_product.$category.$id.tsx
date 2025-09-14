@@ -1,3 +1,6 @@
+import Loader from "@/components/Loader";
+import ProductReview from "@/components/ProductReview";
+import useResponsive from "@/hooks/useResponsive";
 import { getProductById } from "@/services/products";
 import type { Product, Review } from "@/types";
 import { Box, Button, Typography } from "@mui/material";
@@ -9,8 +12,6 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import ProductReview from "@/components/ProductReview";
-import Loader from "@/components/Loader";
 
 export const Route = createFileRoute("/_product/$category/$id")({
   component: RouteComponent,
@@ -21,11 +22,7 @@ export const Route = createFileRoute("/_product/$category/$id")({
     return queryClient.ensureQueryData(
       queryOptions({
         queryKey: ["product", id],
-        queryFn: async () => {
-          const product = await getProductById(Number(id));
-          if (!product) throw new Error("Product not found");
-          return product;
-        },
+        queryFn: () => getProductById(Number(id)),
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
@@ -49,6 +46,9 @@ function RouteComponent() {
   const product = useLoaderData({ from: "/_product/$category/$id" });
   const [showReviews, setShowReviews] = useState(false);
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
+  const { isMobile, isTablet } = useResponsive();
+  const location = useRouterState({ select: (s) => s.location });
+  console.log(location);
 
   const productRating = product.rating
     ? new Array(Math.ceil(product.rating)).fill("⭐")
@@ -59,7 +59,18 @@ function RouteComponent() {
   return (
     <Box className="product-detail">
       <Typography variant="h6">{product.title}</Typography>
-      <Box className="product-detail-content">
+      <Box
+        className="product-detail-content"
+        sx={{
+          display: "flex",
+          flexDirection: isMobile || isTablet ? "column" : "row",
+          position: "relative",
+          gap: 2,
+          alignItems: isMobile || isTablet ? "center" : "flex-start",
+          justifyContent: "center",
+          mt: 2,
+        }}
+      >
         <Box
           className="product-images"
           sx={{
@@ -68,6 +79,7 @@ function RouteComponent() {
             flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "center",
+            position: "relative",
           }}
         >
           {product.images.map((image: string, index: number) => (
@@ -80,7 +92,16 @@ function RouteComponent() {
             />
           ))}
         </Box>
-        <Box sx={{ py: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box
+          sx={{
+            py: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            gridRow: 1,
+            gridColumn: 2,
+          }}
+        >
           <Typography className="product-price">${product.price}</Typography>
           <Typography className="product-description">
             {product.description}
@@ -92,7 +113,7 @@ function RouteComponent() {
           )}
 
           {product.rating && (
-            <Box>
+            <Box sx={{ position: "relative" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography className="product-rating">
                   Rating: {productRating}
