@@ -36,7 +36,7 @@ const Avatar = ({ user }: { user: User }) => {
         <RxAvatar />
       )}
       <Typography
-        variant={isMobile ? "body2" : "body1"}
+        variant={isMobile ? "caption" : "body2"}
         className="avatar-email"
       >
         {user.email}
