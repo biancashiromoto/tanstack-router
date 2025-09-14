@@ -28,7 +28,7 @@ export const Route = createFileRoute("/_auth/cart")({
 
 function RouteComponent() {
   const { user } = useAuth();
-  const { cart } = useLoaderData({ from: "/_auth/cart" });
+  const cart = useLoaderData({ from: "/_auth/cart" });
 
   return (
     <Box className="cart-container">
