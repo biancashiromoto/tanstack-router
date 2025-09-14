@@ -1,3 +1,4 @@
+import useResponsive from "@/hooks/useResponsive";
 import { IconButton, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -12,6 +13,7 @@ import { FiMenu } from "react-icons/fi";
 export default function CustomDrawer() {
   const [open, setOpen] = useState(false);
   const { categories } = useRouteContext({ from: "__root__" });
+  const { isMobile } = useResponsive();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -60,7 +62,7 @@ export default function CustomDrawer() {
         onClick={toggleDrawer(true)}
         sx={{
           color: "black",
-          fontSize: 36,
+          fontSize: isMobile ? 30 : 36,
         }}
       >
         <FiMenu />
