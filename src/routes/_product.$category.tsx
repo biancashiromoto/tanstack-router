@@ -1,6 +1,6 @@
 import CustomCard from "@/components/Card";
 import Loader from "@/components/Loader";
-import { getProductsByCategory } from "@/services/products";
+import { Products } from "@/services/products";
 import type { Product } from "@/types";
 import { Box, List, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
@@ -15,6 +15,8 @@ import {
   useSearch,
 } from "@tanstack/react-router";
 import React from "react";
+
+const productsService = new Products();
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
@@ -32,7 +34,8 @@ export const Route = createFileRoute("/_product/$category")({
       queryOptions({
         queryKey: ["products", category],
         queryFn: async () => {
-          const { products } = await getProductsByCategory(category);
+          const { products } =
+            await productsService.getProductsByCategory(category);
           return { products, category };
         },
         staleTime: 1000 * 60 * 5, // 5 minutes
@@ -54,8 +57,7 @@ export const Route = createFileRoute("/_product/$category")({
 function RouteComponent() {
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
   const { category, products } = useLoaderData({ from: "/_product" });
-  const { id } = useParams({ from: "" });
-  const isProductSelected = !!id;
+  const { productId } = useParams({ from: "" });
   const { page, limit } = useSearch({ from: "/_product/$category" });
   const navigate = useNavigate();
 
@@ -77,7 +79,7 @@ function RouteComponent() {
 
   if (isLoading) return <Loader />;
 
-  if (isProductSelected) return <Outlet />;
+  if (!!productId) return <Outlet />;
 
   return (
     <Box>
