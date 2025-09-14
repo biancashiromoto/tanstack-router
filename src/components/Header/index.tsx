@@ -3,7 +3,7 @@ import useResponsive from "@/hooks/useResponsive";
 import { Box, Divider, Typography } from "@mui/material";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { FaShoppingCart } from "react-icons/fa";
-import { MdLogout } from "react-icons/md";
+import { MdLogin, MdLogout } from "react-icons/md";
 import CustomAutocomplete from "../Autocomplete";
 import Avatar from "../Avatar";
 import CustomDrawer from "../CustomDrawer";
@@ -31,15 +31,29 @@ const Header = () => {
       }}
     >
       {!user && (
-        <Typography
-          variant="body1"
-          component="span"
-          sx={{ gridColumn: 2, gridRow: 1, textAlign: "right", mr: 2 }}
+        <Link
+          to="/login"
+          style={{
+            textDecoration: "none",
+            gridColumn: 2,
+            gridRow: 1,
+          }}
         >
-          <Link className="link-button login" to="/">
-            Login
-          </Link>
-        </Typography>
+          <Typography
+            variant="body2"
+            component="span"
+            sx={{
+              ml: 0.75,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              gap: 1,
+            }}
+          >
+            <MdLogin />
+            {isMobile ? "" : "Login"}
+          </Typography>
+        </Link>
       )}
       {user && (
         <Box
