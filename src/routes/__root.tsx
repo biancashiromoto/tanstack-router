@@ -27,7 +27,7 @@ const queryClient = new QueryClient({
   },
 });
 
-interface RouterContext {
+export interface RouterContext {
   user: User | null;
   queryClient: QueryClient | null;
   categories: string[];
@@ -71,6 +71,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         staleTime: 1000 * 60 * 5, // 5 minutes
       })
     );
-    return { user, queryClient, categories, product: null };
+    return { user, queryClient, categories, selectedProduct: undefined };
   },
 });
