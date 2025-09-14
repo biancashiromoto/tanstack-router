@@ -47,6 +47,7 @@ export default function CustomDrawer() {
                   backgroundColor: "rgba(25, 118, 210, 0.08)",
                 },
               }}
+              preloadDelay={500}
             >
               <ListItemText primary={formatCategoryName(category)} />
             </Link>
