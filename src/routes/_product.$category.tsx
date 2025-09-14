@@ -1,3 +1,5 @@
+import CustomCard from "@/components/Card";
+import Loader from "@/components/Loader";
 import { getProductsByCategory } from "@/services/products";
 import type { Product } from "@/types";
 import { Box, List, Typography } from "@mui/material";
@@ -13,8 +15,6 @@ import {
   useSearch,
 } from "@tanstack/react-router";
 import React from "react";
-import CustomCard from "@/components/Card";
-import Loader from "@/components/Loader";
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
@@ -77,32 +77,30 @@ function RouteComponent() {
 
   if (isLoading) return <Loader />;
 
+  if (isProductSelected) return <Outlet />;
+
   return (
-    <Box sx={{ mx: "auto", py: 2, maxWidth: 1200 }}>
-      {!isProductSelected && (
-        <Box>
-          <Typography variant="body1" className="text">
-            {products.length} products found - Showing page {page} of{" "}
-            {totalPages}
-          </Typography>
-          <List
-            className="product-list"
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-              gap: 2,
-              width: "100%",
-              justifyContent: "center",
-            }}
-          >
-            {currentProducts?.map((product: Product) => (
-              <CustomCard product={product} key={product.id} />
-            ))}
-          </List>
-        </Box>
-      )}
-      {isProductSelected && <Outlet />}
-      {!isProductSelected && totalPages > 1 && (
+    <Box>
+      <Box>
+        <Typography variant="body1" className="text">
+          {products.length} products found - Showing page {page} of {totalPages}
+        </Typography>
+        <List
+          className="product-list"
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+            gap: 2,
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          {currentProducts?.map((product: Product) => (
+            <CustomCard product={product} key={product.id} />
+          ))}
+        </List>
+      </Box>
+      {totalPages > 1 && (
         <Pagination
           count={totalPages}
           page={page}
