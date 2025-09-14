@@ -56,6 +56,7 @@ const Header = () => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Link to="/cart">
               <Typography
+                variant="body2"
                 component="span"
                 sx={{
                   display: "flex",
@@ -70,6 +71,7 @@ const Header = () => {
             </Link>
             <Link onClick={handleLogout} to="/">
               <Typography
+                variant="body2"
                 component="span"
                 sx={{
                   display: "flex",
