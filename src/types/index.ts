@@ -4,6 +4,7 @@ export type Review = {
   date: string;
   reviewerName: string;
   reviewerEmail: string;
+  reviewer?: User;
 }
 
 export type Product = {
