@@ -49,9 +49,10 @@ export default function Breadcrumb() {
           key="cart"
           component={RouterLink}
           to="/cart"
-          underline="hover"
+          underline={location.pathname === "/cart" ? "none" : "hover"}
           sx={{ display: "flex", alignItems: "center" }}
           color="inherit"
+          disabled={location.pathname === "/cart"}
         >
           Cart
         </Link>
