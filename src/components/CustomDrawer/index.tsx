@@ -8,7 +8,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 
 export default function CustomDrawer() {
@@ -16,16 +16,18 @@ export default function CustomDrawer() {
   const { categories } = useRouteContext({ from: "__root__" });
   const { isMobile } = useResponsive();
 
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
-  };
+  const toggleDrawer = useCallback(
+    (newOpen: boolean) => () => setOpen(newOpen),
+    [setOpen]
+  );
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List sx={{ p: 1 }}>
-        <Typography variant="h6" sx={{ pl: 1.5, textDecoration: "underline" }}>
-          Categories
-        </Typography>
+    <Box
+      sx={{ width: 250, p: 1 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+    >
+      <List>
         {categories.map((category: string) => (
           <ListItem key={category}>
             <Link
@@ -65,6 +67,7 @@ export default function CustomDrawer() {
         sx={{
           color: "black",
           fontSize: isMobile ? 30 : 36,
+          transform: "translateX(6px)",
         }}
       >
         <FiMenu />
