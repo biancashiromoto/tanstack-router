@@ -10,7 +10,7 @@ function RouteComponent() {
     <Box>
       <Typography className="subtitle">Unauthenticated</Typography>
       <Typography className="text">
-        Please <Link to="/">sign in</Link> to access this page.
+        Please <Link to="/login">sign in</Link> to access this page.
       </Typography>
     </Box>
   );
