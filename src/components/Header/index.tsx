@@ -1,20 +1,11 @@
-import { useAuth } from "@/context/AuthContext";
-import useResponsive from "@/hooks/useResponsive";
-import { Box, Divider, Typography } from "@mui/material";
-import { Link, useRouteContext } from "@tanstack/react-router";
-import { FaShoppingCart } from "react-icons/fa";
-import { MdLogin, MdLogout } from "react-icons/md";
+import { Box, Divider } from "@mui/material";
+import { useRouteContext } from "@tanstack/react-router";
 import CustomAutocomplete from "../Autocomplete";
-import Avatar from "../Avatar";
 import CustomDrawer from "../CustomDrawer";
+import Navbar from "./Navbar";
 
 const Header = () => {
-  const { isMobile } = useResponsive();
-
-  const { user, logout } = useAuth();
   const { categories } = useRouteContext({ from: "__root__" });
-
-  const handleLogout = () => logout();
 
   return (
     <Box
@@ -30,77 +21,7 @@ const Header = () => {
         gap: 1,
       }}
     >
-      {!user && (
-        <Link
-          to="/login"
-          style={{
-            textDecoration: "none",
-            gridColumn: 2,
-            gridRow: 1,
-          }}
-        >
-          <Typography
-            variant="body2"
-            component="span"
-            sx={{
-              ml: 0.75,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              gap: 1,
-            }}
-          >
-            <MdLogin />
-            {isMobile ? "" : "Login"}
-          </Typography>
-        </Link>
-      )}
-      {user && (
-        <Box
-          className="header-user"
-          sx={{
-            gridColumn: "span 2",
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            justifyContent: "space-between",
-          }}
-        >
-          <Avatar user={user} />
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Link to="/cart">
-              <Typography
-                variant="body2"
-                component="span"
-                sx={{
-                  display: "flex",
-                  gap: 1,
-                  alignItems: "center",
-                  color: "text.primary",
-                }}
-              >
-                <FaShoppingCart />
-                {isMobile ? "" : "Cart"}
-              </Typography>
-            </Link>
-            <Link onClick={handleLogout} to="/">
-              <Typography
-                variant="body2"
-                component="span"
-                sx={{
-                  display: "flex",
-                  gap: 1,
-                  alignItems: "center",
-                  color: "text.primary",
-                }}
-              >
-                <MdLogout />
-                {isMobile ? "" : "Logout"}
-              </Typography>
-            </Link>
-          </Box>
-        </Box>
-      )}
+      <Navbar />
       <Box
         sx={{
           display: "grid",
