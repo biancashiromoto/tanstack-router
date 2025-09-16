@@ -1,103 +1,22 @@
-import { formatCategoryName } from "@/helpers";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
-import {
-  Link as RouterLink,
-  useLocation,
-  useParams,
-  useMatches,
-} from "@tanstack/react-router";
-import { Typography } from "@mui/material";
+import BreadcrumbItem from "./BreadcrumbItem";
+import useBreadcrumb from "./hooks/useBreadcrumb";
+import { routesWithNoBreadcrumb } from "./Breadcrumb.constants";
+import { Box } from "@mui/material";
 
 export default function Breadcrumb() {
-  const { category } = useParams({ from: "" });
-  const location = useLocation();
-  const matches = useMatches();
+  const { location, items } = useBreadcrumb();
 
-  const selectedProduct = matches.find(
-    (match) => match.routeId === "/_product/$category/$productId"
-  )?.loaderData;
-
-  if (location.pathname === "/" || location.pathname === "/login") return null;
-
-  const categoryName = formatCategoryName(category);
-
-  const createBreadcrumbItems = () => {
-    const items = [];
-
-    if (location.pathname !== "/profile") {
-      items.push(
-        <Link
-          key="home"
-          component={RouterLink}
-          to="/"
-          underline="hover"
-          sx={{ display: "flex", alignItems: "center" }}
-          color="inherit"
-        >
-          Home
-        </Link>
-      );
-    }
-
-    if (
-      location.maskedLocation?.pathname.includes("/cart") ||
-      location.pathname === "/cart"
-    ) {
-      items.push(
-        <Link
-          key="cart"
-          component={RouterLink}
-          to="/cart"
-          underline={location.pathname === "/cart" ? "none" : "hover"}
-          sx={{ display: "flex", alignItems: "center" }}
-          color="inherit"
-          disabled={location.pathname === "/cart"}
-        >
-          Cart
-        </Link>
-      );
-    }
-
-    if (categoryName && !location.maskedLocation?.pathname.includes("/cart")) {
-      items.push(
-        <Link
-          key="category"
-          component={RouterLink}
-          to="/$category"
-          params={category}
-          underline="hover"
-          sx={{ display: "flex", alignItems: "center" }}
-          color="inherit"
-        >
-          {categoryName}
-        </Link>
-      );
-    }
-
-    if (selectedProduct) {
-      items.push(
-        <Typography
-          key="product"
-          sx={{
-            color: "text.primary",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          {selectedProduct.title}
-        </Typography>
-      );
-    }
-    return items;
-  };
+  if (routesWithNoBreadcrumb.includes(location.pathname) || items.length === 0)
+    return null;
 
   return (
-    <div role="presentation" className="breadcrumb">
+    <Box role="banner" className="breadcrumb">
       <Breadcrumbs aria-label="breadcrumb">
-        {createBreadcrumbItems()}
+        {items.map((item) => (
+          <BreadcrumbItem label={item.label} key={item.to} to={item.to} />
+        ))}
       </Breadcrumbs>
-    </div>
+    </Box>
   );
 }
