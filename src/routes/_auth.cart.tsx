@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_auth/cart")({
 
 function RouteComponent() {
   const { user } = useAuth();
-  const { cart, isLoading } = useCart();
+  const { cart, isLoading, totalPrice } = useCart();
 
   if (isLoading) return <Loader />;
 
@@ -52,7 +52,7 @@ function RouteComponent() {
             textAlign: "right",
           }}
         >
-          Total: ${cart.totalProducts.toFixed(2)}
+          Total: ${totalPrice.toFixed(2)}
         </Typography>
       )}
     </Box>
