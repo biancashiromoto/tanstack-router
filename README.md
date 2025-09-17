@@ -1,15 +1,50 @@
-Welcome to your new TanStack app! 
+# 🛒 ShopHub - Modern E-commerce Platform
 
-# Getting Started
+A modern, full-featured e-commerce application built with React, TypeScript, and TanStack Router. This project demonstrates a complete shopping experience with user authentication, product catalog, shopping cart, and more.
 
-To run this application:
+## ✨ Features
+
+- 🔐 **User Authentication** - Login/logout with persistent sessions
+- 🛍️ **Product Catalog** - Browse products by categories
+- 🛒 **Shopping Cart** - Add, remove, and manage cart items
+- 🏷️ **Daily Deals** - Special discounts and offers
+- 🔍 **Product Search** - Find products quickly
+- 👤 **User Profile** - Manage user information
+- 📱 **Responsive Design** - Works on desktop and mobile
+- ⭐ **Product Reviews** - View and manage product ratings
+- 🎨 **Material-UI Design** - Modern, accessible interface
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/biancashiromoto/tanstack-router.git
+cd tanstack-router
+```
+
+2. Install dependencies:
 
 ```bash
 npm install
+```
+
+3. Start the development server:
+
+```bash
 npm run start
 ```
 
-# Building For Production
+The application will be available at `http://localhost:3000`
+
+## 🏗️ Building For Production
 
 To build this application for production:
 
@@ -17,22 +52,83 @@ To build this application for production:
 npm run build
 ```
 
-## Testing
+## 🧪 Testing
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+This project uses [Vitest](https://vitest.dev/) for testing. Run tests with:
 
 ```bash
 npm run test
 ```
 
-## Styling
+## 🎨 Styling
 
-This project uses CSS for styling.
+This project uses:
+
+- **Material-UI (MUI)** - Component library and design system
+- **SCSS** - Enhanced CSS with variables and mixins
+- **Emotion** - CSS-in-JS for dynamic styling
+
+## 🛠️ Tech Stack
+
+- **Frontend Framework:** React 19
+- **Language:** TypeScript
+- **Routing:** TanStack Router
+- **State Management:** TanStack Query (React Query)
+- **UI Components:** Material-UI (MUI v7)
+- **Styling:** Emotion + SCSS
+- **Icons:** React Icons
+- **Build Tool:** Vite
+- **Testing:** Vitest + React Testing Library
+
+## 📁 Project Structure
+
+```text
+src/
+├── components/          # Reusable UI components
+│   ├── AppLayout/      # Main layout wrapper
+│   ├── Card/           # Product card components
+│   ├── Header/         # Navigation header
+│   ├── LoginForm/      # Authentication form
+│   └── ...
+├── context/            # React context providers
+├── hooks/              # Custom React hooks
+├── routes/             # TanStack Router route definitions
+├── services/           # API service classes
+├── types/              # TypeScript type definitions
+└── helpers/            # Utility functions
+```
+
+## 🔐 Authentication
+
+The app uses a mock authentication system with the following test credentials:
+
+- **Username:** `emilys`
+- **Password:** `emilyspass`
+
+## 🌐 API Integration
+
+This project integrates with the [DummyJSON API](https://dummyjson.com) for:
+
+- Product catalog and categories
+- User authentication
+- Shopping cart data
+- User profiles
+
+## 📱 Routes
+
+- `/` - Home page with daily deals
+- `/login` - User authentication
+- `/profile` - User profile page
+- `/cart` - Shopping cart
+- `/{category}` - Product category listings
+- `/{category}/{productId}` - Product details
+- `/user/{userId}` - User details page
 
 
 
 
-## Routing
+## 🚦 Routing
+
 This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
 
 ### Adding A Route
@@ -281,10 +377,44 @@ Once we've created the derived store we can use it in the `App` component just l
 
 You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
 
-# Demo files
+## 🚀 Development
 
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
+### Available Scripts
 
-# Learn More
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run serve` - Serve production build
+- `npm run test` - Run tests
 
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+### Key Features Implemented
+
+- **File-based routing** with TanStack Router
+- **Type-safe navigation** with TypeScript
+- **Responsive design** with Material-UI breakpoints
+- **State management** with React Query
+- **Form handling** with controlled components
+- **Error boundaries** for better UX
+- **Loading states** throughout the app
+
+## 📚 Learn More
+
+- [TanStack Router Documentation](https://tanstack.com/router)
+- [TanStack Query Documentation](https://tanstack.com/query)
+- [Material-UI Documentation](https://mui.com/)
+- [React Documentation](https://react.dev/)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 👥 Author
+
+**Bianca Shiromoto** - [GitHub](https://github.com/biancashiromoto)
