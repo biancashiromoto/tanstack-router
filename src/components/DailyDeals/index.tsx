@@ -73,12 +73,11 @@ const DailyDeals = () => {
           gutterBottom
           sx={{
             fontWeight: "bold",
-            color: "primary.main",
             textAlign: "center",
             mb: 1,
           }}
         >
-          🔥 Today's discounts
+          Today's discounts
         </Typography>
         <Typography
           variant="h6"
