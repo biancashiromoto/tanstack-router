@@ -41,6 +41,8 @@ export default function CustomDrawer() {
                 color: "inherit",
                 borderRadius: "4px",
                 display: "block",
+                padding: "8px 12px",
+                transition: "all 0.2s ease-in-out",
               }}
               activeProps={{
                 style: {
@@ -49,6 +51,14 @@ export default function CustomDrawer() {
                   backgroundColor: "rgba(25, 118, 210, 0.08)",
                 },
               }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.04)";
+                e.currentTarget.style.transform = "translateX(4px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.transform = "translateX(0)";
+              }}
               preloadDelay={500}
             >
               <ListItemText primary={formatCategoryName(category)} />
@@ -56,7 +66,6 @@ export default function CustomDrawer() {
           </ListItem>
         ))}
       </List>
-      <Divider />
     </Box>
   );
 
