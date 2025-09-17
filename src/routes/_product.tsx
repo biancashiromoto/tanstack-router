@@ -1,3 +1,4 @@
+import Loader from "@/components/Loader";
 import { Products } from "@/services/products";
 import type { LoaderData, LoaderParams } from "@/types/_product.types";
 import { Box } from "@mui/material";
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/_product")({
       <Outlet />
     </Box>
   ),
+  pendingComponent: () => <Loader />,
   loader: async ({ params, context }: LoaderParams): Promise<LoaderData> => {
     const queryClient = context?.queryClient;
     const { category, productId } = params;
