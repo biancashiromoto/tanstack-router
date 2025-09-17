@@ -1,4 +1,4 @@
-import type { ProductsResponse, Product } from "@/types";
+import type { ProductsResponse, Product, User } from "@/types";
 
 export class Products {
   private baseUrl: string;
@@ -56,11 +56,10 @@ export class Products {
       const users = await usersService.getUsersFromReview(reviewersEmails);
 
       product.reviews = product.reviews.map(review => {
-        const user = users.find((u: any) => u?.email === review.reviewerEmail);
+        const user = users.find((user: User) => user?.email === review.reviewerEmail);
         return {
           ...review,
-          reviewerName: user ? `${user.firstName} ${user.lastName}` : 'Unknown',
-          reviewerAvatar: user?.image || '',
+          reviewer: user,
         };
       });
     } catch (error) {

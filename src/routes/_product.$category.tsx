@@ -1,17 +1,15 @@
 import CustomCard from "@/components/Card";
 import Loader from "@/components/Loader";
+import Pagination from "@/components/Pagination";
+import usePagination from "@/components/Pagination/hooks/usePagination";
 import type { Product } from "@/types";
 import { Box, List, Typography } from "@mui/material";
-import Pagination from "@mui/material/Pagination";
 import {
   createFileRoute,
   Outlet,
   useLoaderData,
-  useNavigate,
   useRouterState,
-  useSearch,
 } from "@tanstack/react-router";
-import React from "react";
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
@@ -35,27 +33,10 @@ export const Route = createFileRoute("/_product/$category")({
 
 function RouteComponent() {
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
-  const { category, products, selectedProduct } = useLoaderData({
+  const { products, selectedProduct } = useLoaderData({
     from: "/_product",
   });
-  const { page, limit } = useSearch({ from: "/_product/$category" });
-  const navigate = useNavigate();
-
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
-  const currentProducts = products.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(products.length / limit);
-
-  const handlePageChange = (
-    _e: React.ChangeEvent<unknown>,
-    newPage: number
-  ) => {
-    navigate({
-      to: "/$category",
-      params: { category },
-      search: { page: newPage, limit },
-    });
-  };
+  const { page, currentProducts, totalPages } = usePagination();
 
   if (isLoading) return <Loader />;
 
@@ -82,17 +63,7 @@ function RouteComponent() {
           ))}
         </List>
       </Box>
-      {totalPages > 1 && (
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={(e, newPage) => handlePageChange(e, newPage)}
-          showFirstButton
-          showLastButton
-          className="pagination"
-          sx={{ my: 2, display: "flex", justifyContent: "center" }}
-        />
-      )}
+      <Pagination />
     </Box>
   );
 }

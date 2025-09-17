@@ -1,9 +1,13 @@
 import AppLayout from "@/components/AppLayout";
 import { AuthProvider } from "@/context/AuthContext";
 import { getProductsCategories } from "@/services/categories";
-import type { User } from "@/types";
+import type { Product, User } from "@/types";
 import { TanstackDevtools } from "@tanstack/react-devtools";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  queryOptions,
+} from "@tanstack/react-query";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -23,10 +27,11 @@ const queryClient = new QueryClient({
   },
 });
 
-interface RouterContext {
+export interface RouterContext {
   user: User | null;
   queryClient: QueryClient | null;
   categories: string[];
+  selectedProduct?: Product;
 }
 
 function RootComponent() {
@@ -59,7 +64,13 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   beforeLoad: async () => {
     const user = JSON.parse(localStorage.getItem("user") || "null");
-    const categories = await getProductsCategories();
-    return { user, queryClient, categories };
+    const categories = await queryClient.ensureQueryData(
+      queryOptions({
+        queryKey: ["categories"],
+        queryFn: () => getProductsCategories(),
+        staleTime: 1000 * 60 * 5, // 5 minutes
+      })
+    );
+    return { user, queryClient, categories, selectedProduct: undefined };
   },
 });

@@ -8,27 +8,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login, isAuthenticated, user } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user && isAuthenticated) {
-      navigate({ to: "/profile" });
-    }
-  }, [user, isAuthenticated]);
-
-  // const { data: users } = useQuery({
-  //   queryKey: ['users'],
-  //   queryFn: getAllUsers,
-  //   enabled: true
-  // });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

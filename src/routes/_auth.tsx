@@ -18,5 +18,7 @@ export const Route = createFileRoute("/_auth")({
 function AuthLayout() {
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
 
-  return isLoading ? <Loader /> : <Outlet />;
+  if (isLoading) return <Loader />;
+
+  return <Outlet />;
 }

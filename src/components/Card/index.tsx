@@ -1,62 +1,35 @@
 import type { Product } from "@/types";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { Link } from "@tanstack/react-router";
+import CardBody from "./CardBody";
+import CardDiscount from "./CardDiscount";
+import CardImage from "./CardImage";
+import CardPrice from "./CardPrice";
+import CardTitle from "./CardTitle";
+import Root from "./Root";
 
 export interface CustomCardProps {
   product: Product;
+  shouldShowDiscount?: boolean;
 }
 
-export default function CustomCard({ product }: CustomCardProps) {
+export default function CustomCard({
+  product,
+  shouldShowDiscount,
+}: CustomCardProps) {
   return (
-    <Link
-      to="/$category/$productId"
-      params={{ category: product.category, productId: String(product.id) }}
-      style={{ textDecoration: "none" }}
-      preloadDelay={500}
-    >
-      <Card
-        sx={{
-          width: "100%",
-          height: "100%",
-          cursor: "pointer",
-        }}
-      >
-        <CardMedia
-          component="img"
-          alt={product.title}
-          image={product.images[0]}
-        />
-        <CardContent
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "auto auto",
-            gridTemplateRows: "auto auto",
-          }}
-        >
-          <Typography
-            gutterBottom
-            variant="body1"
-            component="div"
-            sx={{ gridColumn: "span 2", height: 50 }}
-          >
-            {product.title}
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              color: "text.secondary",
-              gridRow: 2,
-              gridColumn: 2,
-              justifySelf: "end",
-            }}
-          >
-            U${product.price}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Link>
+    <Root product={product}>
+      <CardImage src={product.images[0]} alt={product.title} />
+      <CardBody>
+        <CardTitle title={product.title} />
+        {shouldShowDiscount ? (
+          <CardDiscount
+            price={product.price}
+            discountPercentage={product.discountPercentage ?? 0}
+            showDiscount={shouldShowDiscount}
+          />
+        ) : (
+          <CardPrice price={product.price} />
+        )}
+      </CardBody>
+    </Root>
   );
 }

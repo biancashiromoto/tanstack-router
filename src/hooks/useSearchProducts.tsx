@@ -1,11 +1,13 @@
 import { searchProducts } from "@/services/products";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useLocation } from "@tanstack/react-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDebounce } from "use-debounce";
 
 const useSearchProducts = () => {
   const [search, setSearch] = useState<string>("");
   const [debouncedSearch] = useDebounce(search, 300);
+  const location = useLocation();
 
   const {
     data: products,
@@ -23,13 +25,12 @@ const useSearchProducts = () => {
     return products?.products || [];
   }, [products]);
 
-  const handleSearchChange = (value: string) => {
-    setSearch(value);
-  };
+  const handleSearchChange = useCallback(
+    (value: string) => setSearch(value),
+    [setSearch]
+  );
 
-  const clearSearch = () => {
-    setSearch("");
-  };
+  useEffect(() => setSearch(""), [location.pathname]);
 
   return {
     search,
@@ -38,7 +39,6 @@ const useSearchProducts = () => {
     isError,
     error,
     handleSearchChange,
-    clearSearch,
   };
 };
 

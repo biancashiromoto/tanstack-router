@@ -30,7 +30,7 @@ const ProductReview = ({ review }: { review: Review }) => {
           sx={{ transform: "translateY(-2px)" }}
           variant="body2"
         >
-          {productRating && <p>{productRating}</p>}
+          {productRating && <span>{productRating}</span>}
         </Typography>
       </Box>
       <Typography variant="body2" className="review__comment">
