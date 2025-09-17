@@ -13,6 +13,7 @@ import {
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
+  pendingComponent: () => <Loader />,
   validateSearch: (search: Record<string, unknown>) => {
     return {
       page: Number(search?.page) || 1,
@@ -32,7 +33,7 @@ export const Route = createFileRoute("/_product/$category")({
 });
 
 function RouteComponent() {
-  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
+  const { isLoading } = useRouterState();
   const { products, selectedProduct } = useLoaderData({
     from: "/_product",
   });
