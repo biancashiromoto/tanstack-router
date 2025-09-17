@@ -1,10 +1,12 @@
 import DailyDeals from "@/components/DailyDeals";
+import Loader from "@/components/Loader";
 import { useAuth } from "@/context/AuthContext";
 import { Box, Container, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: App,
+  pendingComponent: () => <Loader />,
 });
 
 function App() {
