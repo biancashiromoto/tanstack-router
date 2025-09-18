@@ -39,6 +39,7 @@ function RouteComponent() {
             flexDirection: "column",
             gap: 2,
             alignItems: "center",
+            aspectRatio: "1 / 1",
           }}
         >
           <Typography variant="h6" className="text">
