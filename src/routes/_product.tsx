@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_product")({
     </Box>
   ),
   pendingComponent: () => <Loader />,
+  wrapInSuspense: true,
   loader: async ({ params, context }: LoaderParams): Promise<LoaderData> => {
     const queryClient = context?.queryClient;
     const { category, productId } = params;
