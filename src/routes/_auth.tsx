@@ -3,8 +3,9 @@ import Loader from "@/components/Loader";
 
 export const Route = createFileRoute("/_auth")({
   component: () => <Outlet />,
-  pendingComponent: () => <Loader />,
   beforeLoad: async ({ context }) => {
     if (!context.user) throw redirect({ to: "/unauthenticated" });
   },
+  pendingComponent: () => <Loader />,
+  wrapInSuspense: true,
 });
