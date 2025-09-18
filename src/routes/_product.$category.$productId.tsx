@@ -110,6 +110,7 @@ function RouteComponent() {
               src={image}
               alt={`${product.title} ${index + 1}`}
               width="35dvw"
+              sx={{ aspectRatio: "1 / 1" }}
             />
           ))}
         </Box>
