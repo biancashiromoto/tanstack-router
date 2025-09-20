@@ -1,4 +1,7 @@
-import type { PageType } from "./index.types";
+export type PageType = {
+  name: string;
+  path: string;
+}
 
 export const pages: PageType[] = [
   { name: "Home", path: "/" },
