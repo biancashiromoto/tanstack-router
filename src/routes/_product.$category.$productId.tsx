@@ -2,10 +2,9 @@ import Loader from "@/components/Loader";
 import ProductRating from "@/components/ProductRating";
 import { getMetaHeader } from "@/helpers";
 import useResponsive from "@/hooks/useResponsive";
-import { getProductById } from "@/services/products";
+import { Products } from "@/services/products";
 import type { Product } from "@/types";
 import { Box, Typography } from "@mui/material";
-import { queryOptions } from "@tanstack/react-query";
 import {
   createFileRoute,
   useLoaderData,
@@ -19,8 +18,10 @@ export interface ProductRouteLoaderData {
 
 export interface ProductRouteParams {
   category: string;
-  productId: string;
+  productId: Product["id"];
 }
+
+const productsService = new Products();
 
 export const Route = createFileRoute("/_product/$category/$productId")({
   component: RouteComponent,
@@ -31,27 +32,17 @@ export const Route = createFileRoute("/_product/$category/$productId")({
     params: ProductRouteParams;
     context: RouterContext;
   }) => {
-    if (!params.productId || typeof params.productId !== "string")
-      throw new Error("Product ID is required");
-    const product = await context?.queryClient?.ensureQueryData(
-      queryOptions({
-        queryKey: ["product", params.productId],
-        queryFn: () => getProductById(params.productId),
-        staleTime: 1000 * 60 * 5, // 5 minutes,
-      })
-    );
+    const product =
+      (await context?.queryClient?.ensureQueryData(
+        productsService.selectedProductQueryOptions(Number(params.productId))
+      )) ?? null;
     if (!product) throw new Error("Product not found");
     context.selectedProduct = product;
-    return { product };
   },
-  loader: async ({ context }) => {
-    if (!context.selectedProduct)
-      throw new Error("Failed to load product or reviewers");
-    return context.selectedProduct;
-  },
-  errorComponent: ({ error }) => {
-    return <p>Error loading product details: {error.message}</p>;
-  },
+  loader: async ({ context }) => context.selectedProduct,
+  errorComponent: ({ error }) => (
+    <p>Error loading product details: {error.message}</p>
+  ),
   head: ({ loaderData }: { loaderData?: Product }) =>
     getMetaHeader(loaderData?.title ?? "Product not found"),
 });
