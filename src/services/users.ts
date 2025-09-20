@@ -1,4 +1,5 @@
 import type { User, UsersCart } from "@/types";
+import { queryOptions } from "@tanstack/react-query";
 
 export class Users {
   private baseUrl: string;
@@ -132,6 +133,13 @@ export class Users {
       products: enrichedProducts,
     };
   }
+
+  userQueryOptions = (userId: User["id"]) =>
+    queryOptions<User>({
+      queryKey: ["user", userId],
+      queryFn: () => this.getUserById(userId),
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    });
 }
 
 export const usersService = new Users();
