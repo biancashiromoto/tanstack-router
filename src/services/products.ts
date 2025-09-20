@@ -1,5 +1,6 @@
 import { generateWeightedDiscounts } from "@/helpers";
 import type { ProductsResponse, Product, User } from "@/types";
+import { queryOptions } from "@tanstack/react-query";
 
 export class Products {
   private baseUrl: string;
@@ -89,6 +90,27 @@ export class Products {
       return [];
     }
   }
+
+  selectedProductQueryOptions = (productId: Product["id"]) =>
+    queryOptions<Product>({
+      queryKey: ["product", productId],
+      queryFn: () => getProductById(String(productId)),
+      staleTime: 1000 * 60 * 5, // 5 minutes,
+    });
+
+  productsByCategoryQueryOptions = (category: string) =>
+    queryOptions<ProductsResponse>({
+      queryKey: ["products", category],
+      queryFn: async () => await this.getProductsByCategory(category),
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      enabled: Boolean(category),
+  });
+
+  dailyDealsQueryOptions = () => queryOptions<Product[]>({
+    queryKey: ["dailyDeals"],
+    queryFn: () => this.fetchDailyDeals(),
+    staleTime: 1000 * 60 * 60, // 1 hour
+  });
 }
 
 export const productsService = new Products();
