@@ -13,6 +13,7 @@ import {
 } from "@tanstack/react-router";
 import { useState } from "react";
 import type { RouterContext } from "./__root";
+import { getMetaHeader } from "@/helpers";
 
 export interface ProductRouteLoaderData {
   product: Product;
@@ -53,16 +54,8 @@ export const Route = createFileRoute("/_product/$category/$productId")({
   errorComponent: ({ error }) => {
     return <p>Error loading product details: {error.message}</p>;
   },
-  head: ({ loaderData }: { loaderData?: Product }) => {
-    if (!loaderData) return { meta: [{ title: "Product not found" }] };
-    return {
-      meta: [
-        {
-          title: loaderData.title,
-        },
-      ],
-    };
-  },
+  head: ({ loaderData }: { loaderData?: Product }) =>
+    getMetaHeader(loaderData?.title ?? "Product not found"),
 });
 
 function RouteComponent() {
