@@ -1,68 +1,14 @@
-import { generateWeightedDiscounts } from "@/helpers";
-import { productsService } from "@/services/products";
 import type { Product } from "@/types";
-import {
-  Box,
-  CircularProgress,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import { useRouteContext, useRouterState } from "@tanstack/react-router";
 import Card from "../Card";
+import Loader from "../Loader";
 
 const DailyDeals = () => {
-  const [discountedProducts, setDiscountedProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { dailyDeals } = useRouteContext({ from: "__root__" });
+  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
 
-  useEffect(() => {
-    const fetchDailyDeals = async () => {
-      try {
-        setLoading(true);
-        const response = await productsService.getAllProducts();
-
-        const productsWithDiscounts = generateWeightedDiscounts(
-          response.products
-        );
-
-        const dealsOfTheDay = productsWithDiscounts
-          .filter((product) => product.discountPercentage > 10)
-          .sort((a, b) => b.discountPercentage - a.discountPercentage)
-          .slice(0, 8);
-
-        setDiscountedProducts(dealsOfTheDay);
-      } catch (err) {
-        setError("Failed to load daily deals. Please try again later.");
-        console.error("Error fetching daily deals:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDailyDeals();
-  }, []);
-
-  if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="200px"
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Box textAlign="center" py={4}>
-        <Typography color="error">{error}</Typography>
-      </Box>
-    );
-  }
+  if (isLoading) return <Loader />;
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }} className="daily-deals-container">
@@ -90,14 +36,14 @@ const DailyDeals = () => {
       </Box>
 
       <Grid container spacing={3}>
-        {discountedProducts.map((product) => (
+        {dailyDeals.map((product: Product) => (
           <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
             <Card product={product} shouldShowDiscount />
           </Grid>
         ))}
       </Grid>
 
-      {discountedProducts.length === 0 && !loading && (
+      {dailyDeals.length === 0 && (
         <Box textAlign="center" py={8}>
           <Typography variant="h6" color="text.secondary">
             No deals available today.
