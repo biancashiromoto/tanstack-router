@@ -1,14 +1,10 @@
 import AppLayout from "@/components/AppLayout";
 import { AuthProvider } from "@/context/AuthContext";
-import { getProductsCategories } from "@/services/categories";
+import { categoriesQueryOptions } from "@/services/categories";
 import { Products } from "@/services/products";
 import type { Product, User } from "@/types";
 import { TanstackDevtools } from "@tanstack/react-devtools";
-import {
-  QueryClient,
-  QueryClientProvider,
-  queryOptions,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -70,19 +66,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     const user = JSON.parse(localStorage.getItem("user") || "null");
 
     const categories = await queryClient.ensureQueryData(
-      queryOptions({
-        queryKey: ["categories"],
-        queryFn: () => getProductsCategories(),
-        staleTime: 1000 * 60 * 5, // 5 minutes
-      })
+      categoriesQueryOptions()
     );
 
     const dailyDeals = await queryClient.ensureQueryData(
-      queryOptions({
-        queryKey: ["dailyDeals"],
-        queryFn: () => productsService.fetchDailyDeals(),
-        staleTime: 1000 * 60 * 60 * 24, // 24 hours
-      })
+      productsService.dailyDealsQueryOptions()
     );
 
     return {
