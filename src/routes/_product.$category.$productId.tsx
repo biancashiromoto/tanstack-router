@@ -1,19 +1,17 @@
 import Loader from "@/components/Loader";
-import ProductReview from "@/components/ProductReview";
+import ProductRating from "@/components/ProductRating";
+import { getMetaHeader } from "@/helpers";
 import useResponsive from "@/hooks/useResponsive";
 import { getProductById } from "@/services/products";
-import type { Product, Review } from "@/types";
-import { Box, Button, Typography } from "@mui/material";
+import type { Product } from "@/types";
+import { Box, Typography } from "@mui/material";
 import { queryOptions } from "@tanstack/react-query";
 import {
   createFileRoute,
-  Outlet,
   useLoaderData,
   useRouterState,
 } from "@tanstack/react-router";
-import { useState } from "react";
 import type { RouterContext } from "./__root";
-import { getMetaHeader } from "@/helpers";
 
 export interface ProductRouteLoaderData {
   product: Product;
@@ -39,7 +37,7 @@ export const Route = createFileRoute("/_product/$category/$productId")({
       queryOptions({
         queryKey: ["product", params.productId],
         queryFn: () => getProductById(params.productId),
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        staleTime: 1000 * 60 * 5, // 5 minutes,
       })
     );
     if (!product) throw new Error("Product not found");
@@ -60,13 +58,8 @@ export const Route = createFileRoute("/_product/$category/$productId")({
 
 function RouteComponent() {
   const product = useLoaderData({ from: "/_product/$category/$productId" });
-  const [showReviews, setShowReviews] = useState(false);
   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
-  const { isMobile, isTablet } = useResponsive();
-
-  const productRating = product.rating
-    ? new Array(Math.ceil(product.rating)).fill("⭐")
-    : null;
+  const { isDesktop } = useResponsive();
 
   if (isLoading) return <Loader />;
 
@@ -77,10 +70,10 @@ function RouteComponent() {
         className="product-detail-content"
         sx={{
           display: "flex",
-          flexDirection: isMobile || isTablet ? "column" : "row",
+          flexDirection: !isDesktop ? "column" : "row",
           position: "relative",
           gap: 2,
-          alignItems: isMobile || isTablet ? "center" : "flex-start",
+          alignItems: !isDesktop ? "center" : "flex-start",
           justifyContent: "center",
           mt: 2,
         }}
@@ -127,39 +120,9 @@ function RouteComponent() {
             </Typography>
           )}
 
-          {product.rating && (
-            <Box sx={{ position: "relative" }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Typography className="product-rating">
-                  Rating: {productRating}
-                </Typography>
-                <Button
-                  onClick={() => setShowReviews((prev) => !prev)}
-                  className="button toggle-reviews"
-                  variant="text"
-                >
-                  {product.reviews && (
-                    <>
-                      {!showReviews ? <span>Show </span> : <span>Hide </span>} (
-                      {product.reviews.length} reviews)
-                    </>
-                  )}
-                </Button>
-              </Box>
-              <Box className="product-reviews">
-                {showReviews &&
-                  product.reviews.map((review: Review, index: number) => (
-                    <ProductReview
-                      key={`${review.date}-${index}`}
-                      review={review}
-                    />
-                  ))}
-              </Box>
-            </Box>
-          )}
+          <ProductRating product={product} />
         </Box>
       </Box>
-      {showReviews && <Outlet />}
     </Box>
   );
 }
