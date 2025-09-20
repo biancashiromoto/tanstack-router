@@ -1,3 +1,4 @@
+import { generateWeightedDiscounts } from "@/helpers";
 import type { ProductsResponse, Product, User } from "@/types";
 
 export class Products {
@@ -67,6 +68,26 @@ export class Products {
     }
 
     return product;
+  }
+
+  async fetchDailyDeals(): Promise<Product[]> {
+    try {
+      const response = await productsService.getAllProducts();
+
+      const productsWithDiscounts = generateWeightedDiscounts(
+        response.products
+      );
+
+      const dealsOfTheDay = productsWithDiscounts
+        .filter((product) => product.discountPercentage > 10)
+        .sort((a, b) => b.discountPercentage - a.discountPercentage)
+        .slice(0, 8);
+
+      return dealsOfTheDay;
+    } catch (err) {
+      console.error("Error fetching daily deals:", err);
+      return [];
+    }
   }
 }
 
