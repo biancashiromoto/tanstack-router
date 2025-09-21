@@ -8,7 +8,15 @@ const AppLayout = ({ children }: { children?: React.ReactNode }) => {
   const { isDesktop } = useResponsive();
 
   return (
-    <Box sx={{ maxWidth: 1000, mx: "auto", p: 2 }}>
+    <Box
+      sx={{
+        maxWidth: 1000,
+        mx: "auto",
+        p: 2,
+        minHeight: "100vh",
+        pb: isDesktop ? 2 : "72px",
+      }}
+    >
       <Header />
       <Breadcrumb />
       {children}
