@@ -1,16 +1,17 @@
+import { formatProductPrice } from "@/helpers";
 import Typography from "@mui/material/Typography";
 
 interface CardPriceProps {
   price: number;
-  currency?: string;
   showDiscount?: boolean;
 }
 
 export default function CardPrice({
   price,
-  currency = "U$",
   showDiscount = false,
 }: CardPriceProps) {
+  const productPrice = formatProductPrice(price);
+
   return (
     <Typography
       variant="body2"
@@ -26,8 +27,7 @@ export default function CardPrice({
         fontSize: "1rem",
       }}
     >
-      {currency}
-      {price}
+      {productPrice}
     </Typography>
   );
 }
