@@ -1,19 +1,7 @@
-import { Chip as MUIChip } from "@mui/material";
+import { Chip as MUIChip, type ChipProps } from "@mui/material";
 
-export interface ChipProps {
-  label: string;
-  color:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "error"
-    | "info"
-    | "success"
-    | "warning";
-}
-
-const Chip = ({ label, color }: ChipProps) => {
-  return <MUIChip label={label} color={color} />;
+const Chip = ({ label, color, size }: ChipProps) => {
+  return <MUIChip label={label} color={color} size={size} />;
 };
 
 export default Chip;
