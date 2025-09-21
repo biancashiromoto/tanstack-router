@@ -1,8 +1,8 @@
 import type { Product } from "@/types";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useRouteContext, useRouterState } from "@tanstack/react-router";
-import Card from "../Card";
 import Loader from "../Loader";
+import Card from "../Card";
 
 const DailyDeals = () => {
   const { dailyDeals } = useRouteContext({ from: "__root__" });
@@ -39,8 +39,8 @@ const DailyDeals = () => {
         {dailyDeals.map((product: Product) => (
           <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
             <Card.Root product={product} shouldShowDiscount>
-              <Card.Image />
-              <Card.Content></Card.Content>
+              <Card.Media />
+              <Card.Content />
             </Card.Root>
           </Grid>
         ))}
