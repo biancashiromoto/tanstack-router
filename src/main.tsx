@@ -1,6 +1,7 @@
 import { StrictMode, Suspense, useMemo } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 
 // Import the generated route tree
@@ -9,6 +10,17 @@ import { routeTree } from "./routeTree.gen";
 import reportWebVitals from "./reportWebVitals.ts";
 import Loader from "@/components/Loader/index.tsx";
 import "./index.scss";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      enabled: true,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1,
+    },
+  },
+});
 
 function RouterWithContext() {
   const { user, isLoading } = useAuth();
@@ -19,7 +31,7 @@ function RouterWithContext() {
         routeTree,
         context: {
           user,
-          queryClient: null,
+          queryClient,
           categories: [],
           dailyDeals: [],
         },
@@ -45,11 +57,13 @@ declare module "@tanstack/react-router" {
 
 function App() {
   return (
-    <Suspense fallback={<Loader />}>
-      <AuthProvider>
-        <RouterWithContext />
-      </AuthProvider>
-    </Suspense>
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<Loader />}>
+        <AuthProvider>
+          <RouterWithContext />
+        </AuthProvider>
+      </Suspense>
+    </QueryClientProvider>
   );
 }
 
