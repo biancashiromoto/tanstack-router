@@ -20,6 +20,10 @@ export default function CardPrice({
         gridColumn: 2,
         justifySelf: "end",
         textDecoration: showDiscount ? "line-through" : "none",
+        display: "flex",
+        alignItems: "center",
+        gap: 0.5,
+        fontSize: "1rem",
       }}
     >
       {currency}
