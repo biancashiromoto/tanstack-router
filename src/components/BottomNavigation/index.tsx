@@ -1,25 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import { RxAvatar } from "react-icons/rx";
-import { GoHome } from "react-icons/go";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { useLocation, useNavigate } from "@tanstack/react-router";
 
-export const bottomNavigationRoutes = [
-  { label: "Profile", icon: RxAvatar, path: "/profile", value: 0 },
-  { label: "Home", icon: GoHome, path: "/", value: 1 },
-  { label: "Cart", icon: AiOutlineShoppingCart, path: "/cart", value: 2 },
-];
+import { useLocation, useNavigate } from "@tanstack/react-router";
+import {
+  bottomNavigationRoutes,
+  type BottomNavigationRoute,
+} from "./index.constants";
 
 export default function SimpleBottomNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [value, setValue] = useState(
-    bottomNavigationRoutes.findIndex(
-      (route) => route.path === location.pathname
-    )
+
+  const [value, setValue] = useState<BottomNavigationRoute["value"] | null>(
+    null
   );
+
+  useEffect(() => {
+    const routeIndex = bottomNavigationRoutes.findIndex(
+      (route) => route.path === location.pathname
+    );
+    setValue(routeIndex !== -1 ? routeIndex : null);
+  }, [location.pathname]);
 
   return (
     <BottomNavigation
