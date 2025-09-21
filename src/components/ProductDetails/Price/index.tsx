@@ -11,7 +11,6 @@ const Price = () => {
     !product.discountPercentage || product.discountPercentage <= 0;
 
   if (shouldNotRender) return null;
-  console.log(product);
 
   const discountedPrice = (
     product.price -
