@@ -38,7 +38,10 @@ const DailyDeals = () => {
       <Grid container spacing={3}>
         {dailyDeals.map((product: Product) => (
           <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
-            <Card product={product} shouldShowDiscount />
+            <Card.Root product={product} shouldShowDiscount>
+              <Card.Image />
+              <Card.Content></Card.Content>
+            </Card.Root>
           </Grid>
         ))}
       </Grid>
