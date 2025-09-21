@@ -9,7 +9,7 @@ const userService = new User();
 interface AuthContextType {
   user: IUser | null;
   signInUser: (data: SignInData) => void;
-  logout: () => void;
+  signOutUser: () => void;
   isAuthenticated: boolean;
   isLoading: boolean;
   signInError: Error | null;
@@ -48,10 +48,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     },
   });
 
-  const logout = () => {
-    console.log("Logging out user:", user);
+  const signOutUser = () => {
     setUser(null);
     localStorage.removeItem("user");
+    window.location.pathname = "/";
   };
 
   const isAuthenticated = user !== null;
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const value = {
     user,
     signInUser,
-    logout,
+    signOutUser,
     isAuthenticated,
     isLoading: isLoadingSignIn || isLoading,
     signInError,
