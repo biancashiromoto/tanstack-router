@@ -3,12 +3,15 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  InputAdornment,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { RxAvatar } from "react-icons/rx";
+import { TbLockPassword } from "react-icons/tb";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -61,6 +64,15 @@ const LoginForm = () => {
           required
           variant="outlined"
           label="Username"
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <RxAvatar />
+                </InputAdornment>
+              ),
+            },
+          }}
         />
         <TextField
           type="password"
@@ -71,6 +83,15 @@ const LoginForm = () => {
           required
           variant="outlined"
           label="Password"
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <TbLockPassword />
+                </InputAdornment>
+              ),
+            },
+          }}
         />
         <Button type="submit" disabled={isLoading} variant="contained">
           {isLoading ? "Signing in..." : "Login"}

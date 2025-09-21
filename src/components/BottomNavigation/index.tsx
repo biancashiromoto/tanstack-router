@@ -1,50 +1,63 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import { RxAvatar } from "react-icons/rx";
-import { GoHome } from "react-icons/go";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-
-export const bottomNavigationRoutes = [
-  { label: "Profile", icon: RxAvatar, path: "/profile", value: 0 },
-  { label: "Home", icon: GoHome, path: "/", value: 1 },
-  { label: "Cart", icon: AiOutlineShoppingCart, path: "/cart", value: 2 },
-];
+import { bottomNavigationRoutes, RouteValue } from "./index.constants";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SimpleBottomNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [value, setValue] = useState(
-    bottomNavigationRoutes.findIndex(
+  const { user } = useAuth();
+
+  const [value, setValue] = useState<number | null>(null);
+
+  const filteredRoutes = bottomNavigationRoutes.filter((route) => {
+    if (route.value === RouteValue.all) return true;
+    if (route.value === RouteValue.authenticated) return !!user;
+    if (route.value === RouteValue.unauthenticated) return !user;
+    return false;
+  });
+
+  useEffect(() => {
+    const matchingRouteIndex = filteredRoutes.findIndex(
       (route) => route.path === location.pathname
-    )
-  );
+    );
+    setValue(matchingRouteIndex !== -1 ? matchingRouteIndex : null);
+  }, [location.pathname, filteredRoutes]);
+
+  useEffect(() => console.log(value), [value]);
 
   return (
     <BottomNavigation
       showLabels
       value={value}
-      onChange={(_event, newValue) => setValue(newValue)}
+      onChange={(_event, newValue) => {
+        const selectedRoute = filteredRoutes[newValue];
+        if (selectedRoute) {
+          setValue(selectedRoute.value);
+          navigate({ to: selectedRoute.path });
+        }
+      }}
       sx={{
         position: "fixed",
         bottom: 0,
         left: 0,
         right: 0,
+        height: 56,
         zIndex: 1000,
         borderTop: "1px solid #e0e0e0",
         backgroundColor: "#fff",
+        boxShadow: "0 -2px 8px rgba(0,0,0,0.1)",
       }}
     >
-      {bottomNavigationRoutes.map((route) => (
+      {filteredRoutes.map((route, index) => (
         <BottomNavigationAction
           key={route.value}
           label={route.label}
-          icon={<route.icon size={22} />}
+          icon={<route.icon size={24} />}
           onClick={() => navigate({ to: route.path })}
-          style={{
-            color: value === route.value ? "primary.main" : "text.secondary",
-          }}
+          value={index}
         />
       ))}
     </BottomNavigation>

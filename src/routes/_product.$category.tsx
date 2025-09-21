@@ -1,4 +1,4 @@
-import CustomCard from "@/components/Card";
+import Card from "@/components/Card";
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import usePagination from "@/components/Pagination/hooks/usePagination";
@@ -53,7 +53,10 @@ function RouteComponent() {
           }}
         >
           {currentProducts?.map((product: Product) => (
-            <CustomCard product={product} key={product.id} />
+            <Card.Root product={product} shouldShowDiscount key={product.id}>
+              <Card.Media />
+              <Card.Content />
+            </Card.Root>
           ))}
         </List>
       </Box>

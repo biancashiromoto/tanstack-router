@@ -1,34 +1,13 @@
-import type { Product } from "@/types";
-import CardBody from "./CardBody";
-import CardDiscount from "./CardDiscount";
-import CardImage from "./CardImage";
+import CardContent from "./CardContent";
+import CardMedia from "./CardMedia";
 import CardPrice from "./CardPrice";
-import CardTitle from "./CardTitle";
-import Root from "./Root";
+import CardRoot from "./CardRoot";
 
-export interface CustomCardProps {
-  product: Product;
-  shouldShowDiscount?: boolean;
-}
+const Card = {
+  Root: CardRoot,
+  Media: CardMedia,
+  Content: CardContent,
+  Price: CardPrice,
+};
 
-export default function CustomCard({
-  product,
-  shouldShowDiscount,
-}: CustomCardProps) {
-  return (
-    <Root product={product}>
-      <CardImage src={product.images[0]} alt={product.title} />
-      <CardBody>
-        <CardTitle title={product.title} />
-        {shouldShowDiscount ? (
-          <CardDiscount
-            price={product.price}
-            discountPercentage={product.discountPercentage ?? 0}
-          />
-        ) : (
-          <CardPrice price={product.price} />
-        )}
-      </CardBody>
-    </Root>
-  );
-}
+export default Card;

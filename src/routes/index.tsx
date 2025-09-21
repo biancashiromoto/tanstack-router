@@ -15,11 +15,10 @@ function App() {
   const { user } = useAuth();
 
   return (
-    <Box sx={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
+    <Box sx={{ minHeight: "100dvh", backgroundColor: "#f5f5f5", pt: 5 }}>
       <Box
         className="hero-section"
         sx={{
-          py: 6,
           textAlign: "center",
         }}
       >

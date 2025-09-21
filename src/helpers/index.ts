@@ -77,3 +77,11 @@ export const getMetaHeader = (headerTitle?: string) => {
   const title = pages.find(page => page.path === location.pathname)?.name;
   return { meta: [{ title }] };
 }
+
+export const formatProductPrice = (price: number) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(price);
+}

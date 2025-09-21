@@ -1,3 +1,4 @@
+import { formatProductPrice } from "@/helpers";
 import { Box, Chip, Typography } from "@mui/material";
 import { useLoaderData, useSearch } from "@tanstack/react-router";
 
@@ -16,6 +17,8 @@ const Price = () => {
     product.price -
     (product.price * product.discountPercentage) / 100
   ).toFixed(2);
+
+  const formattedPrice = formatProductPrice(product.price);
 
   const DiscountedPrice = () => (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
@@ -37,7 +40,7 @@ const Price = () => {
             fontSize: "1.1rem",
           }}
         >
-          ${product.price}
+          ${formattedPrice}
         </Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: 0.5 }}>
