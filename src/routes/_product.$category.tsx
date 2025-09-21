@@ -53,7 +53,7 @@ function RouteComponent() {
           }}
         >
           {currentProducts?.map((product: Product) => (
-            <Card.Root product={product} shouldShowDiscount>
+            <Card.Root product={product} shouldShowDiscount key={product.id}>
               <Card.Media />
               <Card.Content />
             </Card.Root>
