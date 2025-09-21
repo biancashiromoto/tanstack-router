@@ -3,6 +3,7 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 import CustomAutocomplete from "../Autocomplete";
 import CustomDrawer from "../CustomDrawer";
 import Navbar from "./Navbar";
+import cart from "@/assets/icons/cart.svg";
 
 const Header = () => {
   const { categories } = useRouteContext({ from: "__root__" });
@@ -37,7 +38,12 @@ const Header = () => {
             color="black"
             sx={{ fontWeight: "bold" }}
           >
-            TanStack Router
+            <Box
+              component="img"
+              src={cart}
+              sx={{ verticalAlign: "middle", mr: 1 }}
+            />
+            TanStack Market
           </Typography>
         </Link>
         <Navbar />
@@ -46,7 +52,7 @@ const Header = () => {
         sx={{
           display: "grid",
           alignItems: "center",
-          gridTemplateColumns: "85% auto",
+          gridTemplateColumns: "auto 52px",
           gridColumn: "span 2",
           gridRow: 2,
           py: 1,
