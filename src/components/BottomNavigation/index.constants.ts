@@ -1,6 +1,7 @@
 import { RxAvatar } from "react-icons/rx";
 import { GoHome } from "react-icons/go";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { VscSignOut } from "react-icons/vsc";
 
 export interface BottomNavigationRoute {
   label: string;
@@ -19,5 +20,6 @@ export const bottomNavigationRoutes: BottomNavigationRoute[] = [
   { label: "Profile", icon: RxAvatar, path: "/profile", value: RouteValue.authenticated },
   { label: "Home", icon: GoHome, path: "/", value: RouteValue.all },
   { label: "Cart", icon: AiOutlineShoppingCart, path: "/cart", value: RouteValue.authenticated },
-  { label: "Login", icon: RxAvatar, path: "/login", value: RouteValue.unauthenticated }
+  { label: "Login", icon: RxAvatar, path: "/login", value: RouteValue.unauthenticated },
+  { label: "Logout", icon: VscSignOut, path: "/", value: RouteValue.authenticated },
 ];
