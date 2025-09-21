@@ -4,6 +4,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import {
   bottomNavigationRoutes,
+  RouteValue,
   type BottomNavigationRoute,
 } from "./index.constants";
 import { useAuth } from "@/context/AuthContext";
@@ -24,9 +25,12 @@ export default function SimpleBottomNavigation() {
     setValue(routeIndex !== -1 ? routeIndex : null);
   }, [location.pathname]);
 
-  const memoizedRoutes = user
-    ? bottomNavigationRoutes.filter((route) => route.authenticatedRoute)
-    : bottomNavigationRoutes.filter((route) => !route.authenticatedRoute);
+  const filteredRoutes = bottomNavigationRoutes.filter((route) => {
+    if (route.value === RouteValue.all) return true;
+    if (route.value === RouteValue.authenticated) return !!user;
+    if (route.value === RouteValue.unauthenticated) return !user;
+    return false;
+  });
 
   return (
     <BottomNavigation
@@ -43,7 +47,7 @@ export default function SimpleBottomNavigation() {
         backgroundColor: "#fff",
       }}
     >
-      {memoizedRoutes.map((route) => (
+      {filteredRoutes.map((route) => (
         <BottomNavigationAction
           key={route.value}
           label={route.label}
