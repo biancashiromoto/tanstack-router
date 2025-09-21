@@ -21,9 +21,7 @@ export class User {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error('Login failed');
-    }
+    if (!response.ok) throw new Error('Login failed');
 
     const user = await response.json();
 
