@@ -1,15 +1,18 @@
 import { useAuth } from "@/context/AuthContext";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
+import type { SignInData } from "@/services/user";
+import { useCallback, useState } from "react";
 
-const useLoginForm = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
-  const { login } = useAuth();
-  const navigate = useNavigate();
+export interface IUseLoginFormReturn {
+  handleSubmit: (e: React.FormEvent) => void;
+  formData: SignInData;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  signInError: Error | null;
+  isLoading: boolean;
+}
+
+const useLoginForm = (): IUseLoginFormReturn => {
+  const [formData, setFormData] = useState<SignInData>({} as SignInData);
+  const { signInUser, signInError, isLoading } = useAuth();
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,27 +22,17 @@ const useLoginForm = () => {
     [setFormData]
   );
 
-  const {
-    mutate: loginUser,
-    isPending,
-    data: loginResponse,
-    error,
-  } = useMutation({
-    mutationKey: ["login", formData],
-    mutationFn: async () => await login(formData.username, formData.password),
-  });
-
-  useEffect(() => {
-    if (loginResponse) navigate({ to: "/" });
-  }, [loginResponse]);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    signInUser(formData);
+  };
 
   return {
-    loginUser,
-    loginResponse,
+    handleSubmit,
     formData,
     handleChange,
-    isPending,
-    error,
+    signInError,
+    isLoading,
   };
 };
 
