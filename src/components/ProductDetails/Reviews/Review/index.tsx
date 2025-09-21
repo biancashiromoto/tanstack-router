@@ -1,11 +1,11 @@
 import Rating from "@/components/Rating";
 import type { ProductReview } from "@/types";
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 
 const Review = ({ review }: { review: ProductReview }) => {
   return (
-    <Box key={review.date} className="review">
+    <Box key={review.date} className="review" sx={{ my: 2 }}>
       <Box
         className="review__header"
         sx={{ display: "flex", alignItems: "center", gap: 1 }}
@@ -28,6 +28,7 @@ const Review = ({ review }: { review: ProductReview }) => {
       <Typography variant="body2" className="review__comment">
         {review.comment}
       </Typography>
+      <Divider sx={{ my: 1 }} />
     </Box>
   );
 };
