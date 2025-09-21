@@ -69,7 +69,7 @@ function RouteComponent() {
           alignItems: !isDesktop ? "center" : "flex-start",
           justifyContent: "center",
           mt: 2,
-          height: "100dvh",
+          height: "auto",
         }}
       >
         <Images />
