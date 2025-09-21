@@ -1,10 +1,11 @@
 import useResponsive from "@/hooks/useResponsive";
 import useSearchProducts from "@/hooks/useSearchProducts";
-import { FormControl, Typography } from "@mui/material";
+import { FormControl, InputAdornment, Typography } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "@tanstack/react-router";
+import { SlMagnifier } from "react-icons/sl";
 
 export default function CustomAutocomplete() {
   const navigate = useNavigate();
@@ -60,6 +61,13 @@ export default function CustomAutocomplete() {
               htmlInput: {
                 ...params.inputProps,
                 autoComplete: "new-password", // disable autocomplete and autofill
+              },
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SlMagnifier />
+                  </InputAdornment>
+                ),
               },
             }}
           />
