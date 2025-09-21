@@ -1,5 +1,5 @@
 import useResponsive from "@/hooks/useResponsive";
-import { Link as MUILink, Typography } from "@mui/material";
+import { Link as MUILink, Typography, Box } from "@mui/material";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { createContext, useContext } from "react";
 import type {
@@ -29,35 +29,31 @@ const LinkRoot = ({ to, handleClick, children }: LinkRootProps) => {
         component={RouterLink}
         style={{
           textDecoration: "none",
+          marginLeft: 0.75,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: 1,
         }}
         onClick={handleClick}
       >
-        <Typography
-          variant="body2"
-          component="span"
-          sx={{
-            ml: 0.75,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 1,
-          }}
-        >
-          {children}
-        </Typography>
+        {children}
       </MUILink>
     </LinkContext.Provider>
   );
 };
 
-const LinkIcon = ({ icon }: LinkIconProps) => <>{icon}</>;
+const LinkIcon = ({ icon }: LinkIconProps) => (
+  <Box sx={{ fontSize: 20, lineHeight: 1 }}>{icon}</Box>
+);
 
 const LinkLabel = ({ children, hideOnMobile = true }: LinkLabelProps) => {
   const { isMobile } = useLinkContext();
 
   if (hideOnMobile && isMobile) return null;
 
-  return <>{children}</>;
+  return <Typography variant="caption">{children}</Typography>;
 };
 
 const LinkContent = ({ children }: LinkContentProps) => {
