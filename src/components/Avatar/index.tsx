@@ -1,10 +1,10 @@
 import useResponsive from "@/hooks/useResponsive";
-import type { User } from "@/types";
+import type { IUser } from "@/types";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import { RxAvatar } from "react-icons/rx";
 
-const Avatar = ({ user }: { user: User }) => {
+const Avatar = ({ user }: { user: IUser }) => {
   const navigate = useNavigate();
   const { isMobile } = useResponsive();
 
