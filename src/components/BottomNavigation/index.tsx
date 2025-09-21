@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 export default function SimpleBottomNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const [value, setValue] = useState<number | null>(null);
 
@@ -25,8 +25,6 @@ export default function SimpleBottomNavigation() {
     );
     setValue(matchingRouteIndex !== -1 ? matchingRouteIndex : null);
   }, [location.pathname, filteredRoutes]);
-
-  useEffect(() => console.log(value), [value]);
 
   return (
     <BottomNavigation
@@ -56,7 +54,9 @@ export default function SimpleBottomNavigation() {
           key={route.value}
           label={route.label}
           icon={<route.icon size={24} />}
-          onClick={() => navigate({ to: route.path })}
+          onClick={() => {
+            if (route.label === "Logout") logout();
+          }}
           value={index}
         />
       ))}
