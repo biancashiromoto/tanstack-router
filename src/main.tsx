@@ -21,6 +21,7 @@ function RouterWithContext() {
           user,
           queryClient: null,
           categories: [],
+          dailyDeals: [],
         },
         defaultPreload: "intent",
         scrollRestoration: true,

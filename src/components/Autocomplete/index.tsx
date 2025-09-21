@@ -28,8 +28,8 @@ export default function CustomAutocomplete() {
             return;
           }
           navigate({
-            to: "/$category/$id",
-            params: { category: value.category, id: String(value.id) },
+            to: "/$category/$productId",
+            params: { category: value.category, productId: String(value.id) },
           });
         }}
         options={options}

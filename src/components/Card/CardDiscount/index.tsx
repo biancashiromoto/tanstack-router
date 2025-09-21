@@ -4,19 +4,14 @@ import Chip from "@mui/material/Chip";
 
 export default function CardDiscount({
   price,
-  showDiscount = false,
   discountPercentage,
 }: {
   price: number;
-  showDiscount?: boolean;
   discountPercentage: number;
 }) {
-  const calculatedDiscount =
-    showDiscount &&
-    (Math.round(((price - price * (discountPercentage / 100)) / price) * 100) ||
-      0);
-
-  const discountedPrice = price - (price * discountPercentage) / 100;
+  const discountedPrice = (price - (price * discountPercentage) / 100).toFixed(
+    2
+  );
 
   return (
     <Box
@@ -51,11 +46,11 @@ export default function CardDiscount({
         }}
       >
         U$
-        {discountedPrice.toFixed(2)}
+        {discountedPrice}
       </Typography>
 
       <Chip
-        label={`-${calculatedDiscount}%`}
+        label={`-${discountPercentage}%`}
         size="small"
         color="error"
         sx={{

@@ -6,5 +6,12 @@ interface CardImageProps {
 }
 
 export default function CardImage({ src, alt }: CardImageProps) {
-  return <CardMedia component="img" alt={alt} image={src} />;
+  return (
+    <CardMedia
+      component="img"
+      alt={alt}
+      image={src}
+      sx={{ aspectRatio: "1 / 1" }}
+    />
+  );
 }

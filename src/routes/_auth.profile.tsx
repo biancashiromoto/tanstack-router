@@ -2,16 +2,11 @@ import { useAuth } from "@/context/AuthContext";
 import { createFileRoute } from "@tanstack/react-router";
 import Loader from "@/components/Loader";
 import { Box, Typography } from "@mui/material";
+import { getMetaHeader } from "@/helpers";
 
 export const Route = createFileRoute("/_auth/profile")({
   component: RouteComponent,
-  head: () => ({
-    meta: [
-      {
-        title: "Profile",
-      },
-    ],
-  }),
+  head: () => getMetaHeader(),
   errorComponent: () => <p>Error loading profile.</p>,
 });
 
@@ -39,6 +34,7 @@ function RouteComponent() {
             flexDirection: "column",
             gap: 2,
             alignItems: "center",
+            aspectRatio: "1 / 1",
           }}
         >
           <Typography variant="h6" className="text">

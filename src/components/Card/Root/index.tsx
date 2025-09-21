@@ -1,6 +1,6 @@
 import type { Product } from "@/types";
 import { Card } from "@mui/material";
-import { Link } from "@tanstack/react-router";
+import { useNavigate, useLocation } from "@tanstack/react-router";
 
 interface RootProps {
   children: React.ReactNode;
@@ -8,28 +8,37 @@ interface RootProps {
 }
 
 const Root = ({ children, product }: RootProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   if (!product) return null;
 
-  return (
-    <Link
-      to="/$category/$productId"
-      params={{
+  const handleClick = () => {
+    navigate({
+      to: "/$category/$productId",
+      params: {
         category: product.category,
         productId: String(product.id),
+      },
+      search: {
+        from: encodeURIComponent(location.pathname),
+      },
+      replace: false,
+    });
+  };
+
+  return (
+    <Card
+      onClick={handleClick}
+      sx={{
+        width: "100%",
+        height: "100%",
+        cursor: "pointer",
+        textDecoration: "none",
       }}
-      style={{ textDecoration: "none" }}
-      preloadDelay={500}
     >
-      <Card
-        sx={{
-          width: "100%",
-          height: "100%",
-          cursor: "pointer",
-        }}
-      >
-        {children}
-      </Card>
-    </Link>
+      {children}
+    </Card>
   );
 };
 

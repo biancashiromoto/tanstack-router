@@ -33,6 +33,7 @@ export default function CustomDrawer() {
               to="/$category"
               params={{ category }}
               search={{ page: 1, limit: 15 }}
+              preload="intent"
               style={{
                 width: "100%",
                 textDecoration: "none",

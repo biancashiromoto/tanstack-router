@@ -2,6 +2,7 @@ import CustomCard from "@/components/Card";
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import usePagination from "@/components/Pagination/hooks/usePagination";
+import { getMetaHeader } from "@/helpers";
 import type { Product } from "@/types";
 import { Box, List, Typography } from "@mui/material";
 import {
@@ -13,6 +14,7 @@ import {
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
+  pendingComponent: () => <Loader />,
   validateSearch: (search: Record<string, unknown>) => {
     return {
       page: Number(search?.page) || 1,
@@ -20,19 +22,11 @@ export const Route = createFileRoute("/_product/$category")({
     };
   },
   errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
-  head: ({ params }) => {
-    return {
-      meta: [
-        {
-          title: `Products in ${params.category}`,
-        },
-      ],
-    };
-  },
+  head: ({ params }) => getMetaHeader(`Products in ${params.category}`),
 });
 
 function RouteComponent() {
-  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
+  const { isLoading } = useRouterState();
   const { products, selectedProduct } = useLoaderData({
     from: "/_product",
   });

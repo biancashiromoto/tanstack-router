@@ -1,4 +1,5 @@
 import type { Product } from "@/types";
+import { pages } from "./index.constants";
 
 export const formatCategoryName = (
   category: string,
@@ -10,10 +11,6 @@ export const formatCategoryName = (
     " "
   );
   return shouldCapitalizeFirstLetter ? formatted : formatted.toLowerCase();
-};
-
-export const getProductRating = (rating: number | null) => {
-  return rating ? new Array(Math.ceil(rating)).fill("⭐") : null;
 };
 
 export const getCategoryWeight = (category: string): number => {
@@ -74,3 +71,9 @@ export const generateWeightedDiscounts = (products: Product[]) => {
     };
   });
 };
+
+export const getMetaHeader = (headerTitle?: string) => {
+  if (headerTitle) { return { meta: [{ title: headerTitle }] }; }
+  const title = pages.find(page => page.path === location.pathname)?.name;
+  return { meta: [{ title }] };
+}

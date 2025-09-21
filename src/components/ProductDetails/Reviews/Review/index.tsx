@@ -1,13 +1,11 @@
-import { getProductRating } from "@/helpers";
-import type { Review } from "@/types";
-import { Box, Typography } from "@mui/material";
+import Rating from "@/components/Rating";
+import type { ProductReview } from "@/types";
+import { Box, Divider, Typography } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 
-const ProductReview = ({ review }: { review: Review }) => {
-  const productRating = getProductRating(review.rating);
-
+const Review = ({ review }: { review: ProductReview }) => {
   return (
-    <Box key={review.date} className="review">
+    <Box key={review.date} className="review" sx={{ my: 2 }}>
       <Box
         className="review__header"
         sx={{ display: "flex", alignItems: "center", gap: 1 }}
@@ -18,26 +16,20 @@ const ProductReview = ({ review }: { review: Review }) => {
             params={{ userId: review.reviewer?.id }}
             mask={{ to: `/user/${review.reviewer?.username}` }}
           >
-            {review.reviewer?.firstName} {review.reviewer?.lastName} (
-            {review.reviewer?.username})
+            {review.reviewer?.username}
           </Link>
         </Typography>
         <Typography className="review__date" variant="body2">
           {new Date(review.date).toLocaleDateString()}
         </Typography>
-        <Typography
-          className="review__rating"
-          sx={{ transform: "translateY(-2px)" }}
-          variant="body2"
-        >
-          {productRating && <span>{productRating}</span>}
-        </Typography>
+        <Rating value={review.rating} />
       </Box>
       <Typography variant="body2" className="review__comment">
         {review.comment}
       </Typography>
+      <Divider sx={{ my: 1 }} />
     </Box>
   );
 };
 
-export default ProductReview;
+export default Review;

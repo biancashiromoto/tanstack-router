@@ -1,6 +1,7 @@
 import CartItem from "@/components/CartItem";
 import Loader from "@/components/Loader";
 import { useAuth } from "@/context/AuthContext";
+import { getMetaHeader } from "@/helpers";
 import useCart from "@/hooks/useCart";
 import type { Product } from "@/types";
 import { Box, Typography } from "@mui/material";
@@ -8,13 +9,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/cart")({
   component: RouteComponent,
-  head: () => ({
-    meta: [
-      {
-        title: "Cart",
-      },
-    ],
-  }),
+  head: () => getMetaHeader(),
 });
 
 function RouteComponent() {

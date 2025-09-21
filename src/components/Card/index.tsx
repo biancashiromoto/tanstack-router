@@ -24,7 +24,6 @@ export default function CustomCard({
           <CardDiscount
             price={product.price}
             discountPercentage={product.discountPercentage ?? 0}
-            showDiscount={shouldShowDiscount}
           />
         ) : (
           <CardPrice price={product.price} />

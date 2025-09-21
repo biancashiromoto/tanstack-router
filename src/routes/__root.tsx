@@ -1,13 +1,10 @@
 import AppLayout from "@/components/AppLayout";
 import { AuthProvider } from "@/context/AuthContext";
-import { getProductsCategories } from "@/services/categories";
+import { categoriesQueryOptions } from "@/services/categories";
+import { Products } from "@/services/products";
 import type { Product, User } from "@/types";
 import { TanstackDevtools } from "@tanstack/react-devtools";
-import {
-  QueryClient,
-  QueryClientProvider,
-  queryOptions,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -32,7 +29,10 @@ export interface RouterContext {
   queryClient: QueryClient | null;
   categories: string[];
   selectedProduct?: Product;
+  dailyDeals: Product[];
 }
+
+const productsService = new Products();
 
 function RootComponent() {
   return (
@@ -64,13 +64,21 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   beforeLoad: async () => {
     const user = JSON.parse(localStorage.getItem("user") || "null");
+
     const categories = await queryClient.ensureQueryData(
-      queryOptions({
-        queryKey: ["categories"],
-        queryFn: () => getProductsCategories(),
-        staleTime: 1000 * 60 * 5, // 5 minutes
-      })
+      categoriesQueryOptions()
     );
-    return { user, queryClient, categories, selectedProduct: undefined };
+
+    const dailyDeals = await queryClient.ensureQueryData(
+      productsService.dailyDealsQueryOptions()
+    );
+
+    return {
+      user,
+      queryClient,
+      categories,
+      selectedProduct: undefined,
+      dailyDeals,
+    };
   },
 });

@@ -1,16 +1,17 @@
-import { getUserById } from "@/services/users";
-import type { User } from "@/types";
+import Loader from "@/components/Loader";
+import useResponsive from "@/hooks/useResponsive";
+import { Users } from "@/services/users";
 import {
+  Avatar,
   Box,
-  Typography,
   Card,
   CardContent,
-  Avatar,
   Chip,
+  Typography,
 } from "@mui/material";
-import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import useResponsive from "@/hooks/useResponsive";
+
+const userService = new Users();
 
 export const Route = createFileRoute("/_auth/user/$userId")({
   component: RouteComponent,
@@ -18,28 +19,15 @@ export const Route = createFileRoute("/_auth/user/$userId")({
     const { userId } = params;
     if (!userId) throw new Error("User ID is required");
 
-    const user: User = await context.queryClient.ensureQueryData(
-      queryOptions({
-        queryKey: [userId],
-        queryFn: () => getUserById(userId),
-        staleTime: 1000 * 60 * 5, // 5 minutes
-      })
+    return await context.queryClient.ensureQueryData(
+      userService.userQueryOptions(userId)
     );
-
-    return user;
   },
-  errorComponent: ({ error }) => {
-    return <p>Error loading user profile: {error.message}</p>;
-  },
-  head: () => {
-    return {
-      meta: [
-        {
-          title: "",
-        },
-      ],
-    };
-  },
+  errorComponent: ({ error }) => (
+    <p>Error loading user profile: {error.message}</p>
+  ),
+  wrapInSuspense: true,
+  pendingComponent: () => <Loader />,
 });
 
 function RouteComponent() {

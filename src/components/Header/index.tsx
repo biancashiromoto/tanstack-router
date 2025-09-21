@@ -1,5 +1,5 @@
-import { Box, Divider } from "@mui/material";
-import { useRouteContext } from "@tanstack/react-router";
+import { Box, Divider, Typography } from "@mui/material";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import CustomAutocomplete from "../Autocomplete";
 import CustomDrawer from "../CustomDrawer";
 import Navbar from "./Navbar";
@@ -21,7 +21,27 @@ const Header = () => {
         gap: 1,
       }}
     >
-      <Navbar />
+      <Box
+        sx={{
+          gridColumn: "span 2",
+          gridRow: 1,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Typography
+            variant="h5"
+            component="h1"
+            color="black"
+            sx={{ fontWeight: "bold" }}
+          >
+            TanStack Router
+          </Typography>
+        </Link>
+        <Navbar />
+      </Box>
       <Box
         sx={{
           display: "grid",

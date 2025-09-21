@@ -1,4 +1,4 @@
-export type Review = {
+export type ProductReview = {
   rating: number;
   comment: string;
   date: string;
@@ -19,7 +19,7 @@ export type Product = {
   stock?: number;
   rating?: number;
   quantity?: number;
-  reviews?: Review[];
+  reviews?: ProductReview[];
   discountPercentage?: number;
 }
 
@@ -55,5 +55,5 @@ export type UsersCart = {
   totalProducts: number;
   totalQuantity: number;
   products: Product[];
-  userId: number;
+  userId: User["id"];
 };
