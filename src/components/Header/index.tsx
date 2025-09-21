@@ -4,11 +4,9 @@ import CustomAutocomplete from "../Autocomplete";
 import CustomDrawer from "../CustomDrawer";
 import Navbar from "./Navbar";
 import cart from "@/assets/icons/cart.svg";
-import useResponsive from "@/hooks/useResponsive";
 
 const Header = () => {
   const { categories } = useRouteContext({ from: "__root__" });
-  const { isDesktop } = useResponsive();
 
   return (
     <Box
@@ -48,7 +46,7 @@ const Header = () => {
             TanStack Market
           </Typography>
         </Link>
-        {isDesktop && <Navbar />}
+        <Navbar />
       </Box>
       <Box
         sx={{
