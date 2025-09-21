@@ -1,10 +1,10 @@
-import Avatar from "@/components/Avatar";
 import Link from "@/components/Link";
 import { useAuth } from "@/context/AuthContext";
 import { Box } from "@mui/material";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { GoHome } from "react-icons/go";
 import { VscSignIn, VscSignOut } from "react-icons/vsc";
+import { RxAvatar } from "react-icons/rx";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -37,14 +37,18 @@ const Navbar = () => {
     <Box
       className="navbar"
       sx={{
-        gridColumn: "span 2",
         display: "flex",
         alignItems: "center",
         gap: 2,
         justifyContent: user ? "space-between" : "flex-end",
       }}
     >
-      {user && <Avatar user={user} />}
+      {user && (
+        <Link.Root to="/profile">
+          <Link.Icon icon={<RxAvatar />} />
+          <Link.Label>Profile</Link.Label>
+        </Link.Root>
+      )}
       <Box
         sx={{
           display: "flex",
