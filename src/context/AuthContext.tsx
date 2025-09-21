@@ -1,69 +1,70 @@
-import { signIn } from '@/services/users'
-import type { User } from '@/types'
-import { createContext, useContext, useState, useEffect } from 'react'
-import type { ReactNode } from 'react'
+import { User, type SignInData } from "@/services/user";
+import type { IUser } from "@/types";
+import { useMutation } from "@tanstack/react-query";
+import { createContext, useContext, useState, useEffect } from "react";
+import type { ReactNode } from "react";
+
+const userService = new User();
 
 interface AuthContextType {
-  user: User | null
-  login: (username: string, password: string) => Promise<boolean>
-  logout: () => void
-  isAuthenticated: boolean
-  isLoading: boolean
+  user: IUser | null;
+  signInUser: (data: SignInData) => void;
+  logout: () => void;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  signInError: Error | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}
+};
 
 interface AuthProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState<IUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const login = async (username: string, password: string): Promise<boolean> => {
-    try {
-      setUser(null);
-      localStorage.removeItem('user');
-      
-      const signedUser = await signIn(username, password);
-      if (signedUser) {
-        setUser(signedUser);
-        localStorage.setItem('user', JSON.stringify(signedUser));
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.error('Login error:', error);
-      return false;
-    }
-  }
+  const {
+    mutate: signInUser,
+    isPending: isLoadingSignIn,
+    error: signInError,
+  } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async (formData: SignInData) =>
+      await userService.signIn(formData),
+    onSuccess: (data) => {
+      setUser(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      window.location.pathname = "/";
+    },
+  });
 
   const logout = () => {
-    console.log('Logging out user:', user);
+    console.log("Logging out user:", user);
     setUser(null);
-    localStorage.removeItem('user');
-  }
+    localStorage.removeItem("user");
+  };
 
-  const isAuthenticated = user !== null
+  const isAuthenticated = user !== null;
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
+    const savedUser = localStorage.getItem("user");
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
         setUser(parsedUser);
       } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('user');
+        console.error("Error parsing saved user:", error);
+        localStorage.removeItem("user");
       }
     }
     setIsLoading(false);
@@ -71,11 +72,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const value = {
     user,
-    login,
+    signInUser,
     logout,
     isAuthenticated,
-    isLoading,
-  }
+    isLoading: isLoadingSignIn || isLoading,
+    signInError,
+  };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
