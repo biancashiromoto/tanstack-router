@@ -1,33 +1,37 @@
-import type { User, UsersCart } from "@/types";
+import type { IProduct, IUser, IUsersCart } from "@/types";
 import { queryOptions } from "@tanstack/react-query";
 
-export class Users {
+export interface SignInData {
+    username: IUser["username"];
+    password: IUser["password"];
+}
+export class User {
   private baseUrl: string;
 
   constructor(baseUrl: string = 'https://dummyjson.com') {
     this.baseUrl = baseUrl;
   }
 
-  async signIn(username: User["username"], password: User["password"]): Promise<User> {
+  async signIn(data: SignInData): Promise<IUser> {
     const response = await fetch(`${this.baseUrl}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
       throw new Error('Login failed');
     }
 
-    const data = await response.json();
+    const user = await response.json();
 
-    localStorage.setItem('user', JSON.stringify(data));
-    return data;
+    localStorage.setItem('user', JSON.stringify(user));
+    return user;
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(): Promise<IUser[]> {
     const response = await fetch(`${this.baseUrl}/users`);
     if (!response.ok) {
       throw new Error('Failed to fetch users');
@@ -37,7 +41,7 @@ export class Users {
     return data.users;
   }
 
-  async getUsersCartById(userId: User["id"]): Promise<UsersCart> {
+  async getUsersCartById(userId: IUser["id"]): Promise<IUsersCart> {
     const response = await fetch(`${this.baseUrl}/users/${userId}/carts`);
     if (!response.ok) {
       throw new Error('Failed to fetch user cart');
@@ -52,7 +56,7 @@ export class Users {
     };
   }
 
-  async getUserById(userId: User["id"]): Promise<User> {
+  async getUserById(userId: IUser["id"]): Promise<User> {
     const response = await fetch(`${this.baseUrl}/users/${userId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch user');
@@ -61,7 +65,7 @@ export class Users {
     return data;
   }
 
-  async getUserByEmail(email: User["email"]): Promise<User | null> {
+  async getUserByEmail(email: IUser["email"]): Promise<IUser | null> {
     try {
       const response = await fetch(`${this.baseUrl}/users/search?q=${email}`);
       
@@ -84,7 +88,7 @@ export class Users {
     }
   }
 
-  async getUsersFromReview(reviewersEmails: User["email"][]): Promise<User[]> {
+  async getUsersFromReview(reviewersEmails: IUser["email"][]): Promise<IUser[]> {
     if (!reviewersEmails || reviewersEmails.length === 0) {
       return [];
     }
@@ -100,17 +104,17 @@ export class Users {
     );
 
     return users
-      .filter((result): result is PromiseFulfilledResult<User | null> => 
+      .filter((result): result is PromiseFulfilledResult<IUser | null> => 
         result.status === 'fulfilled' && result.value !== null
       )
-      .map(result => result.value as User);
+      .map(result => result.value as IUser);
   }
 
-  async enrichCartProductsWithDetails(cart: UsersCart): Promise<UsersCart> {
+  async enrichCartProductsWithDetails(cart: IUsersCart): Promise<IUsersCart> {
     const { getProductById } = await import("./products");
     
     const enrichedProducts = await Promise.all(
-      cart.products.map(async (product) => {
+      cart.products.map(async (product: IProduct) => {
         try {
           const productDetails = await getProductById(String(product.id));
           return {
@@ -134,7 +138,7 @@ export class Users {
     };
   }
 
-  userQueryOptions = (userId: User["id"]) =>
+  userQueryOptions = (userId: IUser["id"]) =>
     queryOptions<User>({
       queryKey: ["user", userId],
       queryFn: () => this.getUserById(userId),
@@ -142,13 +146,11 @@ export class Users {
     });
 }
 
-export const usersService = new Users();
+export const usersService = new User();
 
-export const signIn = (username: User["username"], password: User["password"]) => 
-  usersService.signIn(username, password);
 export const getAllUsers = () => usersService.getAllUsers();
-export const getUsersCartById = (userId: User["id"]) => usersService.getUsersCartById(userId);
-export const getUserById = (userId: User["id"]) => usersService.getUserById(userId);
-export const getUserByEmail = (email: User["email"]) => usersService.getUserByEmail(email);
-export const getUsersFromReview = (reviewersEmails: User["email"][]): Promise<User[]> => 
+export const getUsersCartById = (userId: IUser["id"]) => usersService.getUsersCartById(userId);
+export const getUserById = (userId: IUser["id"]) => usersService.getUserById(userId);
+export const getUserByEmail = (email: IUser["email"]) => usersService.getUserByEmail(email);
+export const getUsersFromReview = (reviewersEmails: IUser["email"][]): Promise<IUser[]> => 
   usersService.getUsersFromReview(reviewersEmails);
