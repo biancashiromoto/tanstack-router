@@ -1,6 +1,6 @@
 import type { Product } from "@/types";
 import { Card } from "@mui/material";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useLocation } from "@tanstack/react-router";
 
 interface RootProps {
   children: React.ReactNode;
@@ -9,6 +9,7 @@ interface RootProps {
 
 const Root = ({ children, product }: RootProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   if (!product) return null;
 
@@ -18,6 +19,10 @@ const Root = ({ children, product }: RootProps) => {
       params: {
         category: product.category,
         productId: String(product.id),
+      },
+      search: {
+        ref: "product-card",
+        from: encodeURIComponent(location.pathname),
       },
       replace: false,
     });
