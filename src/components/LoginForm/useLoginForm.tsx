@@ -1,50 +1,45 @@
 import { useAuth } from "@/context/AuthContext";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const useLoginForm = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
-      if (name === "username") setUsername(value);
-      else if (name === "password") setPassword(value);
+      setFormData((prev) => ({ ...prev, [name]: value }));
     },
-    [setUsername, setPassword]
+    [setFormData]
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
+  const {
+    mutate: loginUser,
+    isPending,
+    data: loginResponse,
+    error,
+  } = useMutation({
+    mutationKey: ["login", formData],
+    mutationFn: async () => await login(formData.username, formData.password),
+  });
 
-    try {
-      const success = await login(username, password);
-      if (success) {
-        navigate({ to: "/profile" });
-      } else {
-        setError("Invalid credentials");
-      }
-    } catch (err) {
-      setError("Error logging in");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    if (loginResponse) navigate({ to: "/" });
+  }, [loginResponse]);
 
   return {
-    username,
-    password,
+    loginUser,
+    loginResponse,
+    formData,
     handleChange,
+    isPending,
     error,
-    isLoading,
-    handleSubmit,
   };
 };
 
