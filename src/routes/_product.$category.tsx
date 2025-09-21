@@ -54,7 +54,7 @@ function RouteComponent() {
         >
           {currentProducts?.map((product: Product) => (
             <Card.Root product={product} shouldShowDiscount>
-              <Card.Image />
+              <Card.Media />
               <Card.Content />
             </Card.Root>
           ))}
