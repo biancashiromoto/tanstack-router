@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import {
-  bottomNavigationRoutes,
-  RouteValue,
-  type BottomNavigationRoute,
-} from "./index.constants";
+import { bottomNavigationRoutes, RouteValue } from "./index.constants";
 import { useAuth } from "@/context/AuthContext";
 
 export default function SimpleBottomNavigation() {
@@ -14,16 +10,7 @@ export default function SimpleBottomNavigation() {
   const location = useLocation();
   const { user } = useAuth();
 
-  const [value, setValue] = useState<BottomNavigationRoute["value"] | null>(
-    null
-  );
-
-  useEffect(() => {
-    const routeIndex = bottomNavigationRoutes.findIndex(
-      (route) => route.path === location.pathname
-    );
-    setValue(routeIndex !== -1 ? routeIndex : null);
-  }, [location.pathname]);
+  const [value, setValue] = useState<number | null>(null);
 
   const filteredRoutes = bottomNavigationRoutes.filter((route) => {
     if (route.value === RouteValue.all) return true;
@@ -32,11 +19,26 @@ export default function SimpleBottomNavigation() {
     return false;
   });
 
+  useEffect(() => {
+    const matchingRouteIndex = filteredRoutes.findIndex(
+      (route) => route.path === location.pathname
+    );
+    setValue(matchingRouteIndex !== -1 ? matchingRouteIndex : null);
+  }, [location.pathname, filteredRoutes]);
+
+  useEffect(() => console.log(value), [value]);
+
   return (
     <BottomNavigation
       showLabels
       value={value}
-      onChange={(_event, newValue) => setValue(newValue)}
+      onChange={(_event, newValue) => {
+        const selectedRoute = filteredRoutes[newValue];
+        if (selectedRoute) {
+          setValue(selectedRoute.value);
+          navigate({ to: selectedRoute.path });
+        }
+      }}
       sx={{
         position: "fixed",
         bottom: 0,
@@ -49,13 +51,13 @@ export default function SimpleBottomNavigation() {
         boxShadow: "0 -2px 8px rgba(0,0,0,0.1)",
       }}
     >
-      {filteredRoutes.map((route) => (
+      {filteredRoutes.map((route, index) => (
         <BottomNavigationAction
           key={route.value}
           label={route.label}
           icon={<route.icon size={24} />}
           onClick={() => navigate({ to: route.path })}
-          value={route.value}
+          value={index}
         />
       ))}
     </BottomNavigation>
