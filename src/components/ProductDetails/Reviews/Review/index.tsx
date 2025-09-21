@@ -16,8 +16,7 @@ const Review = ({ review }: { review: ProductReview }) => {
             params={{ userId: review.reviewer?.id }}
             mask={{ to: `/user/${review.reviewer?.username}` }}
           >
-            {review.reviewer?.firstName} {review.reviewer?.lastName} (
-            {review.reviewer?.username})
+            {review.reviewer?.username}
           </Link>
         </Typography>
         <Typography className="review__date" variant="body2">
