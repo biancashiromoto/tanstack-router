@@ -1,37 +1,24 @@
 import Link from "@/components/Link";
 import { useAuth } from "@/context/AuthContext";
 import { Box } from "@mui/material";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { GoHome } from "react-icons/go";
-import { VscSignIn, VscSignOut } from "react-icons/vsc";
-import { RxAvatar } from "react-icons/rx";
+import {
+  bottomNavigationRoutes,
+  RouteValue,
+} from "@/components/BottomNavigation/index.constants";
+import useResponsive from "@/hooks/useResponsive";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
+  const { isDesktop } = useResponsive();
 
-  const handleLogout = () => logout();
+  if (!isDesktop) return null;
 
-  const NavbarLinks = () => {
-    if (!user)
-      return (
-        <Link.Root to="/login">
-          <Link.Icon icon={<VscSignIn />} />
-          <Link.Label>Login</Link.Label>
-        </Link.Root>
-      );
-    return (
-      <>
-        <Link.Root to="/cart">
-          <Link.Icon icon={<AiOutlineShoppingCart />} />
-          <Link.Label>Cart</Link.Label>
-        </Link.Root>
-        <Link.Root to="/" handleClick={handleLogout}>
-          <Link.Icon icon={<VscSignOut />} />
-          <Link.Label>Logout</Link.Label>
-        </Link.Root>
-      </>
-    );
-  };
+  const filteredRoutes = bottomNavigationRoutes.filter((route) => {
+    if (route.value === RouteValue.all) return true;
+    if (route.value === RouteValue.authenticated) return !!user;
+    if (route.value === RouteValue.unauthenticated) return !user;
+    return false;
+  });
 
   return (
     <Box
@@ -43,15 +30,12 @@ const Navbar = () => {
         justifyContent: user ? "space-between" : "flex-end",
       }}
     >
-      <Link.Root to="/profile">
-        <Link.Icon icon={<RxAvatar />} />
-        <Link.Label>Profile</Link.Label>
-      </Link.Root>
-      <Link.Root to="/">
-        <Link.Icon icon={<GoHome />} />
-        <Link.Label>Home</Link.Label>
-      </Link.Root>
-      <NavbarLinks />
+      {filteredRoutes.map((route) => (
+        <Link.Root key={route.path} to={route.path}>
+          <Link.Icon icon={<route.icon />} />
+          <Link.Label>{route.label}</Link.Label>
+        </Link.Root>
+      ))}
     </Box>
   );
 };
