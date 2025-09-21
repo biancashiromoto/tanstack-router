@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 export default function SimpleBottomNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user, signOutUser } = useAuth();
 
   const [value, setValue] = useState<number | null>(null);
 
@@ -55,7 +55,7 @@ export default function SimpleBottomNavigation() {
           label={route.label}
           icon={<route.icon size={24} />}
           onClick={() => {
-            if (route.label === "Logout") logout();
+            if (route.label === "Logout") signOutUser();
           }}
           value={index}
         />
