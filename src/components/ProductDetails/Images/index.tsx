@@ -2,11 +2,11 @@ import { Box } from "@mui/material";
 import { useLoaderData } from "@tanstack/react-router";
 
 const Images = () => {
-  const product = useLoaderData({
+  const { selectedProduct } = useLoaderData({
     from: "/_product/$category/$productId",
   });
 
-  if (!product || !product.images.length) return null;
+  if (!selectedProduct || !selectedProduct.images.length) return null;
 
   return (
     <Box
@@ -20,12 +20,12 @@ const Images = () => {
         position: "relative",
       }}
     >
-      {product.images.map((image: string, index: number) => (
+      {selectedProduct.images.map((image: string, index: number) => (
         <Box
           key={index}
           component="img"
           src={image}
-          alt={`${product.title} ${index + 1}`}
+          alt={`${selectedProduct.title} ${index + 1}`}
           width="35dvw"
           sx={{ aspectRatio: "1 / 1" }}
         />
