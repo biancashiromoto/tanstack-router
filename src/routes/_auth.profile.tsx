@@ -40,7 +40,12 @@ function RouteComponent() {
           <Typography variant="h6" className="text">
             <strong>Welcome, {authUser.firstName}!</strong>
           </Typography>
-          <img src={authUser.image} alt="User Avatar" className="avatar" />
+          <Box
+            component="img"
+            src={authUser.image}
+            alt="User Avatar"
+            className="avatar"
+          />
           {authUser.address && (
             <Typography variant="body1" className="text">
               <>Address:</> {authUser.address.address} - {authUser.address.city}
