@@ -1,6 +1,6 @@
 import Loader from "@/components/Loader";
 import useResponsive from "@/hooks/useResponsive";
-import { Users } from "@/services/users";
+import { User } from "@/services/user";
 import {
   Avatar,
   Box,
@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 
-const userService = new Users();
+const userService = new User();
 
 export const Route = createFileRoute("/_auth/user/$userId")({
   component: RouteComponent,

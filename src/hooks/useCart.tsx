@@ -1,5 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
-import { getUsersCartById } from "@/services/users";
+import { getUsersCartById } from "@/services/user";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 

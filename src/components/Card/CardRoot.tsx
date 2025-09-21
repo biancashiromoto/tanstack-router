@@ -1,13 +1,13 @@
 import { useNavigate } from "@tanstack/react-router";
 import { CardContext } from "./context/CardContext";
-import type { CardRootProps } from "./index.types";
+import type { ICardRootProps } from "./index.types";
 import { Card as MUICard } from "@mui/material";
 
 const CardRoot = ({
   product,
   shouldShowDiscount = false,
   children,
-}: CardRootProps) => {
+}: ICardRootProps) => {
   const navigate = useNavigate();
   const handleClick = () =>
     navigate({

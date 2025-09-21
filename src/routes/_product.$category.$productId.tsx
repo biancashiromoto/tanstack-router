@@ -4,7 +4,7 @@ import Info from "@/components/ProductDetails/Info";
 import { getMetaHeader } from "@/helpers";
 import useResponsive from "@/hooks/useResponsive";
 import { Products } from "@/services/products";
-import type { Product } from "@/types";
+import type { IProduct } from "@/types";
 import { Box, Typography } from "@mui/material";
 import {
   createFileRoute,
@@ -14,12 +14,12 @@ import {
 import type { RouterContext } from "./__root";
 
 export interface ProductRouteLoaderData {
-  product: Product;
+  product: IProduct;
 }
 
 export interface ProductRouteParams {
   category: string;
-  productId: Product["id"];
+  productId: IProduct["id"];
 }
 
 const productsService = new Products();
@@ -44,7 +44,7 @@ export const Route = createFileRoute("/_product/$category/$productId")({
   errorComponent: ({ error }) => (
     <p>Error loading product details: {error.message}</p>
   ),
-  head: ({ loaderData }: { loaderData?: Product }) =>
+  head: ({ loaderData }: { loaderData?: IProduct }) =>
     getMetaHeader(loaderData?.title ?? "Product not found"),
 });
 

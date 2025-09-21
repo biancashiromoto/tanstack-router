@@ -1,4 +1,4 @@
-import type { Product } from "@/types";
+import type { IProduct } from "@/types";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useRouteContext, useRouterState } from "@tanstack/react-router";
 import Loader from "../Loader";
@@ -36,7 +36,7 @@ const DailyDeals = () => {
       </Box>
 
       <Grid container spacing={3}>
-        {dailyDeals.map((product: Product) => (
+        {dailyDeals.map((product: IProduct) => (
           <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
             <Card.Root product={product} shouldShowDiscount>
               <Card.Media />

@@ -1,5 +1,5 @@
 import { generateWeightedDiscounts } from "@/helpers";
-import type { ProductsResponse, Product, User } from "@/types";
+import type { IProductsResponse, IProduct, IUser } from "@/types";
 import { queryOptions } from "@tanstack/react-query";
 
 export class Products {
@@ -9,7 +9,7 @@ export class Products {
     this.baseUrl = baseUrl;
   }
 
-  async getAllProducts(): Promise<ProductsResponse> {
+  async getAllProducts(): Promise<IProductsResponse> {
     const response = await fetch(`${this.baseUrl}/products`);
     if (!response.ok) {
       throw new Error('Failed to fetch products');
@@ -18,7 +18,7 @@ export class Products {
     return await response.json() ?? [];
   }
 
-  async getProductsByCategory(category: string): Promise<ProductsResponse> {
+  async getProductsByCategory(category: string): Promise<IProductsResponse> {
     const response = await fetch(`${this.baseUrl}/products/category/${category}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch products for category: ${category}`);
@@ -27,7 +27,7 @@ export class Products {
     return await response.json() ?? [];
   }
 
-  async getProductById(id: string): Promise<Product> {
+  async getProductById(id: string): Promise<IProduct> {
     const response = await fetch(`${this.baseUrl}/products/${Number(id)}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch product with id: ${id}`);
@@ -38,7 +38,7 @@ export class Products {
     return await this.enrichProductReviews(product);
   }
 
-  async searchProducts(query: string): Promise<ProductsResponse> {
+  async searchProducts(query: string): Promise<IProductsResponse> {
     const response = await fetch(`${this.baseUrl}/products/search?q=${query}`);
     if (!response.ok) {
       throw new Error(`Failed to search products with query: ${query}`);
@@ -47,18 +47,18 @@ export class Products {
     return await response.json() ?? [];
   }
 
-  async enrichProductReviews(product: Product) {
+  async enrichProductReviews(product: IProduct) {
     if (!product || !product.reviews) return product;
 
     try {
-      const { Users } = await import("./users");
-      const usersService = new Users(this.baseUrl);
+      const { User } = await import("./user");
+      const usersService = new User(this.baseUrl);
       
       const reviewersEmails = product.reviews.map(review => review.reviewerEmail);
       const users = await usersService.getUsersFromReview(reviewersEmails);
 
       product.reviews = product.reviews.map(review => {
-        const user = users.find((user: User) => user?.email === review.reviewerEmail);
+        const user = users.find((user: IUser) => user?.email === review.reviewerEmail);
         return {
           ...review,
           reviewer: user,
@@ -71,7 +71,7 @@ export class Products {
     return product;
   }
 
-  async fetchDailyDeals(): Promise<Product[]> {
+  async fetchDailyDeals(): Promise<IProduct[]> {
     try {
       const response = await productsService.getAllProducts();
 
@@ -91,22 +91,22 @@ export class Products {
     }
   }
 
-  selectedProductQueryOptions = (productId: Product["id"]) =>
-    queryOptions<Product>({
+  selectedProductQueryOptions = (productId: IProduct["id"]) =>
+    queryOptions<IProduct>({
       queryKey: ["product", productId],
       queryFn: () => getProductById(String(productId)),
       staleTime: 1000 * 60 * 5, // 5 minutes,
     });
 
   productsByCategoryQueryOptions = (category: string) =>
-    queryOptions<ProductsResponse>({
+    queryOptions<IProductsResponse>({
       queryKey: ["products", category],
       queryFn: async () => await this.getProductsByCategory(category),
       staleTime: 1000 * 60 * 5, // 5 minutes
       enabled: Boolean(category),
   });
 
-  dailyDealsQueryOptions = () => queryOptions<Product[]>({
+  dailyDealsQueryOptions = () => queryOptions<IProduct[]>({
     queryKey: ["dailyDeals"],
     queryFn: () => this.fetchDailyDeals(),
     staleTime: 1000 * 60 * 60, // 1 hour
