@@ -21,7 +21,6 @@ const Root = ({ children, product }: RootProps) => {
         productId: String(product.id),
       },
       search: {
-        ref: "product-card",
         from: encodeURIComponent(location.pathname),
       },
       replace: false,
