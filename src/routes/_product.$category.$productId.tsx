@@ -1,5 +1,6 @@
 import Loader from "@/components/Loader";
-import ProductRating from "@/components/ProductRating";
+import Images from "@/components/ProductDetails/Images";
+import Info from "@/components/ProductDetails/Info";
 import { getMetaHeader } from "@/helpers";
 import useResponsive from "@/hooks/useResponsive";
 import { Products } from "@/services/products";
@@ -71,50 +72,8 @@ function RouteComponent() {
           mt: 2,
         }}
       >
-        <Box
-          className="product-images"
-          sx={{
-            display: "flex",
-            gap: 2,
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-          }}
-        >
-          {product.images.map((image: string, index: number) => (
-            <Box
-              key={index}
-              component="img"
-              src={image}
-              alt={`${product.title} ${index + 1}`}
-              width="35dvw"
-              sx={{ aspectRatio: "1 / 1" }}
-            />
-          ))}
-        </Box>
-        <Box
-          sx={{
-            py: 1,
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            gridRow: 1,
-            gridColumn: 2,
-          }}
-        >
-          <Typography className="product-price">${product.price}</Typography>
-          <Typography className="product-description">
-            {product.description}
-          </Typography>
-          {product.brand && (
-            <Typography className="product-brand">
-              Brand: {product.brand}
-            </Typography>
-          )}
-
-          <ProductRating product={product} />
-        </Box>
+        <Images />
+        <Info />
       </Box>
     </Box>
   );
