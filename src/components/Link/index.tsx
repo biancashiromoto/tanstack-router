@@ -1,7 +1,7 @@
 import useResponsive from "@/hooks/useResponsive";
 import { Box, Link as MUILink, Typography } from "@mui/material";
 import { Link as RouterLink } from "@tanstack/react-router";
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import type {
   LinkContentProps,
   LinkContextType,
@@ -41,7 +41,14 @@ const LinkIcon = ({ icon }: LinkIconProps) => (
   <Box sx={{ fontSize: 20, lineHeight: 1 }}>{icon}</Box>
 );
 
-const LinkLabel = ({ children }: LinkLabelProps) => {
+const LinkLabel = ({ children, hideOnMobile }: LinkLabelProps) => {
+  const context = useContext(LinkContext);
+  const isMobile = context?.isMobile || false;
+
+  if (hideOnMobile && isMobile) {
+    return null;
+  }
+
   return <Typography variant="caption">{children}</Typography>;
 };
 
