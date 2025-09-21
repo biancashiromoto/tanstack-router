@@ -1,4 +1,4 @@
-import { Box, Divider } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { useRouteContext } from "@tanstack/react-router";
 import CustomAutocomplete from "../Autocomplete";
 import CustomDrawer from "../CustomDrawer";
@@ -21,7 +21,27 @@ const Header = () => {
         gap: 1,
       }}
     >
-      <Navbar />
+      <Box
+        sx={{
+          gridColumn: "span 2",
+          gridRow: 1,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          TanStack Market
+        </Typography>
+        <Navbar />
+      </Box>
       <Box
         sx={{
           display: "grid",
