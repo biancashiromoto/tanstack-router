@@ -5,6 +5,8 @@ import CardImage from "./CardImage";
 import CardPrice from "./CardPrice";
 import CardTitle from "./CardTitle";
 import Root from "./Root";
+import { Box, Typography } from "@mui/material";
+import Rating from "../Rating";
 
 export interface CustomCardProps {
   product: Product;
@@ -28,6 +30,12 @@ export default function CustomCard({
         ) : (
           <CardPrice price={product.price} />
         )}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Rating value={product.rating ?? 0} />
+          <Typography variant="body2" color="text.secondary" noWrap>
+            {product.rating} / 5
+          </Typography>
+        </Box>
       </CardBody>
     </Root>
   );
