@@ -33,7 +33,7 @@ const Navbar = () => {
       {filteredRoutes.map((route) => (
         <Link.Root key={route.path} to={route.path}>
           <Link.Icon icon={<route.icon />} />
-          <Link.Label>{route.label}</Link.Label>
+          <Link.Label hideOnMobile>{route.label}</Link.Label>
         </Link.Root>
       ))}
     </Box>
