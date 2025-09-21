@@ -69,13 +69,16 @@ function RouteComponent() {
           alignItems: !isDesktop ? "center" : "flex-start",
           justifyContent: "center",
           mt: 2,
+          height: "100dvh",
         }}
       >
         <Images />
-        <Typography variant="h6" sx={{ alignSelf: "flex-start" }}>
-          {product.title}
-        </Typography>
-        <Info />
+        <Box>
+          <Typography variant="h6" sx={{ alignSelf: "flex-start" }}>
+            {product.title}
+          </Typography>
+          <Info />
+        </Box>
       </Box>
     </Box>
   );
