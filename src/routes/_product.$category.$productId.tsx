@@ -59,20 +59,22 @@ function RouteComponent() {
 
   return (
     <Box className="product-detail">
-      <Typography variant="h6">{product.title}</Typography>
       <Box
         className="product-detail-content"
         sx={{
           display: "flex",
           flexDirection: !isDesktop ? "column" : "row",
           position: "relative",
-          gap: 2,
+          gap: 1,
           alignItems: !isDesktop ? "center" : "flex-start",
           justifyContent: "center",
           mt: 2,
         }}
       >
         <Images />
+        <Typography variant="h6" sx={{ alignSelf: "flex-start" }}>
+          {product.title}
+        </Typography>
         <Info />
       </Box>
     </Box>
