@@ -1,4 +1,4 @@
-import { StrictMode, useMemo } from "react";
+import { StrictMode, Suspense, useMemo } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
@@ -45,9 +45,11 @@ declare module "@tanstack/react-router" {
 
 function App() {
   return (
-    <AuthProvider>
-      <RouterWithContext />
-    </AuthProvider>
+    <Suspense fallback={<Loader />}>
+      <AuthProvider>
+        <RouterWithContext />
+      </AuthProvider>
+    </Suspense>
   );
 }
 
