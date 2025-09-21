@@ -11,7 +11,7 @@ import { TbLockPassword } from "react-icons/tb";
 import useLoginForm from "./useLoginForm";
 
 const LoginForm = () => {
-  const { username, password, handleChange, error, isLoading, handleSubmit } =
+  const { formData, handleChange, handleSubmit, signInError, isLoading } =
     useLoginForm();
 
   return (
@@ -33,7 +33,7 @@ const LoginForm = () => {
           type="text"
           id="username"
           name="username"
-          value={username}
+          value={formData.username}
           onChange={handleChange}
           required
           variant="outlined"
@@ -52,7 +52,7 @@ const LoginForm = () => {
           type="password"
           id="password"
           name="password"
-          value={password}
+          value={formData.password}
           onChange={handleChange}
           required
           variant="outlined"
@@ -67,9 +67,9 @@ const LoginForm = () => {
             },
           }}
         />
-        {error && (
+        {signInError && (
           <Typography className="error-message" variant="caption" color="error">
-            {error}
+            {signInError?.message ?? "Invalid username or password"}
           </Typography>
         )}
         <Button type="submit" disabled={isLoading} variant="contained">
