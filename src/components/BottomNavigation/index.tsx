@@ -42,9 +42,11 @@ export default function SimpleBottomNavigation() {
         bottom: 0,
         left: 0,
         right: 0,
+        height: 56,
         zIndex: 1000,
         borderTop: "1px solid #e0e0e0",
         backgroundColor: "#fff",
+        boxShadow: "0 -2px 8px rgba(0,0,0,0.1)",
       }}
     >
       {filteredRoutes.map((route) => (
