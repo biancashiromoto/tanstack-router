@@ -5,9 +5,12 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { GoHome } from "react-icons/go";
 import { VscSignIn, VscSignOut } from "react-icons/vsc";
 import { RxAvatar } from "react-icons/rx";
+import useResponsive from "@/hooks/useResponsive";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { isDesktop } = useResponsive();
+
   const handleLogout = () => logout();
 
   const NavbarLinks = () => {
@@ -21,10 +24,12 @@ const Navbar = () => {
     }
     return (
       <>
-        <Link.Root to="/cart">
-          <Link.Icon icon={<AiOutlineShoppingCart />} />
-          <Link.Label>Cart</Link.Label>
-        </Link.Root>
+        {isDesktop && (
+          <Link.Root to="/cart">
+            <Link.Icon icon={<AiOutlineShoppingCart />} />
+            <Link.Label>Cart</Link.Label>
+          </Link.Root>
+        )}
         <Link.Root to="/" handleClick={handleLogout}>
           <Link.Icon icon={<VscSignOut />} />
           <Link.Label>Logout</Link.Label>
@@ -43,25 +48,19 @@ const Navbar = () => {
         justifyContent: user ? "space-between" : "flex-end",
       }}
     >
-      {user && (
+      {user && isDesktop && (
         <Link.Root to="/profile">
           <Link.Icon icon={<RxAvatar />} />
           <Link.Label>Profile</Link.Label>
         </Link.Root>
       )}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 2,
-        }}
-      >
+      {isDesktop && (
         <Link.Root to="/">
           <Link.Icon icon={<GoHome />} />
           <Link.Label>Home</Link.Label>
         </Link.Root>
-        <NavbarLinks />
-      </Box>
+      )}
+      <NavbarLinks />
     </Box>
   );
 };
