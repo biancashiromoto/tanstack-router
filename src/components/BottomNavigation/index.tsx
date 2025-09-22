@@ -51,7 +51,7 @@ export default function SimpleBottomNavigation() {
     >
       {filteredRoutes.map((route, index) => (
         <BottomNavigationAction
-          key={route.value}
+          key={index}
           label={route.label}
           icon={<route.icon size={24} />}
           onClick={() => {
