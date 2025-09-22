@@ -44,14 +44,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     onSuccess: (data) => {
       setUser(data);
       localStorage.setItem("user", JSON.stringify(data));
-      window.location.pathname = "/";
     },
+    onMutate: () => setIsLoading(true),
+    onSettled: () => setIsLoading(false),
   });
 
   const signOutUser = () => {
     setUser(null);
     localStorage.removeItem("user");
-    window.location.pathname = "/";
   };
 
   const isAuthenticated = user !== null;
