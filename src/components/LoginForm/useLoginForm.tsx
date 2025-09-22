@@ -11,7 +11,10 @@ export interface IUseLoginFormReturn {
 }
 
 const useLoginForm = (): IUseLoginFormReturn => {
-  const [formData, setFormData] = useState<SignInData>({} as SignInData);
+  const [formData, setFormData] = useState<SignInData>({
+    username: "",
+    password: "",
+  });
   const { signInUser, signInError, isLoading } = useAuth();
 
   const handleChange = useCallback(
