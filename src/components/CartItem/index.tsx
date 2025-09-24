@@ -1,10 +1,10 @@
 import useResponsive from "@/hooks/useResponsive";
-import type { Product } from "@/types";
+import type { IProduct } from "@/types";
 import { Box, Typography } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 
 type CartItemProps = {
-  item: Product;
+  item: IProduct;
 };
 
 const CartItem = ({ item }: CartItemProps) => {

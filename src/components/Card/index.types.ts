@@ -1,16 +1,16 @@
-import type { Product } from "@/types";
+import type { IProduct } from "@/types";
 
-export interface CardContextType {
-  product: Product;
+export interface ICardContext {
+  product: IProduct;
   shouldShowDiscount: boolean;
 }
 
-export interface CardRootProps {
-  product: Product;
+export interface ICardRootProps {
+  product: IProduct;
   shouldShowDiscount: boolean;
   children: React.ReactNode;
 }
 
-export interface CardContentProps {
+export interface ICardContentProps {
   children: React.ReactNode;
 }

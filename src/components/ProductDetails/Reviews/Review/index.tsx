@@ -1,9 +1,9 @@
 import Rating from "@/components/Rating";
-import type { ProductReview } from "@/types";
+import type { IProductReview } from "@/types";
 import { Box, Divider, Typography } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 
-const Review = ({ review }: { review: ProductReview }) => {
+const Review = ({ review }: { review: IProductReview }) => {
   return (
     <Box key={review.date} className="review" sx={{ my: 2 }}>
       <Box

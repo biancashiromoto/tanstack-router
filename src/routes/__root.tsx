@@ -1,10 +1,9 @@
 import AppLayout from "@/components/AppLayout";
-import { AuthProvider } from "@/context/AuthContext";
 import { categoriesQueryOptions } from "@/services/categories";
 import { Products } from "@/services/products";
-import type { Product, User } from "@/types";
+import type { IProduct, IUser } from "@/types";
 import { TanstackDevtools } from "@tanstack/react-devtools";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -12,23 +11,12 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      enabled: true,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: 1,
-    },
-  },
-});
-
 export interface RouterContext {
-  user: User | null;
+  user: IUser | null;
   queryClient: QueryClient | null;
   categories: string[];
-  selectedProduct?: Product;
-  dailyDeals: Product[];
+  selectedProduct?: IProduct;
+  dailyDeals: IProduct[];
 }
 
 const productsService = new Products();
@@ -36,21 +24,17 @@ const productsService = new Products();
 function RootComponent() {
   return (
     <>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <HeadContent />
-          <AppLayout>
-            <Outlet />
-          </AppLayout>
-        </QueryClientProvider>
-      </AuthProvider>
+      <HeadContent />
+      <AppLayout>
+        <Outlet />
+      </AppLayout>
       <TanstackDevtools
         config={{
           position: "bottom-left",
         }}
         plugins={[
           {
-            name: "Tanstack Router",
+            name: "Tanstack Market",
             render: <TanStackRouterDevtoolsPanel />,
           },
         ]}
@@ -61,8 +45,14 @@ function RootComponent() {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
-  beforeLoad: async () => {
+  beforeLoad: async ({ context }) => {
     const user = JSON.parse(localStorage.getItem("user") || "null");
+
+    const { queryClient } = context;
+
+    if (!queryClient) {
+      throw new Error("QueryClient not found in context");
+    }
 
     const categories = await queryClient.ensureQueryData(
       categoriesQueryOptions()

@@ -45,6 +45,7 @@ function RouteComponent() {
             src={authUser.image}
             alt="User Avatar"
             className="avatar"
+            sx={{ aspectRatio: "1 / 1" }}
           />
           {authUser.address && (
             <Typography variant="body1" className="text">

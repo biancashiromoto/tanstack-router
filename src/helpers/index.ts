@@ -1,4 +1,4 @@
-import type { Product } from "@/types";
+import type { IProduct } from "@/types";
 import { pages } from "./index.constants";
 
 export const formatCategoryName = (
@@ -54,7 +54,7 @@ export const getCategoryWeight = (category: string): number => {
   return categoryWeights[category.toLowerCase()] || 0.5;
 };
 
-export const generateWeightedDiscounts = (products: Product[]) => {
+export const generateWeightedDiscounts = (products: IProduct[]) => {
   return products.map(product => {
     const ratingWeight = (product.rating || 0) / 5; // 0-1
     const stockWeight = Math.min((product.stock || 0) / 100, 1); // 0-1

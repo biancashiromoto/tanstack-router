@@ -1,16 +1,16 @@
-import type { Product } from "@/types";
+import type { IProduct } from "@/types";
 import type { QueryClient } from "@tanstack/react-query";
 
 export type LoaderData = {
-  products: Product[];
-  category: Product["category"];
-  selectedProduct?: Product | null;
+  products: IProduct[];
+  category: IProduct["category"];
+  selectedProduct?: IProduct | null;
 };
 
 export type LoaderParams = {
   params: {
-    category: Product["category"];
-    productId?: Product["id"];
+    category: IProduct["category"];
+    productId?: IProduct["id"];
   };
   context: {
     queryClient?: QueryClient | undefined;

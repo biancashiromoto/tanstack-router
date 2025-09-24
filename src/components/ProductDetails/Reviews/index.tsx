@@ -1,5 +1,5 @@
 import { Box, Button, Typography, Rating as MUIRating } from "@mui/material";
-import type { ProductReview } from "@/types";
+import type { IProductReview } from "@/types";
 import { useCallback, useMemo, useState } from "react";
 import Review from "./Review";
 import { useRouteContext } from "@tanstack/react-router";
@@ -56,7 +56,7 @@ const Reviews = () => {
       <Box className="product-reviews">
         {showReviews &&
           selectedProduct.reviews.map(
-            (review: ProductReview, index: number) => (
+            (review: IProductReview, index: number) => (
               <Review key={`${review.date}-${index}`} review={review} />
             )
           )}

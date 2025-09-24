@@ -8,7 +8,7 @@ import {
 import useResponsive from "@/hooks/useResponsive";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, signOutUser } = useAuth();
   const { isDesktop } = useResponsive();
 
   if (!isDesktop) return null;
@@ -31,7 +31,13 @@ const Navbar = () => {
       }}
     >
       {filteredRoutes.map((route) => (
-        <Link.Root key={route.path} to={route.path}>
+        <Link.Root
+          key={route.path}
+          to={route.path ?? "/"}
+          handleClick={() => {
+            if (route.label === "Logout") return signOutUser();
+          }}
+        >
           <Link.Icon icon={<route.icon />} />
           <Link.Label hideOnMobile>{route.label}</Link.Label>
         </Link.Root>

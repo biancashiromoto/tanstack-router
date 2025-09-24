@@ -3,7 +3,7 @@ import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import usePagination from "@/components/Pagination/hooks/usePagination";
 import { getMetaHeader } from "@/helpers";
-import type { Product } from "@/types";
+import type { IProduct } from "@/types";
 import { Box, List, Typography } from "@mui/material";
 import {
   createFileRoute,
@@ -15,14 +15,12 @@ import {
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
   pendingComponent: () => <Loader />,
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      page: Number(search?.page) || 1,
-      limit: Number(search?.limit) || 15,
-    };
-  },
   errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
   head: ({ params }) => getMetaHeader(`Products in ${params.category}`),
+  validateSearch: (search) => ({
+    page: search.page ? Number(search.page) : 1,
+    limit: search.limit ? Number(search.limit) : 15,
+  }),
 });
 
 function RouteComponent() {
@@ -52,7 +50,7 @@ function RouteComponent() {
             justifyContent: "center",
           }}
         >
-          {currentProducts?.map((product: Product) => (
+          {currentProducts?.map((product: IProduct) => (
             <Card.Root product={product} shouldShowDiscount key={product.id}>
               <Card.Media />
               <Card.Content />

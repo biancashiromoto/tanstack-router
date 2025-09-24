@@ -3,7 +3,7 @@ import Loader from "@/components/Loader";
 import { useAuth } from "@/context/AuthContext";
 import { getMetaHeader } from "@/helpers";
 import useCart from "@/hooks/useCart";
-import type { Product } from "@/types";
+import type { IProduct } from "@/types";
 import { Box, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -28,7 +28,7 @@ function RouteComponent() {
       {cart?.products.length ? (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {cart.products.length > 0 ? (
-            cart.products.map((item: Product) => (
+            cart.products.map((item: IProduct) => (
               <CartItem key={item.id} item={item} />
             ))
           ) : (

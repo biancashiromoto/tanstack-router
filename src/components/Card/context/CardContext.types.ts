@@ -1,7 +1,7 @@
-import type { CardContextType } from "../index.types";
+import type { ICardContext } from "../index.types";
 
 export interface CardProviderProps {
-  product: CardContextType["product"];
+  product: ICardContext["product"];
   shouldShowDiscount?: boolean;
   children: React.ReactNode;
 }
