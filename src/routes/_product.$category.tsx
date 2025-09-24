@@ -17,6 +17,10 @@ export const Route = createFileRoute("/_product/$category")({
   pendingComponent: () => <Loader />,
   errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
   head: ({ params }) => getMetaHeader(`Products in ${params.category}`),
+  validateSearch: (search) => ({
+    page: search.page ? Number(search.page) : 1,
+    limit: search.limit ? Number(search.limit) : 15,
+  }),
 });
 
 function RouteComponent() {
