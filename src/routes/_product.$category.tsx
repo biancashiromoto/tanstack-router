@@ -15,12 +15,6 @@ import {
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
   pendingComponent: () => <Loader />,
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      page: Number(search?.page) || 1,
-      limit: Number(search?.limit) || 15,
-    };
-  },
   errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
   head: ({ params }) => getMetaHeader(`Products in ${params.category}`),
 });
