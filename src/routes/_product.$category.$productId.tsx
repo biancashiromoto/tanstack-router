@@ -45,7 +45,7 @@ export const Route = createFileRoute("/_product/$category/$productId")({
     <p>Error loading product details: {error.message}</p>
   ),
   head: ({ loaderData }: { loaderData?: IProduct }) =>
-    getMetaHeader(loaderData?.title ?? "Product not found"),
+    getMetaHeader(loaderData?.description ?? "Product not found"),
 });
 
 function RouteComponent() {
