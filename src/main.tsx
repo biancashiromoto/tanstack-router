@@ -35,10 +35,12 @@ function RouterWithContext() {
           categories: [],
           dailyDeals: [],
         },
-        defaultPreload: "intent",
+        defaultPreload: "intent", // Habilita preload no hover
+        defaultPreloadDelay: 300, // 300ms de delay antes do preload
         scrollRestoration: true,
         defaultStructuralSharing: true,
-        defaultPreloadStaleTime: 0,
+        defaultPreloadStaleTime: 5 * 60 * 1000, // 5 minutos de cache
+        defaultPreloadGcTime: 10 * 60 * 1000, // 10 minutos para garbage collection
       }),
     [user?.accessToken]
   );
