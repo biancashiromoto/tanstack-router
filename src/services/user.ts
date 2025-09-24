@@ -54,7 +54,7 @@ export class User {
     };
   }
 
-  async getUserById(userId: IUser["id"]): Promise<User> {
+  async getUserById(userId: IUser["id"]): Promise<IUser> {
     const response = await fetch(`${this.baseUrl}/users/${userId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch user');
@@ -137,7 +137,7 @@ export class User {
   }
 
   userQueryOptions = (userId: IUser["id"]) =>
-    queryOptions<User>({
+    queryOptions<IUser>({
       queryKey: ["user", userId],
       queryFn: () => this.getUserById(userId),
       staleTime: 1000 * 60 * 5, // 5 minutes
