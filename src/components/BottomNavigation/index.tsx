@@ -33,8 +33,9 @@ export default function SimpleBottomNavigation() {
       onChange={(_event, newValue) => {
         const selectedRoute = filteredRoutes[newValue];
         if (selectedRoute) {
-          setValue(selectedRoute.value);
-          navigate({ to: selectedRoute.path });
+          if (selectedRoute.label === "Logout") signOutUser();
+          else setValue(newValue);
+          navigate({ to: selectedRoute.path ?? "/" });
         }
       }}
       sx={{
