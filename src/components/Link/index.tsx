@@ -1,7 +1,7 @@
 import useResponsive from "@/hooks/useResponsive";
 import { Box, Link as MUILink, Typography } from "@mui/material";
 import { Link as RouterLink } from "@tanstack/react-router";
-import { createContext, useContext } from "react";
+import { createContext, memo, useContext } from "react";
 import type {
   LinkContentProps,
   LinkContextType,
@@ -12,7 +12,7 @@ import type {
 
 const LinkContext = createContext<LinkContextType | undefined>(undefined);
 
-const LinkRoot = ({ to, handleClick, children }: LinkRootProps) => {
+const LinkRoot = memo(({ to, handleClick, children }: LinkRootProps) => {
   const { isMobile } = useResponsive();
 
   return (
@@ -35,13 +35,17 @@ const LinkRoot = ({ to, handleClick, children }: LinkRootProps) => {
       </MUILink>
     </LinkContext.Provider>
   );
-};
+});
 
-const LinkIcon = ({ icon }: LinkIconProps) => (
+LinkRoot.displayName = "LinkRoot";
+
+const LinkIcon = memo(({ icon }: LinkIconProps) => (
   <Box sx={{ fontSize: 20, lineHeight: 1 }}>{icon}</Box>
-);
+));
 
-const LinkLabel = ({ children, hideOnMobile }: LinkLabelProps) => {
+LinkIcon.displayName = "LinkIcon";
+
+const LinkLabel = memo(({ children, hideOnMobile }: LinkLabelProps) => {
   const context = useContext(LinkContext);
   const isMobile = context?.isMobile || false;
 
@@ -50,7 +54,9 @@ const LinkLabel = ({ children, hideOnMobile }: LinkLabelProps) => {
   }
 
   return <Typography variant="caption">{children}</Typography>;
-};
+});
+
+LinkLabel.displayName = "LinkLabel";
 
 const LinkContent = ({ children }: LinkContentProps) => {
   return <>{children}</>;
