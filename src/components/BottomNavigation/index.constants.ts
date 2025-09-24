@@ -6,7 +6,7 @@ import { VscSignOut, VscSignIn  } from "react-icons/vsc";
 export interface BottomNavigationRoute {
   label: string;
   icon: React.ComponentType<{ size?: number | string }>;
-  path: string;
+  path: string | null;
   value: number;
 }
 
@@ -21,5 +21,5 @@ export const bottomNavigationRoutes: BottomNavigationRoute[] = [
   { label: "Home", icon: GoHome, path: "/", value: RouteValue.all },
   { label: "Cart", icon: AiOutlineShoppingCart, path: "/cart", value: RouteValue.authenticated },
   { label: "Login", icon: VscSignIn, path: "/login", value: RouteValue.unauthenticated },
-  { label: "Logout", icon: VscSignOut, path: "/", value: RouteValue.authenticated },
+  { label: "Logout", icon: VscSignOut, path: null, value: RouteValue.authenticated },
 ];
