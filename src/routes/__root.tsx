@@ -34,7 +34,7 @@ function RootComponent() {
         }}
         plugins={[
           {
-            name: "Tanstack Router",
+            name: "Tanstack Market",
             render: <TanStackRouterDevtoolsPanel />,
           },
         ]}
