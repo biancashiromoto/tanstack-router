@@ -33,7 +33,7 @@ const Navbar = () => {
       {filteredRoutes.map((route) => (
         <Link.Root
           key={route.path}
-          to={route.path}
+          to={route.path ?? "/"}
           handleClick={() => {
             if (route.label === "Logout") return signOutUser();
           }}
