@@ -14,6 +14,8 @@ const CardRoot = ({
         to="/$category/$productId"
         params={{ category: product.category, productId: product.id }}
         style={{ textDecoration: "none" }}
+        preload="intent"
+        preloadDelay={200}
       >
         <MUICard sx={{ cursor: "pointer" }}>{children}</MUICard>
       </Link>
