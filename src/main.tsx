@@ -4,7 +4,9 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 
-// Import the generated route tree
+/**
+ * Importação da árvore de rotas, gerada automaticamente
+ */
 import { routeTree } from "./routeTree.gen";
 
 import reportWebVitals from "./reportWebVitals.ts";
@@ -45,9 +47,12 @@ const router = createRouter({
   defaultPreloadGcTime: 10 * 60 * 1000, // 10 minutos para garbage collection
 });
 
-// Register the router instance for type safety
 declare module "@tanstack/react-router" {
   interface Register {
+    /**
+     * Adiciona o tipo do roteador para segurança de tipos
+     * e auto-complete em todo o projeto
+     */
     router: typeof router;
   }
 }
@@ -59,7 +64,11 @@ declare module "@tanstack/react-router" {
 function RouterWithContext() {
   const { user, isLoading } = useAuth();
 
-  // Atualiza o contexto do router quando o usuário muda
+  /**
+   * Atualiza o contexto do router quando o usuário muda
+   * Isso permite que as rotas acessem o usuário atual
+   * e outras informações do contexto global
+   */
   router.update({
     context: {
       user,
