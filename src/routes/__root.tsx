@@ -48,6 +48,10 @@ function RootComponent() {
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   beforeLoad: async ({ context }) => {
+    /**
+     * Dados globais que queremos carregar antes de qualquer rota
+     * Esses dados ficam disponíveis em todas as rotas via useRouteContext() e também podem ser usados para proteger rotas (ex: redirecionar se não autenticado)
+     */
     const user = JSON.parse(localStorage.getItem("user") || "null");
 
     const { queryClient } = context;
