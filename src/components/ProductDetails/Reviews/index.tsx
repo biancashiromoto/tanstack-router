@@ -11,7 +11,12 @@ const Reviews = () => {
     from: "/_product/$category/$productId",
   }) as RouterContext;
 
-  if (!selectedProduct || !selectedProduct.reviews || selectedProduct.reviews.length === 0) return null;
+  if (
+    !selectedProduct ||
+    !selectedProduct.reviews ||
+    selectedProduct.reviews.length === 0
+  )
+    return null;
 
   const [showReviews, setShowReviews] = useState(false);
 
