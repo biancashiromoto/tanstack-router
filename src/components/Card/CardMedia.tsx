@@ -9,7 +9,12 @@ const CardMedia = () => {
       component="img"
       image={product.images?.[0] || product.thumbnail}
       alt={product.title}
-      sx={{ width: "100%", height: "auto" }}
+      sx={{
+        width: "100%",
+        height: "auto",
+        aspectRatio: "1 / 1",
+        objectFit: "cover",
+      }}
     />
   );
 };
