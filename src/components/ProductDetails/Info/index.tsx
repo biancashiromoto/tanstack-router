@@ -2,9 +2,10 @@ import { Box, Typography } from "@mui/material";
 import Price from "../Price";
 import { useLoaderData } from "@tanstack/react-router";
 import Reviews from "../Reviews";
+import type { IProduct } from "@/types";
 
 const Info = () => {
-  const product = useLoaderData({ from: "/_product/$category/$productId" });
+  const product = useLoaderData({ from: "/_product/$category/$productId" }) as IProduct;
 
   return (
     <Box

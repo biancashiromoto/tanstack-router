@@ -4,13 +4,14 @@ import { useCallback, useMemo, useState } from "react";
 import Review from "./Review";
 import { useRouteContext } from "@tanstack/react-router";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa6";
+import type { RouterContext } from "@/routes/__root";
 
 const Reviews = () => {
   const { selectedProduct } = useRouteContext({
     from: "/_product/$category/$productId",
-  });
+  }) as RouterContext;
 
-  if (!selectedProduct || !selectedProduct.reviews?.length) return null;
+  if (!selectedProduct || !selectedProduct.reviews || selectedProduct.reviews.length === 0) return null;
 
   const [showReviews, setShowReviews] = useState(false);
 
@@ -21,8 +22,8 @@ const Reviews = () => {
 
   const toggleDisplayReviewsButtonLabel = useMemo(
     () => `${showReviews ? "Hide" : "Show"} reviews (
-              ${selectedProduct.reviews.length} reviews)`,
-    [showReviews]
+              ${selectedProduct.reviews?.length} reviews)`,
+    [showReviews, selectedProduct.reviews]
   );
 
   return (

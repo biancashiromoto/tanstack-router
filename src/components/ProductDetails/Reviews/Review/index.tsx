@@ -13,8 +13,11 @@ const Review = ({ review }: { review: IProductReview }) => {
         <Typography variant="body2">
           <Link
             to="/user/$userId"
-            params={{ userId: review.reviewer?.id }}
-            mask={{ to: `/user/${review.reviewer?.username}` }}
+            mask={{
+              to: "/user/$userId",
+              params: { userId: review.reviewer?.username ?? '' }
+            }}
+            params={{ userId: review.reviewer?.id ?? '' }}
           >
             {review.reviewer?.username}
           </Link>

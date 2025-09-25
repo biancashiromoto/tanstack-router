@@ -1,13 +1,17 @@
 import { formatProductPrice } from "@/helpers";
 import { Box, Chip, Typography } from "@mui/material";
 import { useLoaderData, useSearch } from "@tanstack/react-router";
+import type { IProduct } from "@/types";
 
 const Price = () => {
   const product = useLoaderData({
     from: "/_product/$category/$productId",
-  });
-  const search = useSearch({ from: "/_product/$category/$productId" });
-  const previousRoute = decodeURIComponent(search.from || "");
+  }) as IProduct;
+  const search = useSearch({ from: "/_product/$category/$productId" }) as { from?: string };
+  
+  if (!product) return null;
+  
+  const previousRoute = decodeURIComponent(search.from ?? "");
   const shouldNotRender =
     !product.discountPercentage || product.discountPercentage <= 0;
 
@@ -15,7 +19,7 @@ const Price = () => {
 
   const discountedPrice = (
     product.price -
-    (product.price * product.discountPercentage) / 100
+    (product.price * (product.discountPercentage || 1)) / 100
   ).toFixed(2);
 
   const formattedPrice = formatProductPrice(product.price);
