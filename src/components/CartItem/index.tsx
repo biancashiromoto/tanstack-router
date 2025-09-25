@@ -40,8 +40,8 @@ const CartItem = ({ item }: CartItemProps) => {
   return (
     <Link
       to="/$category/$productId"
-      params={{ productId: String(item.id), category: item.category }}
-      mask={{ to: `/cart/${item.id}` }}
+      params={{ productId: item.id, category: item.category }}
+      mask={{ to: "/$category/$productId", params: { category: item.category, productId: item.title as any } }}
       style={{ textDecoration: "none" }}
     >
       <Box
