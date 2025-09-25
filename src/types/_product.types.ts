@@ -1,10 +1,9 @@
+import type { RouterContext } from "@/routes/__root";
 import type { IProduct } from "@/types";
-import type { QueryClient } from "@tanstack/react-query";
 
-export type LoaderData = {
+export interface ILoaderData extends RouterContext {
   products: IProduct[];
   category: IProduct["category"];
-  selectedProduct?: IProduct | null;
 };
 
 export type LoaderParams = {
@@ -12,7 +11,5 @@ export type LoaderParams = {
     category: IProduct["category"];
     productId?: IProduct["id"];
   };
-  context: {
-    queryClient?: QueryClient | undefined;
-  }
+  context: RouterContext | undefined;
 };
