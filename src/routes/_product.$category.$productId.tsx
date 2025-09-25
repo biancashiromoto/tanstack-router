@@ -53,8 +53,8 @@ export const Route = createFileRoute("/_product/$category/$productId")({
 
 function RouteComponent() {
   const product = useLoaderData({ from: "/_product/$category/$productId" });
-  const isLoading = useRouterState({
-    select: (s) => s.isLoading,
+  const { isLoading } = useRouterState({
+    select: (state) => state,
   });
   const { isDesktop } = useResponsive();
 
