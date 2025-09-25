@@ -1,5 +1,5 @@
 import { formatCategoryName } from "@/helpers";
-import { useLocation, useMatches, useParams } from "@tanstack/react-router";
+import { useLocation, useMatches } from "@tanstack/react-router";
 import { useMemo } from "react";
 import type { BreadcrumbItemProps } from "../BreadcrumbItem";
 
@@ -12,11 +12,14 @@ export interface useBreadcrumbReturn {
 }
 
 const useBreadcrumb = (): useBreadcrumbReturn => {
-  const { category } = useParams({ from: "/_product/$category" });
   const location = useLocation();
   const matches = useMatches();
 
-  const categoryName = formatCategoryName(category);
+  const category = matches.find(
+    (match) => match.routeId === "/_product/$category"
+  )?.params.category;
+
+  const categoryName = formatCategoryName("");
 
   const selectedProduct = matches.find(
     (match) => match.routeId === "/_product/$category/$productId"
