@@ -9,6 +9,7 @@ import {
   createFileRoute,
   Outlet,
   useLoaderData,
+  useParams,
   useRouterState,
 } from "@tanstack/react-router";
 
@@ -29,14 +30,16 @@ export const Route = createFileRoute("/_product/$category")({
 
 function RouteComponent() {
   const { isLoading } = useRouterState();
-  const { products, selectedProduct } = useLoaderData({
+  const { products } = useLoaderData({
     from: "/_product",
   });
+  const { productId } = useParams({ from: "/_product" });
+
   const { page, currentProducts, totalPages } = usePagination();
 
   if (isLoading) return <Loader />;
 
-  if (!!selectedProduct) return <Outlet />;
+  if (!!productId) return <Outlet />;
 
   return (
     <Box>
