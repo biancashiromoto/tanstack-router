@@ -41,9 +41,6 @@ export const Route = createFileRoute("/_product/$category/$productId")({
     context.selectedProduct = product;
   },
   loader: async ({ context }) => context.selectedProduct,
-  errorComponent: ({ error }) => (
-    <p>Error loading product details: {error.message}</p>
-  ),
   head: (ctx) =>
     getMetaHeader(
       (ctx.loaderData as IProduct | undefined)?.description ??
