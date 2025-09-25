@@ -2,7 +2,7 @@ import Card from "@/components/Card";
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import usePagination from "@/components/Pagination/hooks/usePagination";
-import { getMetaHeader } from "@/helpers";
+import { formatCategoryName, getMetaHeader } from "@/helpers";
 import type { IProduct } from "@/types";
 import { Box, List, Typography } from "@mui/material";
 import {
@@ -20,7 +20,8 @@ export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
   pendingComponent: () => <Loader />,
   errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
-  head: ({ params }) => getMetaHeader(`Products in ${params.category}`),
+  head: ({ params }) =>
+    getMetaHeader(`Products in ${formatCategoryName(params.category, false)}`),
   validateSearch: (search) => ({
     page: search.page ? Number(search.page) : 1,
     limit: search.limit ? Number(search.limit) : 15,
