@@ -24,6 +24,7 @@ export const Route = createFileRoute("/_product/$category")({
     page: search.page ? Number(search.page) : 1,
     limit: search.limit ? Number(search.limit) : 15,
   }),
+  staleTime: 5 * 60 * 1000, // 5 minutos de cache
 });
 
 function RouteComponent() {
