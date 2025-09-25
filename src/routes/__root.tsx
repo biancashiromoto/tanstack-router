@@ -1,7 +1,9 @@
 import AppLayout from "@/components/AppLayout";
+import Loader from "@/components/Loader";
 import { categoriesQueryOptions } from "@/services/categories";
 import { Products } from "@/services/products";
 import type { IProduct, IUser } from "@/types";
+import { Box, Typography } from "@mui/material";
 import { TanstackDevtools } from "@tanstack/react-devtools";
 import { QueryClient } from "@tanstack/react-query";
 import {
@@ -70,4 +72,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       dailyDeals,
     };
   },
+  pendingComponent: () => <Loader />,
+  notFoundComponent: () => (
+    <Box sx={{ padding: 2 }}>
+      <Typography>Page Not Found</Typography>
+    </Box>
+  ),
 });
