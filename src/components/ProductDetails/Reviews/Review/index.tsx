@@ -3,36 +3,36 @@ import type { IProductReview } from "@/types";
 import { Box, Divider, Typography } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 
-const Review = ({ review }: { review: IProductReview }) => {
-  return (
-    <Box key={review.date} className="review" sx={{ my: 2 }}>
-      <Box
-        className="review__header"
-        sx={{ display: "flex", alignItems: "center", gap: 1 }}
-      >
-        <Typography variant="body2">
-          <Link
-            to="/user/$userId"
-            mask={{
-              to: "/user/$userId",
-              params: { userId: review.reviewer?.username ?? '' }
-            }}
-            params={{ userId: review.reviewer?.id ?? '' }}
-          >
-            {review.reviewer?.username}
-          </Link>
-        </Typography>
-        <Typography className="review__date" variant="body2">
-          {new Date(review.date).toLocaleDateString()}
-        </Typography>
-        <Rating value={review.rating} />
-      </Box>
-      <Typography variant="body2" className="review__comment">
-        {review.comment}
+const Review = ({ review }: { review: IProductReview }) => (
+  <Box key={review.date} className="review" sx={{ my: 2 }}>
+    <Box
+      className="review__header"
+      sx={{ display: "flex", alignItems: "center", gap: 1 }}
+    >
+      <Typography variant="body2">
+        <Link
+          to="/user/$userId"
+          mask={{
+            to: "/user/$userId",
+            params: { userId: review.reviewer?.username ?? "" },
+          }}
+          params={{ userId: review.reviewer?.id ?? "" }}
+          preload="intent"
+          preloadDelay={200}
+        >
+          @{review.reviewer?.username}
+        </Link>
       </Typography>
-      <Divider sx={{ my: 1 }} />
+      <Typography className="review__date" variant="body2">
+        {new Date(review.date).toLocaleDateString()}
+      </Typography>
+      <Rating value={review.rating} />
     </Box>
-  );
-};
+    <Typography variant="body2" className="review__comment">
+      {review.comment}
+    </Typography>
+    <Divider sx={{ my: 1 }} />
+  </Box>
+);
 
 export default Review;
