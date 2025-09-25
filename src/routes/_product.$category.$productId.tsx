@@ -40,14 +40,14 @@ export const Route = createFileRoute("/_product/$category/$productId")({
     if (!product) throw new Error("Product not found");
     context.selectedProduct = product;
   },
-  loader: async ({ context }: { context: RouterContext }) => context.selectedProduct,
+  loader: async ({ context }: { context: RouterContext }) =>
+    context.selectedProduct,
   errorComponent: ({ error }) => (
     <p>Error loading product details: {error.message}</p>
   ),
   head: (ctx) =>
     getMetaHeader(
-      (ctx.loaderData as IProduct | undefined)?.title ??
-        "Product not found"
+      (ctx.loaderData as IProduct | undefined)?.title ?? "Product not found"
     ),
 });
 
