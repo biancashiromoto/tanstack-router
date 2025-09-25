@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useCardContext } from "./context/CardContext";
 import CardPrice from "./CardPrice";
+import Rating from "../Rating";
 
 const CardContent = () => {
   const { product } = useCardContext();
@@ -11,6 +12,7 @@ const CardContent = () => {
         {product.title}
       </Typography>
       <CardPrice />
+      {product.rating && <Rating value={product.rating} />}
     </Box>
   );
 };
