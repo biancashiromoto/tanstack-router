@@ -12,7 +12,7 @@ export interface useBreadcrumbReturn {
 }
 
 const useBreadcrumb = (): useBreadcrumbReturn => {
-  const { category } = useParams({ from: "" });
+  const { category } = useParams({ from: "/_product/$category" });
   const location = useLocation();
   const matches = useMatches();
 
