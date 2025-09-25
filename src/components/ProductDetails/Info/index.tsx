@@ -5,7 +5,9 @@ import Reviews from "../Reviews";
 import type { IProduct } from "@/types";
 
 const Info = () => {
-  const product = useLoaderData({ from: "/_product/$category/$productId" }) as IProduct;
+  const product = useLoaderData({
+    from: "/_product/$category/$productId",
+  }) as IProduct;
 
   return (
     <Box
