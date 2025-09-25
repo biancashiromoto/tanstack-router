@@ -40,7 +40,7 @@ export const Route = createFileRoute("/_product/$category/$productId")({
     if (!product) throw new Error("Product not found");
     context.selectedProduct = product;
   },
-  loader: async ({ context }) => context.selectedProduct,
+  loader: async ({ context }: { context: RouterContext }) => context.selectedProduct,
   errorComponent: ({ error }) => (
     <p>Error loading product details: {error.message}</p>
   ),
@@ -53,10 +53,11 @@ export const Route = createFileRoute("/_product/$category/$productId")({
 
 function RouteComponent() {
   const product = useLoaderData({ from: "/_product/$category/$productId" });
-  const { isLoading } = useRouterState({
-    select: (state) => state,
-  });
   const { isDesktop } = useResponsive();
+
+  const isLoading = useRouterState({
+    select: (state) => state.isLoading,
+  });
 
   if (isLoading) return <Loader />;
 
@@ -78,7 +79,7 @@ function RouteComponent() {
         <Images />
         <Box>
           <Typography variant="h6" sx={{ alignSelf: "flex-start" }}>
-            {product.title}
+            {product?.title}
           </Typography>
           <Info />
         </Box>
