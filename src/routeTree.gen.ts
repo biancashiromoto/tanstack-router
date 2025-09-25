@@ -10,10 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnauthenticatedRouteImport } from './routes/unauthenticated'
+import { Route as TesteRouteImport } from './routes/teste'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProductRouteImport } from './routes/_product'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TesteUserIdRouteImport } from './routes/teste.$userId'
 import { Route as ProductCategoryRouteImport } from './routes/_product.$category'
 import { Route as AuthProfileRouteImport } from './routes/_auth.profile'
 import { Route as AuthCartRouteImport } from './routes/_auth.cart'
@@ -23,6 +25,11 @@ import { Route as AuthUserUserIdRouteImport } from './routes/_auth.user.$userId'
 const UnauthenticatedRoute = UnauthenticatedRouteImport.update({
   id: '/unauthenticated',
   path: '/unauthenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TesteRoute = TesteRouteImport.update({
+  id: '/teste',
+  path: '/teste',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -42,6 +49,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const TesteUserIdRoute = TesteUserIdRouteImport.update({
+  id: '/$userId',
+  path: '/$userId',
+  getParentRoute: () => TesteRoute,
 } as any)
 const ProductCategoryRoute = ProductCategoryRouteImport.update({
   id: '/$category',
@@ -73,20 +85,24 @@ const AuthUserUserIdRoute = AuthUserUserIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/teste': typeof TesteRouteWithChildren
   '/unauthenticated': typeof UnauthenticatedRoute
   '/cart': typeof AuthCartRoute
   '/profile': typeof AuthProfileRoute
   '/$category': typeof ProductCategoryRouteWithChildren
+  '/teste/$userId': typeof TesteUserIdRoute
   '/user/$userId': typeof AuthUserUserIdRoute
   '/$category/$productId': typeof ProductCategoryProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/teste': typeof TesteRouteWithChildren
   '/unauthenticated': typeof UnauthenticatedRoute
   '/cart': typeof AuthCartRoute
   '/profile': typeof AuthProfileRoute
   '/$category': typeof ProductCategoryRouteWithChildren
+  '/teste/$userId': typeof TesteUserIdRoute
   '/user/$userId': typeof AuthUserUserIdRoute
   '/$category/$productId': typeof ProductCategoryProductIdRoute
 }
@@ -96,10 +112,12 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_product': typeof ProductRouteWithChildren
   '/login': typeof LoginRoute
+  '/teste': typeof TesteRouteWithChildren
   '/unauthenticated': typeof UnauthenticatedRoute
   '/_auth/cart': typeof AuthCartRoute
   '/_auth/profile': typeof AuthProfileRoute
   '/_product/$category': typeof ProductCategoryRouteWithChildren
+  '/teste/$userId': typeof TesteUserIdRoute
   '/_auth/user/$userId': typeof AuthUserUserIdRoute
   '/_product/$category/$productId': typeof ProductCategoryProductIdRoute
 }
@@ -108,20 +126,24 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/teste'
     | '/unauthenticated'
     | '/cart'
     | '/profile'
     | '/$category'
+    | '/teste/$userId'
     | '/user/$userId'
     | '/$category/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
+    | '/teste'
     | '/unauthenticated'
     | '/cart'
     | '/profile'
     | '/$category'
+    | '/teste/$userId'
     | '/user/$userId'
     | '/$category/$productId'
   id:
@@ -130,10 +152,12 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_product'
     | '/login'
+    | '/teste'
     | '/unauthenticated'
     | '/_auth/cart'
     | '/_auth/profile'
     | '/_product/$category'
+    | '/teste/$userId'
     | '/_auth/user/$userId'
     | '/_product/$category/$productId'
   fileRoutesById: FileRoutesById
@@ -143,6 +167,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   ProductRoute: typeof ProductRouteWithChildren
   LoginRoute: typeof LoginRoute
+  TesteRoute: typeof TesteRouteWithChildren
   UnauthenticatedRoute: typeof UnauthenticatedRoute
 }
 
@@ -153,6 +178,13 @@ declare module '@tanstack/react-router' {
       path: '/unauthenticated'
       fullPath: '/unauthenticated'
       preLoaderRoute: typeof UnauthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teste': {
+      id: '/teste'
+      path: '/teste'
+      fullPath: '/teste'
+      preLoaderRoute: typeof TesteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -182,6 +214,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/teste/$userId': {
+      id: '/teste/$userId'
+      path: '/$userId'
+      fullPath: '/teste/$userId'
+      preLoaderRoute: typeof TesteUserIdRouteImport
+      parentRoute: typeof TesteRoute
     }
     '/_product/$category': {
       id: '/_product/$category'
@@ -258,11 +297,22 @@ const ProductRouteChildren: ProductRouteChildren = {
 const ProductRouteWithChildren =
   ProductRoute._addFileChildren(ProductRouteChildren)
 
+interface TesteRouteChildren {
+  TesteUserIdRoute: typeof TesteUserIdRoute
+}
+
+const TesteRouteChildren: TesteRouteChildren = {
+  TesteUserIdRoute: TesteUserIdRoute,
+}
+
+const TesteRouteWithChildren = TesteRoute._addFileChildren(TesteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   ProductRoute: ProductRouteWithChildren,
   LoginRoute: LoginRoute,
+  TesteRoute: TesteRouteWithChildren,
   UnauthenticatedRoute: UnauthenticatedRoute,
 }
 export const routeTree = rootRouteImport
