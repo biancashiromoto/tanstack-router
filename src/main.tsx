@@ -12,6 +12,7 @@ import { routeTree } from "./routeTree.gen";
 import reportWebVitals from "./reportWebVitals.ts";
 import Loader from "@/components/Loader/index.tsx";
 import "./index.scss";
+import "./styles/simple-optimizations.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
