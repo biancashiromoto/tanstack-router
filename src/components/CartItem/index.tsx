@@ -39,7 +39,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
   return (
     <Link
-      to={`/${item.category}/${item.id}`}
+      to="/$category/$productId"
       params={{ productId: String(item.id), category: item.category }}
       mask={{ to: `/cart/${item.id}` }}
       style={{ textDecoration: "none" }}
