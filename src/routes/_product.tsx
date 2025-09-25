@@ -1,6 +1,6 @@
 import Loader from "@/components/Loader";
 import { Products } from "@/services/products";
-import type { LoaderData, LoaderParams } from "@/types/_product.types";
+import type { ILoaderData, LoaderParams } from "@/types/_product.types";
 import { Box } from "@mui/material";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_product")({
   ),
   pendingComponent: () => <Loader />,
   wrapInSuspense: true,
-  loader: async ({ params, context }: LoaderParams): Promise<LoaderData> => {
+  loader: async ({ params, context }: LoaderParams): Promise<ILoaderData> => {
     const queryClient = context?.queryClient;
     const { category, productId } = params;
 
@@ -23,8 +23,9 @@ export const Route = createFileRoute("/_product")({
     );
 
     const selectedProduct = productId
-      ? (products?.products.find((p) => p.id === Number(productId)) ?? null)
-      : null;
+      ? (products?.products.find((p) => p.id === Number(productId)) ??
+        undefined)
+      : undefined;
 
     return {
       category: category ?? null,
