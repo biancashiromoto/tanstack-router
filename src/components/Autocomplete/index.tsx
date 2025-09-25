@@ -30,7 +30,7 @@ export default function CustomAutocomplete() {
           }
           navigate({
             to: "/$category/$productId",
-            params: { category: value.category, productId: String(value.id) },
+            params: { category: value.category, productId: value.id },
           });
         }}
         options={options}
