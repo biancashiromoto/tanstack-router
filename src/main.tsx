@@ -1,4 +1,4 @@
-import { StrictMode, Suspense, useMemo } from "react";
+import { StrictMode, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -22,42 +22,65 @@ const queryClient = new QueryClient({
   },
 });
 
+/**
+ * Cria o roteador uma única vez com as configurações necessárias
+ */
+const router = createRouter({
+  routeTree,
+  /**
+   * Contexto global para todas as rotas
+   * Pode ser acessado em qualquer rota via useRouteContext()
+   */
+  context: {
+    user: null,
+    queryClient,
+    categories: [],
+    dailyDeals: [],
+  },
+  defaultPreload: "intent", // Habilita preload no hover
+  defaultPreloadDelay: 300, // 300ms de delay antes do preload
+  scrollRestoration: true,
+  defaultStructuralSharing: true,
+  defaultPreloadStaleTime: 5 * 60 * 1000, // 5 minutos de cache
+  defaultPreloadGcTime: 10 * 60 * 1000, // 10 minutos para garbage collection
+});
+
+// Register the router instance for type safety
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+/**
+ * Componente que provê o roteador para a aplicação
+ * e atualiza o contexto quando necessário
+ */
 function RouterWithContext() {
   const { user, isLoading } = useAuth();
 
-  const router = useMemo(
-    () =>
-      createRouter({
-        routeTree,
-        context: {
-          user,
-          queryClient,
-          categories: [],
-          dailyDeals: [],
-        },
-        defaultPreload: "intent", // Habilita preload no hover
-        defaultPreloadDelay: 300, // 300ms de delay antes do preload
-        scrollRestoration: true,
-        defaultStructuralSharing: true,
-        defaultPreloadStaleTime: 5 * 60 * 1000, // 5 minutos de cache
-        defaultPreloadGcTime: 10 * 60 * 1000, // 10 minutos para garbage collection
-      }),
-    [user?.accessToken]
-  );
+  // Atualiza o contexto do router quando o usuário muda
+  router.update({
+    context: {
+      user,
+      queryClient,
+      categories: [],
+      dailyDeals: [],
+    },
+  });
 
   if (isLoading) return <Loader />;
 
   return <RouterProvider router={router} />;
 }
 
-// Register the router instance for type safety
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: ReturnType<typeof createRouter>;
-  }
-}
-
 function App() {
+  /**
+   * Envolve a aplicação com os providers necessários
+   * QueryClientProvider para React Query
+   * AuthProvider para contexto de autenticação
+   * Suspense para carregamento assíncrono
+   */
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={<Loader />}>
