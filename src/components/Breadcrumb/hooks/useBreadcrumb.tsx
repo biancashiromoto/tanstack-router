@@ -15,11 +15,11 @@ const useBreadcrumb = (): useBreadcrumbReturn => {
   const location = useLocation();
   const matches = useMatches();
 
-  const category = matches.find(
-    (match) => match.routeId === "/_product/$category"
-  )?.params.category;
+  const category =
+    matches.find((match) => match.routeId === "/_product/$category")?.params
+      .category ?? null;
 
-  const categoryName = formatCategoryName("");
+  const categoryName = category && formatCategoryName(category);
 
   const selectedProduct = matches.find(
     (match) => match.routeId === "/_product/$category/$productId"
