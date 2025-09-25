@@ -1,7 +1,7 @@
 import Loader from "@/components/Loader";
 import { Products } from "@/services/products";
 import type { LoaderData, LoaderParams } from "@/types/_product.types";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 const productsService = new Products();
@@ -13,6 +13,22 @@ export const Route = createFileRoute("/_product")({
     </Box>
   ),
   pendingComponent: () => <Loader />,
+  errorComponent: ({ error }) => (
+    <Box
+      sx={{
+        mx: "auto",
+        py: 2,
+        maxWidth: 600,
+      }}
+    >
+      <Typography component="h2" variant="h6" gutterBottom color="error">
+        Error
+      </Typography>
+      <Typography component="p" color="text.secondary">
+        {error.message}
+      </Typography>
+    </Box>
+  ),
   wrapInSuspense: true,
   loader: async ({ params, context }: LoaderParams): Promise<LoaderData> => {
     const queryClient = context?.queryClient;
