@@ -1,0 +1,14 @@
+img[loading="lazy"] {
+  transform: translateZ(0);
+  image-rendering: optimizeQuality;
+  transition: opacity 0.3s ease;
+}
+
+.MuiCard-root {
+  contain: layout style;
+  will-change: transform;
+}
+
+.MuiSkeleton-root {
+  transform: translateZ(0);
+}
