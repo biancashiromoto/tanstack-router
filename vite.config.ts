@@ -9,7 +9,7 @@ export default defineConfig({
     /**
      * Plugin do TanStack Router para Vite
      * Habilita code splitting automático para rotas
-     * e outras otimizações
+     * e outras otimizações - cada rota vira um chunk separado
      */
     TanStackRouterVite({ autoCodeSplitting: true }), 
     viteReact()
