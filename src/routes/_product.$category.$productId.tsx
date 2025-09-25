@@ -46,7 +46,7 @@ export const Route = createFileRoute("/_product/$category/$productId")({
   ),
   head: (ctx) =>
     getMetaHeader(
-      (ctx.loaderData as IProduct | undefined)?.description ??
+      (ctx.loaderData as IProduct | undefined)?.title ??
         "Product not found"
     ),
 });
