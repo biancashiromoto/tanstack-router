@@ -35,7 +35,7 @@ export class Products {
 
     const product = await response.json();
     if (!product) throw new Error('Product not found');
-    return await this.enrichProductReviews(product);
+    return await product;
   }
 
   async searchProducts(query: string): Promise<IProductsResponse> {
@@ -96,7 +96,14 @@ export class Products {
       queryKey: ["product", productId],
       queryFn: () => getProductById(String(productId)),
       staleTime: 1000 * 60 * 5, // 5 minutes,
-    });
+  });
+
+  enrichProductReviewsQueryOptions = (product: IProduct) =>
+    queryOptions<IProduct>({
+      queryKey: ["product", product.id, "reviews"],
+      queryFn: async () => await this.enrichProductReviews(product),
+      staleTime: 1000 * 60 * 10, // 10 minutes
+  });
 
   productsByCategoryQueryOptions = (category: string) =>
     queryOptions<IProductsResponse>({
