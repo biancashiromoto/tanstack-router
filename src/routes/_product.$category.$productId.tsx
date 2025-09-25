@@ -40,19 +40,27 @@ export const Route = createFileRoute("/_product/$category/$productId")({
     if (!product) throw new Error("Product not found");
     context.selectedProduct = product;
   },
-  loader: async ({ context }: { context: RouterContext }) =>
-    context.selectedProduct,
+  loader: async ({ context }: { context: RouterContext }) => {
+    const product = context.selectedProduct;
+    if (!product) throw new Error("Product not found");
+    const reviews = await context?.queryClient?.ensureQueryData(
+      productsService.enrichProductReviewsQueryOptions(product)
+    );
+    return { ...product, reviews };
+  },
   errorComponent: ({ error }) => (
     <p>Error loading product details: {error.message}</p>
   ),
-  head: (ctx) =>
-    getMetaHeader(
-      (ctx.loaderData as IProduct | undefined)?.title ?? "Product not found"
-    ),
+  head: (ctx) => {
+    const product = ctx.loaderData as IProduct | undefined;
+    return getMetaHeader(product?.title ?? "Product not found");
+  },
 });
 
 function RouteComponent() {
-  const product = useLoaderData({ from: "/_product/$category/$productId" });
+  const product = useLoaderData({
+    from: "/_product/$category/$productId",
+  }) as IProduct;
   const { isDesktop } = useResponsive();
 
   const isLoading = useRouterState({
@@ -79,7 +87,7 @@ function RouteComponent() {
         <Images />
         <Box>
           <Typography variant="h6" sx={{ alignSelf: "flex-start" }}>
-            {product?.title}
+            {product?.title ?? ""}
           </Typography>
           <Info />
         </Box>
