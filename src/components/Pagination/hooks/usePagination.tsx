@@ -1,7 +1,7 @@
 import { useLoaderData, useNavigate, useSearch } from "@tanstack/react-router";
 
 const usePagination = () => {
-  const { page, limit } = useSearch({ from: "" });
+  const { page, limit } = useSearch({ from: "/_product/$category" }) as { page: number; limit: number };
   const { products, category } = useLoaderData({
     from: "/_product",
   });
