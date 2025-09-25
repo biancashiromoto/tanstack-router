@@ -14,8 +14,14 @@ import {
 
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
+  beforeLoad: async ({ params, context }) => {
+    const { categories } = context;
+
+    if (!categories.includes(params.category)) {
+      throw new Error(`Category '${params.category}' not found`);
+    }
+  },
   pendingComponent: () => <Loader />,
-  errorComponent: ({ error }) => <p>Error loading products: {error.message}</p>,
   head: ({ params }) => getMetaHeader(`Products in ${params.category}`),
   validateSearch: (search) => ({
     page: search.page ? Number(search.page) : 1,
