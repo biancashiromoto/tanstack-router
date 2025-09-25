@@ -12,6 +12,9 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 
+/**
+ * Rota com parâmetro dinâmico
+ */
 export const Route = createFileRoute("/_product/$category")({
   component: RouteComponent,
   pendingComponent: () => <Loader />,

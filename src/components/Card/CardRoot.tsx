@@ -10,6 +10,9 @@ const CardRoot = ({
 }: ICardRootProps) => {
   const navigate = useNavigate();
   const handleClick = () =>
+    /**
+     * Navigate com rota e parâmetros tipados
+     */
     navigate({
       to: "/$category/$productId",
       params: { category: product.category, productId: product.id },

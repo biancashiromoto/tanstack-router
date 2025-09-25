@@ -24,7 +24,9 @@ const productsService = new Products();
 function RootComponent() {
   return (
     <>
+      {/* Conteúdo do head, como título e meta tags */}
       <HeadContent />
+      {/* Layout principal da aplicação */}
       <AppLayout>
         <Outlet />
       </AppLayout>
