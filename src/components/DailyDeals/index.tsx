@@ -6,7 +6,9 @@ import Card from "../Card";
 
 const DailyDeals = () => {
   const { dailyDeals } = useRouteContext({ from: "__root__" });
-  const isLoading = useRouterState({ select: (s) => s.status === "pending" });
+  const isLoading = useRouterState({
+    select: (state) => state.isLoading,
+  });
 
   if (isLoading) return <Loader />;
 
