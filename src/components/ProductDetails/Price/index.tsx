@@ -1,21 +1,14 @@
 import { formatProductPrice } from "@/helpers";
-import { Box, Chip, Typography } from "@mui/material";
-import { useLoaderData, useSearch } from "@tanstack/react-router";
 import type { IProduct } from "@/types";
+import { Box, Chip, Typography } from "@mui/material";
+import { useLoaderData } from "@tanstack/react-router";
 
 const Price = () => {
   const product = useLoaderData({
     from: "/_product/$category/$productId",
   }) as IProduct;
-  const search = useSearch({ from: "/_product/$category/$productId" }) as { from?: string };
-  
-  if (!product) return null;
-  
-  const previousRoute = decodeURIComponent(search.from ?? "");
-  const shouldNotRender =
-    !product.discountPercentage || product.discountPercentage <= 0;
 
-  if (shouldNotRender) return null;
+  if (!product) return null;
 
   const discountedPrice = (
     product.price -
@@ -72,21 +65,21 @@ const Price = () => {
     </Box>
   );
 
-  if (previousRoute === "/") return <DiscountedPrice />;
+  return <DiscountedPrice />;
 
-  return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-      <Typography
-        variant="body2"
-        sx={{
-          fontWeight: "bold",
-          fontSize: "1.1rem",
-        }}
-      >
-        ${product.price}
-      </Typography>
-    </Box>
-  );
+  // return (
+  //   <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+  //     <Typography
+  //       variant="body2"
+  //       sx={{
+  //         fontWeight: "bold",
+  //         fontSize: "1.1rem",
+  //       }}
+  //     >
+  //       ${product.price}
+  //     </Typography>
+  //   </Box>
+  // );
 };
 
 export default Price;
