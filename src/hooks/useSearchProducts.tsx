@@ -17,7 +17,7 @@ const useSearchProducts = () => {
   } = useQuery({
     queryKey: ["products", debouncedSearch],
     queryFn: () => searchProducts(debouncedSearch),
-    enabled: debouncedSearch.length > 2,
+    enabled: debouncedSearch.length >= 2,
     staleTime: 1000 * 60 * 5,
   });
 
