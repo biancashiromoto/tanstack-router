@@ -9,12 +9,9 @@ import { SlMagnifier } from "react-icons/sl";
 
 export default function CustomAutocomplete() {
   const navigate = useNavigate();
-  const { search, options, handleSearchChange } = useSearchProducts();
+  const { search, options, handleSearchChange, isLoading } =
+    useSearchProducts();
   const { isMobile } = useResponsive();
-
-  const filteredProducts = options.filter((option) =>
-    option.title.toLowerCase().includes(search.toLowerCase())
-  );
 
   return (
     <FormControl fullWidth>
@@ -22,10 +19,8 @@ export default function CustomAutocomplete() {
         size={isMobile ? "small" : "medium"}
         inputValue={search}
         onInputChange={(_, value) => handleSearchChange(value)}
-        clearOnEscape
         onChange={(_, value) => {
           if (!value) {
-            navigate({ to: "/" });
             return;
           }
           navigate({
@@ -34,44 +29,35 @@ export default function CustomAutocomplete() {
           });
         }}
         options={options}
-        autoHighlight
         getOptionLabel={(option) => option.title}
-        getOptionKey={(option) => option.id}
-        filterOptions={() => filteredProducts}
-        renderOption={(props, option) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { key, ...optionProps } = props;
-          return (
-            <Box
-              key={option.id}
-              component="li"
-              sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-              {...optionProps}
-            >
-              <Typography variant="body2">{option.title}</Typography>
-            </Box>
-          );
-        }}
+        renderOption={(props, option) => (
+          <Box component="li" {...props} key={option.id}>
+            <Typography variant="body2">{option.title}</Typography>
+          </Box>
+        )}
         renderInput={(params) => (
           <TextField
             {...params}
             label="Search products"
-            autoFocus
-            slotProps={{
-              htmlInput: {
-                ...params.inputProps,
-                autoComplete: "new-password", // disable autocomplete and autofill
-              },
-              input: {
-                endAdornment: (
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {params.InputProps.endAdornment}
                   <InputAdornment position="end">
                     <SlMagnifier />
                   </InputAdornment>
-                ),
-              },
+                </>
+              ),
             }}
           />
         )}
+        loading={isLoading}
+        noOptionsText={
+          search.length < 2
+            ? "Digite pelo menos 2 caracteres"
+            : "Nenhum produto encontrado"
+        }
       />
     </FormControl>
   );
