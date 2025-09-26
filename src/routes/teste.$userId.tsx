@@ -23,7 +23,7 @@ export const Route = createFileRoute("/teste/$userId")({
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(response);
-      }, 1000);
+      }, 2500);
       // throw new Error("Passou aqui!!");
     });
   },
