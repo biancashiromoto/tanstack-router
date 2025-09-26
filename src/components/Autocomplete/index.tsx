@@ -55,8 +55,8 @@ export default function CustomAutocomplete() {
         loading={isLoading}
         noOptionsText={
           search.length < 2
-            ? "Digite pelo menos 2 caracteres"
-            : "Nenhum produto encontrado"
+            ? "Enter at least 2 characters"
+            : "No products found"
         }
       />
     </FormControl>
