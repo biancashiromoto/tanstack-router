@@ -20,7 +20,7 @@ export const Route = createFileRoute("/teste")({
     const response = await userService.getAllUsers();
     return new Promise<IUser[]>((resolve) => {
       // setTimeout(() => {
-        resolve(response);
+      resolve(response);
       // }, 1000);
       // throw new Error("Passou aqui!!");
     });
@@ -35,7 +35,6 @@ export const Route = createFileRoute("/teste")({
   head: () => ({
     meta: [{ title: "TESTE" }],
   }),
-  notFoundComponent: () => <div>Not found</div>,
   onLeave: () => {
     alert("You are leaving the Teste page!");
   },
